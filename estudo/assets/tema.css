@@ -1,0 +1,80 @@
+/* ==========================================================================
+   MULTI — tema "roxo-ametista"
+   --------------------------------------------------------------------------
+   Este arquivo é a ÚNICA fonte de cores, fontes e medidas do projeto.
+   `estilo.css` cuida só de estrutura e nunca traz cor literal — sempre
+   var(--…) declarada aqui. (Única exceção: a regra @media print, que força
+   fundo branco porque papel é branco.)
+
+   REGRA DO TEMA: as superfícies são neutras. O roxo (e as outras cores
+   semânticas) aparece só em TIPOGRAFIA e em FILETES — títulos, links,
+   rótulos, bordas de destaque. Nenhum fundo tingido de cor.
+
+   Para trocar de tema:
+     1. copie este arquivo para assets/temas/<nome>.css
+     2. mude os valores lá
+     3. troque o href do primeiro <link> das páginas para o novo arquivo
+   Nenhuma outra alteração é necessária: estilo.css continua igual.
+   ========================================================================== */
+
+:root {
+  /* ---- superfícies: cinzas neutros, sem tingimento ---- */
+  --fundo:        #fdfdfc;
+  --fundo-caixa:  #ffffff;
+  --fundo-suave:  #f4f3f6;   /* caixas, cabeçalho de tabela, hover */
+  --texto:        #1b1a1d;
+  --texto-fraco:  #58555c;
+  --linha:        #ddd9e0;
+
+  /* ---- cores semânticas: SÓ em texto e filetes ---- */
+  --realce:       #5b3a8e;   /* roxo-ametista — h1, h2, links e destaques */
+  --realce-2:     #6c48a3;   /* roxo médio — h3 (subtópicos) */
+  --realce-3:     #7c62a0;   /* lavanda-fosco — h4 (rótulos de sub-bloco) */
+  --azul:         #1c5566;   /* petróleo — definições e saída do R */
+  --verde:        #55771f;   /* verde-oliva — código R / respostas */
+  --ambar:        #7a5a17;   /* avisos e armadilhas */
+
+  /* ---- cores de peças específicas ---- */
+  --menu-fundo:   #f7f6f9;   /* barra lateral fixa */
+  --menu-texto:   #ffffff;   /* texto sobre o alternador do menu (fundo --realce) */
+  --fundo-figura: #ffffff;   /* recortes do PDF são digitalizações em branco */
+
+  /* ---- tipografia ---- */
+  --serif:  Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --sans:   "Segoe UI", -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:   "Cascadia Mono", Consolas, "SF Mono", "Liberation Mono", monospace;
+  --corpo-tamanho: 18px;
+  --corpo-altura:  1.72;
+
+  /* ---- medidas da grade (ver estilo.css) ---- */
+  --largura-leitura: 46rem;   /* coluna de prosa */
+  --largura-sangria: 10rem;   /* quanto figuras/tabelas avançam para cada lado */
+  --largura-menu:    17rem;   /* barra lateral fixa, sempre aberta */
+  --desloca-texto:   4.5rem;  /* quanto o bloco de conteúdo anda para a direita
+                                 além da barra lateral. Aumente para afastar
+                                 mais o texto do menu; 0 = centrado na sobra. */
+
+  /* ---- figuras ---- */
+  --figura-largura: 34rem;    /* teto de largura dos recortes do livro */
+  --figura-altura:  52vh;     /* teto de altura, para nenhuma figura dominar a tela */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo:        #161517;
+    --fundo-caixa:  #1e1d21;
+    --fundo-suave:  #262429;
+    --texto:        #e6e4e8;
+    --texto-fraco:  #a3a0a7;
+    --linha:        #37343c;
+    --realce:       #bfa3e8;
+    --realce-2:     #b295e2;
+    --realce-3:     #b0a2c8;
+    --azul:         #7fc0d4;
+    --verde:        #a9c86a;
+    --ambar:        #d9b968;
+    --menu-fundo:   #1b1a1e;
+    --menu-texto:   #161517;   /* o realce clareia no escuro: texto escuro sobre ele */
+    /* --fundo-figura continua branco: as figuras vêm do PDF com fundo branco */
+  }
+}

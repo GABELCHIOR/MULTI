@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Johnson & Wichern, Prentice Hall) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Análise Multivariada — percurso de estudo</title>
+<link rel="stylesheet" href="assets/tema.css?v=1">
+<link rel="stylesheet" href="assets/estilo.css?v=1">
+</head>
+<body>
+
+<details class="menu-lateral" open>
+  <summary>Capítulos</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Capítulos</p>
+    <ol>
+      <li><a href="cap01/01-00-aspectos-da-analise-multivariada.html">Aspectos da Análise Multivariada</a></li>
+      <li><a href="cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Álgebra de Matrizes e Vetores Aleatórios</a></li>
+      <li class="adiante">Geometria da Amostra e Amostragem Aleatória</li>
+      <li class="adiante">A Distribuição Normal Multivariada</li>
+      <li class="adiante">Inferências sobre um Vetor de Médias</li>
+      <li class="adiante">Comparações entre Vários Vetores de Médias</li>
+      <li class="adiante">Modelos de Regressão Linear Multivariada</li>
+      <li class="adiante">Componentes Principais</li>
+      <li class="adiante">Análise Fatorial</li>
+      <li class="adiante">Correlação Canônica</li>
+      <li class="adiante">Discriminação e Classificação</li>
+      <li class="adiante">Agrupamento e Escalonamento Multidimensional</li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="#menu">Menu</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha">Johnson &amp; Wichern · <em>Applied Multivariate Statistical Analysis</em> · 4ª ed., Prentice Hall, 1998</p>
+  <h1>Análise Multivariada</h1>
+  <p class="subtitulo">Percurso linear do capítulo 1 ao 12. Aulas em português, com o código em R e exercícios resolvidos.</p>
+</header>
+
+
+<h2>Aulas disponíveis</h2>
+
+<div class="cartoes">
+
+  <a class="cartao" href="cap01/01-00-aspectos-da-analise-multivariada.html">
+    <span class="cap">Capítulo 1 · págs. 1–47</span>
+    <p class="tit">Aspectos da Análise Multivariada</p>
+    <p class="desc">Os cinco objetivos. O arranjo <math><mi>X</mi></math> e os três resumos: <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math>. O divisor <math><mi>n</mi></math> × <math><mi>n</mi><mo>−</mo><mn>1</mn></math>. Gráficos, <em class="en">brushing</em>, estrelas e faces de Chernoff. E a distância estatística: por que a euclidiana não serve, e de onde vem a elipse.</p>
+  </a>
+
+  <a class="cartao" href="cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">
+    <span class="cap">Capítulo 2 · págs. 49–115</span>
+    <p class="tit">Álgebra de Matrizes e Vetores Aleatórios</p>
+    <p class="desc">Comprimento, ângulo e projeção. Decomposição espectral e matrizes definidas positivas — a resposta à pergunta que ficou do cap. 1. Elipses por autovalores. <math><mi mathvariant="bold">μ</mi></math>, <math><mi mathvariant="bold">Σ</mi></math>, <math><mi mathvariant="bold">ρ</mi></math> e a regra <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math>. Cauchy–Schwarz e maximização.</p>
+  </a>
+
+</div>
+
+<h2 id="menu">Menu</h2>
+
+<div class="rolagem">
+<table>
+  <caption>Página de abertura de cada capítulo, na numeração do livro e na do PDF.</caption>
+  <thead>
+    <tr><th>Cap.</th><th class="txt">Título</th><th>Livro</th><th>PDF</th><th>Situação</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td class="txt"><a href="cap01/01-00-aspectos-da-analise-multivariada.html">Aspectos da Análise Multivariada</a></td><td>1</td><td>17</td><td>✅ pronto</td></tr>
+    <tr><td>2</td><td class="txt"><a href="cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Álgebra de Matrizes e Vetores Aleatórios</a></td><td>49</td><td>65</td><td>✅ pronto</td></tr>
+    <tr><td>3</td><td class="txt">Geometria da Amostra e Amostragem Aleatória</td><td>116</td><td>132</td><td>—</td></tr>
+    <tr><td>4</td><td class="txt">A Distribuição Normal Multivariada</td><td>149</td><td>165</td><td>—</td></tr>
+    <tr><td>5</td><td class="txt">Inferências sobre um Vetor de Médias</td><td>222</td><td>238</td><td>—</td></tr>
+    <tr><td>6</td><td class="txt">Comparações entre Vários Vetores de Médias</td><td>288</td><td>304</td><td>—</td></tr>
+    <tr><td>7</td><td class="txt">Modelos de Regressão Linear Multivariada</td><td>373</td><td>389</td><td>—</td></tr>
+    <tr><td>8</td><td class="txt">Componentes Principais</td><td>454</td><td>470</td><td>—</td></tr>
+    <tr><td>9</td><td class="txt">Análise Fatorial e Inferência sobre Covariâncias Estruturadas</td><td>510</td><td>526</td><td>—</td></tr>
+    <tr><td>10</td><td class="txt">Correlação Canônica</td><td>583</td><td>599</td><td>—</td></tr>
+    <tr><td>11</td><td class="txt">Discriminação e Classificação</td><td>625</td><td>641</td><td>—</td></tr>
+    <tr><td>12</td><td class="txt">Agrupamento, Métodos de Distância e Ordenação</td><td>722</td><td>738</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Sobre o PDF do livro</span>
+  <p>O arquivo é um <strong>escaneamento com OCR</strong> (ClearScan do Acrobat), e isso tem duas consequências práticas. A camada de texto reproduz bem a <em>prosa</em>, mas embaralha fórmulas, matrizes e índices — por isso as figuras destas aulas são <em>recortes de imagem</em> da página, e toda a matemática foi reescrita à mão em MathML.</p>
+  <p>Além disso, o <strong>deslocamento entre a numeração do livro e a do PDF não é constante</strong>, porque o escaneamento perdeu duas folhas:</p>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th class="txt">Páginas do livro</th><th class="txt">Como achar no PDF</th></tr></thead>
+    <tbody>
+      <tr><td class="txt">1 a 174</td><td class="txt">PDF = livro + 16</td></tr>
+      <tr><td class="txt">175 e 176</td><td class="txt"><strong>ausentes</strong> (meio do cap. 4)</td></tr>
+      <tr><td class="txt">177 a 318</td><td class="txt">PDF = livro + 14</td></tr>
+      <tr><td class="txt">319 e 320</td><td class="txt"><strong>ausentes</strong> (meio do cap. 6)</td></tr>
+      <tr><td class="txt">321 a 816</td><td class="txt">PDF = livro + 12</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Os capítulos 1, 2 e 3 estão <strong>inteiros</strong> na primeira faixa. As lacunas só serão sentidas nos capítulos 4 e 6. A conversão está resolvida em <code>ferramentas/extrair.py</code> (funções <code>livro2pdf</code> e <code>pdf2livro</code>) — não use uma constante.</p>
+</div>
+
+<h2>Como as aulas são organizadas</h2>
+
+<p>Cada aula segue sempre a mesma ordem, para que o percurso fique previsível:</p>
+
+<ol>
+  <li><strong>Objetivo da seção</strong> — o que se deve saber fazer ao final.</li>
+  <li><strong>Conceito</strong> em português, com a derivação matemática escrita em MathML nativo (sem biblioteca, sem internet).</li>
+  <li><strong>Figuras</strong> recortadas do PDF do livro.</li>
+  <li><strong>Exemplos do livro resolvidos passo a passo</strong>, com o código em R e a saída comentada.</li>
+  <li><strong>Cartões de recall ativo</strong> — pergunta com a resposta escondida.</li>
+  <li><strong>Exercícios selecionados</strong> do fim do capítulo, com gabarito comentado.</li>
+</ol>
+
+<p>Todo resultado numérico das resoluções é <em>calculado</em>, nunca copiado de memória, e conferido contra o livro quando há valor publicado.</p>
+
+
+<div class="nota">
+  <p>Material de estudo produzido a partir de Johnson, R. A. &amp; Wichern, D. W., <em>Applied Multivariate Statistical Analysis</em>, 4ª edição, Prentice Hall, 1998. Figuras e tabelas reproduzidas do original para fins de estudo pessoal.</p>
+</div>
+
+</div>
+<script>
+/* Em tela larga a barra lateral fica sempre aberta (o CSS esconde o
+   alternador). Abaixo de 62rem ela vira aba: aí começa fechada e fecha
+   sozinha ao escolher um link. Nada aqui depende de rede ou biblioteca —
+   sem JavaScript a barra apenas fica sempre aberta, que é o estado bom. */
+(function () {
+  var menu = document.querySelector(".menu-lateral");
+  if (!menu) return;
+
+  /* Seções com subtópicos: clicar no título abre a lista e segue o link.
+     Só ABRE — para fechar, clique na setinha. É preciso fazer à mão porque
+     o navegador dá prioridade ao <a> e não alterna o <details> sozinho.
+     Sem JavaScript a setinha continua abrindo e fechando normalmente. */
+  menu.querySelectorAll("details.sub > summary > a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var d = a.closest("details.sub");
+      if (d) d.open = true;
+    });
+  });
+
+  if (!window.matchMedia) return;
+  var estreito = window.matchMedia("(max-width: 62rem)");
+  function ajustar() { menu.open = !estreito.matches; }
+  ajustar();
+  estreito.addEventListener("change", ajustar);
+  menu.querySelectorAll(".painel a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (estreito.matches) menu.open = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

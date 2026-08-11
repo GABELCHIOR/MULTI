@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Johnson & Wichern, Prentice Hall) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Cap. 2 — Álgebra de Matrizes e Vetores Aleatórios</title>
+<link rel="stylesheet" href="../assets/tema.css?v=1">
+<link rel="stylesheet" href="../assets/estilo.css?v=1">
+</head>
+<body>
+
+<details class="menu-lateral" open>
+  <summary>Índice da aula</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Cap. 2 — Álgebra de Matrizes</p>
+    <ol>
+      <li><a href="#s1">Por que álgebra de matrizes</a></li>
+      <li><details class="sub">
+        <summary><a href="#s2">Vetores: comprimento, ângulo, projeção</a></summary>
+        <ul class="subitens">
+          <li><a href="#s2-1">2.1 Comprimento e produto interno</a></li>
+          <li><a href="#s2-2">2.2 Ângulo e perpendicularidade</a></li>
+          <li><a href="#s2-3">2.3 Dependência linear</a></li>
+          <li><a href="#s2-4">2.4 Projeção — a sombra de um vetor</a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s3">Matrizes: as operações que importam</a></summary>
+        <ul class="subitens">
+          <li><a href="#s3-1">3.1 Produto: linha com coluna</a></li>
+          <li><a href="#s3-2">3.2 Simetria, identidade e inversa</a></li>
+          <li><a href="#s3-3">3.3 Matrizes ortogonais</a></li>
+          <li><a href="#s3-4">3.4 Autovalores e autovetores</a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s4">A decomposição espectral</a></summary>
+        <ul class="subitens">
+          <li><a href="#s4-1">4.1 O enunciado e o que ele diz</a></li>
+          <li><a href="#s4-2">4.2 Exemplo 2.10, completo</a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s5">Matrizes definidas positivas e distância</a></summary>
+        <ul class="subitens">
+          <li><a href="#s5-1">5.1 Formas quadráticas</a></li>
+          <li><a href="#s5-2">5.2 O critério dos autovalores</a></li>
+          <li><a href="#s5-3">5.3 A elipse, finalmente explicada</a></li>
+        </ul>
+      </details></li>
+      <li><a href="#s6">A matriz raiz quadrada</a></li>
+      <li><details class="sub">
+        <summary><a href="#s7">Vetores aleatórios: <math><mi mathvariant="bold">μ</mi></math> e <math><mi mathvariant="bold">Σ</mi></math></a></summary>
+        <ul class="subitens">
+          <li><a href="#s7-1">7.1 Esperança de uma matriz aleatória</a></li>
+          <li><a href="#s7-2">7.2 O vetor de médias e a matriz de covariâncias</a></li>
+          <li><a href="#s7-3">7.3 Independência × covariância nula</a></li>
+          <li><a href="#s7-4">7.4 De <math><mi mathvariant="bold">Σ</mi></math> para <math><mi mathvariant="bold">ρ</mi></math> e de volta</a></li>
+          <li><a href="#s7-5">7.5 Particionando <math><mi mathvariant="bold">Σ</mi></math></a></li>
+        </ul>
+      </details></li>
+      <li><a href="#s8">Combinações lineares: <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math></a></li>
+      <li><details class="sub">
+        <summary><a href="#s9">Desigualdades e maximização</a></summary>
+        <ul class="subitens">
+          <li><a href="#s9-1">9.1 Cauchy–Schwarz</a></li>
+          <li><a href="#s9-2">9.2 A versão estendida e o lema de maximização</a></li>
+          <li><a href="#s9-3">9.3 Autovalores como valores extremos</a></li>
+        </ul>
+      </details></li>
+      <li><a href="#recall">Cartões de recall ativo</a></li>
+      <li><a href="#exercicios">Exercícios resolvidos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="../index.html">Menu</a>
+      <a href="../cap01/01-00-aspectos-da-analise-multivariada.html">← Cap. 1</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha"><a href="../index.html">Menu</a> · Johnson &amp; Wichern, 4ª ed. · Capítulo 2 · págs. 49–115</p>
+  <h1>Álgebra de Matrizes e Vetores Aleatórios</h1>
+  <p class="subtitulo">A caixa de ferramentas do curso: decomposição espectral, matrizes definidas positivas, e a álgebra que transforma "distância estatística" em <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi></math>.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Ao final desta aula você deve saber</span>
+  <ul>
+    <li>Calcular comprimento, ângulo e projeção com o produto interno, e ler <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><mn>0</mn></math> como perpendicularidade.</li>
+    <li>Reconhecer matrizes simétricas, ortogonais e inversíveis, e saber a condição para a inversa existir.</li>
+    <li>Encontrar autovalores e autovetores de uma matriz simétrica e escrever a <strong>decomposição espectral</strong>.</li>
+    <li>Decidir se uma matriz é <strong>definida positiva</strong> — e explicar por que isso é exatamente a condição de distância do cap. 1.</li>
+    <li>Traçar a elipse <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math> dando eixos (autovetores) e semi-eixos (<math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>).</li>
+    <li>Construir <math><msup><mi>A</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> e <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> pela decomposição espectral.</li>
+    <li>Definir <math><mi mathvariant="bold">μ</mi><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>)</mo></math> e <math><mi mathvariant="bold">Σ</mi><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup></math>, e converter entre <math><mi mathvariant="bold">Σ</mi></math> e <math><mi mathvariant="bold">ρ</mi></math>.</li>
+    <li>Aplicar <math><msub><mi mathvariant="bold">μ</mi><mi>Z</mi></msub><mo>=</mo><mi>C</mi><mi mathvariant="bold">μ</mi></math> e <math><msub><mi mathvariant="bold">Σ</mi><mi>Z</mi></msub><mo>=</mo><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math> a combinações lineares.</li>
+    <li>Usar Cauchy–Schwarz e o lema de maximização, e interpretar <math><msub><mi>λ</mi><mn>1</mn></msub></math> como máximo de <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></math> na esfera unitária.</li>
+  </ul>
+</div>
+
+
+
+<h2 id="s1">1. Por que álgebra de matrizes</h2>
+
+<p>O capítulo 1 terminou com uma dívida. Vimos que a distância estatística tem a forma</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi>d</mi><mn>2</mn></msup><mo>=</mo><munderover><mo>∑</mo><mi>i</mi><mi>p</mi></munderover><munderover><mo>∑</mo><mi>k</mi><mi>p</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>x</mi><mi>i</mi></msub><msub><mi>x</mi><mi>k</mi></msub></mrow></math>
+</div>
+
+<p>e que os coeficientes <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> não podem ser quaisquer — precisam garantir <math><msup><mi>d</mi><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></math> para todo <math><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></math>. O livro prometeu responder na seção 2.3. Este capítulo paga essa dívida e, no caminho, monta a caixa de ferramentas que será usada até a última página.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Como estudar este capítulo</span>
+  <p>É um capítulo de ferramentas, não de método estatístico — a tentação é sobrevoar. Não sobrevoe: <strong>a decomposição espectral (seção 4) e a noção de matriz definida positiva (seção 5) são usadas em todos os capítulos seguintes.</strong> Componentes principais é a decomposição espectral de <math><mi>S</mi></math>. A densidade normal multivariada é <math><mo>exp</mo><mo>(</mo><mo>−</mo><msup><mi>d</mi><mn>2</mn></msup><mo>/</mo><mn>2</mn><mo>)</mo></math> com <math><mi>A</mi><mo>=</mo><msup><mi mathvariant="bold">Σ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>. Análise discriminante é o lema de maximização da seção 9. Se você entender bem estas 60 páginas, o resto do livro fica muito mais leve.</p>
+  <p>O livro traz ainda o <strong>Suplemento 2A</strong> (págs. 86–107) com a revisão detalhada: determinantes, posto, cálculo de inversas, decomposição em valores singulares. Use-o como referência quando precisar — esta aula cobre o corpo do capítulo, que é o que se usa no dia a dia.</p>
+</div>
+
+
+<h2 id="s2">2. Vetores: comprimento, ângulo, projeção</h2>
+
+<p>Um arranjo <math><mi mathvariant="bold">x</mi></math> de <math><mi>n</mi></math> números reais é um <strong>vetor</strong>, escrito como coluna; a linha correspondente é a <strong>transposta</strong> <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>]</mo></math>. Geometricamente é uma seta partindo da origem, com componente <math><msub><mi>x</mi><mi>i</mi></msub></math> ao longo do <math><mi>i</mi></math>-ésimo eixo:</p>
+
+<figure>
+  <img src="img/fig-02-01.png" alt="Vetor desenhado em três dimensões dentro de uma caixa tracejada, com componentes 1, 3 e 2 nos eixos x1, x2 e x3.">
+  <figcaption><b>Figura 2.1</b> — O vetor <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> em <math><mi>n</mi><mo>=</mo><mn>3</mn></math> dimensões.</figcaption>
+</figure>
+
+<p>Duas operações básicas, e as duas têm leitura geométrica imediata:</p>
+
+<figure>
+  <img src="img/fig-02-02.png" alt="À esquerda, multiplicação escalar: o vetor 2x é o dobro e -x/2 aponta para o lado oposto. À direita, a soma x+y como diagonal do paralelogramo.">
+  <figcaption><b>Figura 2.2</b> — Multiplicação escalar e soma de vetores. <strong>À esquerda:</strong> <math><mi>c</mi><mi mathvariant="bold">x</mi></math> multiplica cada elemento por <math><mi>c</mi></math>; com <math><mi>c</mi><mo>&gt;</mo><mn>0</mn></math> a direção se mantém, com <math><mi>c</mi><mo>&lt;</mo><mn>0</mn></math> ela inverte. <strong>À direita:</strong> a soma de dois vetores que partem da origem é a <em>diagonal do paralelogramo</em> formado por eles.</figcaption>
+</figure>
+
+<h3 id="s2-1">2.1 Comprimento e produto interno</h3>
+
+<p>Em duas dimensões, o comprimento é Pitágoras; em <math><mi>n</mi></math> dimensões, a definição é a extensão natural:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mo>=</mo><msqrt><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><mo>⋯</mo><mo>+</mo><msubsup><mi>x</mi><mi>n</mi><mn>2</mn></msubsup></mrow></msqrt></mrow></math>
+<span class="num">(2-1)</span>
+</div>
+
+<figure>
+  <img src="img/fig-02-03.png" alt="À esquerda, o vetor x no plano com suas componentes x1 e x2; à direita, o triângulo retângulo cuja hipotenusa é o comprimento de x.">
+  <figcaption><b>Figura 2.3</b> — O comprimento <math><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mo>=</mo><msqrt><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup></mrow></msqrt></math> como hipotenusa de um triângulo retângulo.</figcaption>
+</figure>
+
+<p>Multiplicar por <math><mi>c</mi></math> multiplica o comprimento por <math><mo>|</mo><mi>c</mi><mo>|</mo></math>: expande se <math><mo>|</mo><mi>c</mi><mo>|</mo><mo>&gt;</mo><mn>1</mn></math>, contrai se <math><mn>0</mn><mo>&lt;</mo><mo>|</mo><mi>c</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn></math>. Escolhendo <math><mi>c</mi><mo>=</mo><msubsup><mi>L</mi><mi mathvariant="bold">x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></math> obtemos o <strong>vetor unitário</strong> <math><msubsup><mi>L</mi><mi mathvariant="bold">x</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mi mathvariant="bold">x</mi></math>, que tem comprimento 1 e a direção de <math><mi mathvariant="bold">x</mi></math>. Essa operação — <em>normalizar</em> — vai aparecer o tempo todo com autovetores.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Produto interno</span>
+  <math display="block"><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>y</mi><mn>2</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>x</mi><mi>n</mi></msub><msub><mi>y</mi><mi>n</mi></msub></mrow></math>
+  <p>Com ele, comprimento e ângulo ganham forma compacta:</p>
+  <math display="block"><mrow><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mo>=</mo><msqrt><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></mrow></msqrt><mo>,</mo><mspace width="2em"/><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow><mrow><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow><mrow><msqrt><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></mrow></msqrt><mspace width="0.2em"/><msqrt><mrow><msup><mi mathvariant="bold">y</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow></msqrt></mrow></mfrac></mrow></math>
+  <span class="num">(2-5), (2-6)</span>
+</div>
+
+<h3 id="s2-2">2.2 Ângulo e perpendicularidade</h3>
+
+<p>De onde vem a fórmula do cosseno? Em duas dimensões, sendo <math><msub><mi>θ</mi><mn>1</mn></msub></math> e <math><msub><mi>θ</mi><mn>2</mn></msub></math> os ângulos que <math><mi mathvariant="bold">x</mi></math> e <math><mi mathvariant="bold">y</mi></math> fazem com o primeiro eixo, tem-se <math><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>1</mn></msub><mo>)</mo><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>/</mo><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub></math>, <math><mo>sen</mo><mo>(</mo><msub><mi>θ</mi><mn>1</mn></msub><mo>)</mo><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><mo>/</mo><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub></math> e análogos para <math><mi mathvariant="bold">y</mi></math>. Aplicando a fórmula do cosseno da diferença:</p>
+
+<figure>
+  <img src="img/fig-02-04.png" alt="Dois vetores x e y no plano, com os ângulos teta1 e teta2 que cada um faz com o eixo horizontal e o ângulo teta entre eles.">
+  <figcaption><b>Figura 2.4</b> — O ângulo <math><mi>θ</mi><mo>=</mo><msub><mi>θ</mi><mn>2</mn></msub><mo>−</mo><msub><mi>θ</mi><mn>1</mn></msub></math> entre <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>]</mo></math> e <math><msup><mi mathvariant="bold">y</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><msub><mi>y</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>2</mn></msub><mo>]</mo></math>.</figcaption>
+</figure>
+
+<div class="eq">
+<math display="block"><mrow><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>2</mn></msub><mo>)</mo><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>1</mn></msub><mo>)</mo><mo>+</mo><mo>sen</mo><mo>(</mo><msub><mi>θ</mi><mn>2</mn></msub><mo>)</mo><mo>sen</mo><mo>(</mo><msub><mi>θ</mi><mn>1</mn></msub><mo>)</mo><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><msub><mi>y</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mi>y</mi><mn>2</mn></msub></mrow><mrow><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub></mrow></mfrac></mrow></math>
+<span class="num">(2-3)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">A equivalência mais usada do capítulo</span>
+  <p>Como <math><mo>cos</mo><mo>(</mo><mn>90</mn><mo>°</mo><mo>)</mo><mo>=</mo><mn>0</mn></math> e o cosseno só se anula quando o numerador se anula:</p>
+  <math display="block"><mrow><mi mathvariant="bold">x</mi><mspace width="0.4em"/><mtext>e</mtext><mspace width="0.4em"/><mi mathvariant="bold">y</mi><mspace width="0.6em"/><mtext>são perpendiculares</mtext><mspace width="0.8em"/><mo>⟺</mo><mspace width="0.8em"/><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><mn>0</mn></mrow></math>
+  <p>Guarde nas duas direções. Sempre que este livro disser "os autovetores são ortogonais", ou "as linhas de <math><mi>Q</mi></math> são mutuamente perpendiculares", ou "<math><mi mathvariant="bold">x</mi></math> é perpendicular às primeiras <math><mi>k</mi></math> direções", a conta que se faz é um produto interno igual a zero.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.1 — comprimentos e ângulo</span>
+  <p>Com <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> e <math><msup><mi mathvariant="bold">y</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math>:</p>
+  <math display="block"><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi><mo>=</mo><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>14</mn><mo>,</mo><mspace width="1em"/><msup><mi mathvariant="bold">y</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>6</mn><mo>,</mo><mspace width="1em"/><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>1</mn></mrow></math>
+  <p>Logo <math><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mo>=</mo><msqrt><mn>14</mn></msqrt><mo>=</mo><mn>3</mn><mo>,</mo><mn>742</mn></math>, <math><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub><mo>=</mo><msqrt><mn>6</mn></msqrt><mo>=</mo><mn>2</mn><mo>,</mo><mn>449</mn></math> e</p>
+  <math display="block"><mrow><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><mrow><mn>3</mn><mo>,</mo><mn>742</mn><mo>×</mo><mn>2</mn><mo>,</mo><mn>449</mn></mrow></mfrac><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>109</mn><mo>,</mo><mspace width="1.4em"/><mi>θ</mi><mo>=</mo><mn>96</mn><mo>,</mo><mn>3</mn><mo>°</mo></mrow></math>
+  <p>Pouco mais que reto — os vetores são <em>quase</em> perpendiculares. E de fato <math><msub><mi>L</mi><mrow><mn>3</mn><mi mathvariant="bold">x</mi></mrow></msub><mo>=</mo><msqrt><mn>126</mn></msqrt><mo>=</mo><mn>3</mn><msqrt><mn>14</mn></msqrt><mo>=</mo><mn>3</mn><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub></math>, confirmando que o escalar sai do comprimento em módulo.</p>
+</div>
+
+<h3 id="s2-3">2.3 Dependência linear</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Um conjunto <math><msub><mi mathvariant="bold">x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">x</mi><mi>k</mi></msub></math> é <strong>linearmente dependente</strong> se existem constantes <math><msub><mi>c</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>c</mi><mi>k</mi></msub></math>, <em>nem todas nulas</em>, com <math><msub><mi>c</mi><mn>1</mn></msub><msub><mi mathvariant="bold">x</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>c</mi><mi>k</mi></msub><msub><mi mathvariant="bold">x</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></math>. Caso contrário, são <strong>linearmente independentes</strong>.</p>
+  <p>Dependência linear significa que pelo menos um vetor do conjunto pode ser escrito como combinação dos outros — ele não acrescenta informação nova.</p>
+</div>
+
+<p>A expressão "nem todas nulas" é essencial: com <math><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><mo>⋯</mo><mo>=</mo><msub><mi>c</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></math> a soma é sempre zero, o que não informa nada. Testar independência é resolver o sistema homogêneo e verificar se a <em>única</em> solução é a trivial — foi o que o Exemplo 2.2 fez.</p>
+
+<h3 id="s2-4">2.4 Projeção — a sombra de um vetor</h3>
+
+<div class="eq">
+<math display="block"><mrow><mtext>projeção de </mtext><mi mathvariant="bold">x</mi><mtext> sobre </mtext><mi mathvariant="bold">y</mi><mo>=</mo><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow><mrow><msup><mi mathvariant="bold">y</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow></mfrac><mi mathvariant="bold">y</mi><mo>=</mo><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi></mrow><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub></mfrac><mspace width="0.3em"/><mfrac><mn>1</mn><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub></mfrac><mi mathvariant="bold">y</mi></mrow></math>
+<span class="num">(2-8)</span>
+</div>
+
+<p>A segunda forma é a mais transparente: <math><msubsup><mi>L</mi><mi mathvariant="bold">y</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mi mathvariant="bold">y</mi></math> é o vetor unitário na direção de <math><mi mathvariant="bold">y</mi></math>, e o escalar que o multiplica é o <em>comprimento</em> da sombra:</p>
+
+<div class="eq">
+<math display="block"><mrow><mtext>comprimento da projeção</mtext><mo>=</mo><mfrac><mrow><mo>|</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>|</mo></mrow><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub></mfrac><mo>=</mo><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mspace width="0.2em"/><mo>|</mo><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>|</mo></mrow></math>
+<span class="num">(2-9)</span>
+</div>
+
+<figure>
+  <img src="img/fig-02-05.png" alt="O vetor x projetado perpendicularmente sobre o vetor y, formando a sombra de comprimento Lx cos(theta).">
+  <figcaption><b>Figura 2.5</b> — A projeção de <math><mi mathvariant="bold">x</mi></math> sobre <math><mi mathvariant="bold">y</mi></math>. O comprimento da sombra é <math><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo></math>.</figcaption>
+</figure>
+
+<div class="caixa pratica">
+  <span class="rotulo">Por que projeção importa tanto</span>
+  <p>Projeção é <em>a</em> operação da estatística multivariada. Mínimos quadrados é projetar o vetor de respostas no espaço gerado pelas colunas de <math><mi>X</mi></math> (cap. 7). Componentes principais é projetar os dados na direção de maior variância (cap. 8). E no capítulo 3, o comprimento da projeção de uma coluna centrada de dados sobre outra dá diretamente a correlação amostral — porque <math><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>, como antecipamos na seção 6 do capítulo 1.</p>
+</div>
+
+
+<h2 id="s3">3. Matrizes: as operações que importam</h2>
+
+<p>Uma <strong>matriz</strong> é qualquer arranjo retangular de números reais. A <strong>transposta</strong> <math><msup><mi>A</mi><mo>′</mo></msup></math> troca linhas por colunas. Multiplicar por um escalar multiplica cada elemento; somar duas matrizes de mesma dimensão soma elemento a elemento. Nada disso surpreende — o produto, sim, merece atenção.</p>
+
+<h3 id="s3-1">3.1 Produto: linha com coluna</h3>
+
+<p>O produto <math><mi>A</mi><mi>B</mi></math> só existe se as dimensões <em>conformam</em>: <math><mi>A</mi></math> é <math><mi>n</mi><mo>×</mo><mi>k</mi></math> e <math><mi>B</mi></math> é <math><mi>k</mi><mo>×</mo><mi>p</mi></math>, isto é, o número de elementos numa <em>linha</em> de <math><mi>A</mi></math> é igual ao número numa <em>coluna</em> de <math><mi>B</mi></math>. O resultado é <math><mi>n</mi><mo>×</mo><mi>p</mi></math> e</p>
+
+<div class="eq">
+<math display="block"><mrow><mtext>entrada </mtext><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo><mtext> de </mtext><mi>A</mi><mi>B</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>ℓ</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>ℓ</mi></mrow></msub><msub><mi>b</mi><mrow><mi>ℓ</mi><mi>j</mi></mrow></msub></mrow></math>
+<span class="num">(2-10)</span>
+</div>
+
+<p>ou seja: <strong>o produto interno da <math><mi>i</mi></math>-ésima linha de <math><mi>A</mi></math> com a <math><mi>j</mi></math>-ésima coluna de <math><mi>B</mi></math></strong>. Toda a álgebra deste livro é isso repetido.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Três produtos que parecem iguais e não são</span>
+  <p>Com <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>7</mn><mo>,</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>]</mo></math> e <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>5</mn><mo>,</mo><mn>8</mn><mo>,</mo><mo>−</mo><mn>4</mn><mo>]</mo></math> (Exemplo 2.6):</p>
+  <ul>
+    <li><math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">c</mi></math> é <math><mn>1</mn><mo>×</mo><mn>1</mn></math> — um <strong>número</strong>, aqui <math><mo>−</mo><mn>13</mn></math>.</li>
+    <li><math><mi mathvariant="bold">b</mi><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup></math> é <math><mn>3</mn><mo>×</mo><mn>3</mn></math> — uma <strong>matriz</strong> inteira, de posto 1.</li>
+    <li><math><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">b</mi></math> é <math><mn>1</mn><mo>×</mo><mn>1</mn></math> — de novo um número.</li>
+  </ul>
+  <p>A ordem da transposta decide se sai escalar ou matriz. Confundir <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">c</mi></math> com <math><mi mathvariant="bold">b</mi><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup></math> é o erro mais comum de quem está começando — e o produto externo <math><mi mathvariant="bold">e</mi><msup><mi mathvariant="bold">e</mi><mo>′</mo></msup></math> é justamente a peça da decomposição espectral da seção 4. Vale treinar até virar automático. Note ainda que, em geral, <math><mi>A</mi><mi>B</mi><mo>≠</mo><mi>B</mi><mi>A</mi></math>, mesmo quando ambos existem.</p>
+</div>
+
+<h3 id="s3-2">3.2 Simetria, identidade e inversa</h3>
+
+<p>Uma matriz quadrada é <strong>simétrica</strong> se <math><mi>A</mi><mo>=</mo><msup><mi>A</mi><mo>′</mo></msup></math>, isto é, <math><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>a</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub></math>. <math><mi mathvariant="bold">Σ</mi></math>, <math><mi>S</mi></math>, <math><mi>R</mi></math> e a matriz de pesos <math><mi>A</mi></math> do capítulo 1 são todas simétricas — e é por isso que o capítulo inteiro concentra os resultados nesse caso.</p>
+
+<p>A <strong>identidade</strong> <math><mi>I</mi></math> tem 1 na diagonal e 0 fora, e satisfaz <math><mi>A</mi><mi>I</mi><mo>=</mo><mi>I</mi><mi>A</mi><mo>=</mo><mi>A</mi></math>. A <strong>inversa</strong> <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, quando existe, satisfaz <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>A</mi><mo>=</mo><mi>A</mi><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mi>I</mi></math>. A condição técnica de existência é a que interessa:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Quando <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> existe</span>
+  <p>A inversa de <math><mi>A</mi></math> (<math><mi>k</mi><mo>×</mo><mi>k</mi></math>) existe se e somente se suas <math><mi>k</mi></math> colunas <math><msub><mi mathvariant="bold">a</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">a</mi><mi>k</mi></msub></math> são <strong>linearmente independentes</strong> — equivalentemente, se</p>
+  <math display="block"><mrow><msub><mi>c</mi><mn>1</mn></msub><msub><mi mathvariant="bold">a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>c</mi><mn>2</mn></msub><msub><mi mathvariant="bold">a</mi><mn>2</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>c</mi><mi>k</mi></msub><msub><mi mathvariant="bold">a</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn><mspace width="1em"/><mo>⟹</mo><mspace width="1em"/><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><mo>⋯</mo><mo>=</mo><msub><mi>c</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></mrow></math>
+  <span class="num">(2-12)</span>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Aviso do livro que vale ouro na prática</span>
+  <p>Se a soma em (2-12) for <em>quase</em> zero para alguns <math><msub><mi>c</mi><mi>i</mi></msub></math> — isto é, se as colunas forem <strong>quase</strong> dependentes —, o computador pode produzir inversas <strong>erradas</strong> por erro de arredondamento. O livro recomenda explicitamente: <em>sempre confira <math><mi>A</mi><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> e <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>A</mi></math> contra <math><mi>I</mi></math></em> quando a inversa vier de um pacote.</p>
+  <p>O Exercício 2.10 mostra o estrago: duas matrizes que diferem apenas na sexta casa decimal da posição (2,2) têm inversas relacionadas por <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> — <em>sinal trocado e escala tripla</em>. Em dados reais, variáveis quase colineares (peso em kg e em libras; total e soma das partes) produzem exatamente isso, e a análise inteira desanda sem aviso. Esta é a razão de a multicolinearidade ser um problema sério, e não uma tecnicalidade.</p>
+</div>
+
+<p>Matrizes <strong>diagonais</strong> têm inversa trivial: basta inverter cada elemento da diagonal, desde que todos sejam não nulos. Vamos usar isso o tempo todo com <math><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> na seção 7.4.</p>
+
+<h3 id="s3-3">3.3 Matrizes ortogonais</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <math display="block"><mrow><mi>Q</mi><msup><mi>Q</mi><mo>′</mo></msup><mo>=</mo><msup><mi>Q</mi><mo>′</mo></msup><mi>Q</mi><mo>=</mo><mi>I</mi><mspace width="1.4em"/><mtext>ou, o que é o mesmo,</mtext><mspace width="1.4em"/><msup><mi>Q</mi><mo>′</mo></msup><mo>=</mo><msup><mi>Q</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>
+  <span class="num">(2-13)</span>
+</div>
+
+<p>O nome vem da propriedade: se <math><msubsup><mi mathvariant="bold">q</mi><mi>i</mi><mo>′</mo></msubsup></math> é a <math><mi>i</mi></math>-ésima linha de <math><mi>Q</mi></math>, então <math><mi>Q</mi><msup><mi>Q</mi><mo>′</mo></msup><mo>=</mo><mi>I</mi></math> diz que <math><msubsup><mi mathvariant="bold">q</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">q</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></math> (comprimento unitário) e <math><msubsup><mi mathvariant="bold">q</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">q</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></math> para <math><mi>i</mi><mo>≠</mo><mi>j</mi></math> (mutuamente perpendiculares). E <math><msup><mi>Q</mi><mo>′</mo></msup><mi>Q</mi><mo>=</mo><mi>I</mi></math> diz o mesmo das colunas.</p>
+
+<p><strong>Uma matriz ortogonal é uma rotação</strong> (possivelmente com reflexão). Ela preserva comprimentos e ângulos: <math><msup><mrow><mo>(</mo><mi>Q</mi><mi mathvariant="bold">x</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi>Q</mi><mi mathvariant="bold">x</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msup><mi>Q</mi><mo>′</mo></msup><mi>Q</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></math>. Aquela rotação de 26° do Exercício 1.9 era uma <math><mi>Q</mi></math>, e é por isso que a variância total não mudou.</p>
+
+<h3 id="s3-4">3.4 Autovalores e autovetores</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p>Uma matriz quadrada <math><mi>A</mi></math> tem <strong>autovalor</strong> <math><mi>λ</mi></math> com <strong>autovetor</strong> correspondente <math><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></math> se</p>
+  <math display="block"><mrow><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><mi>λ</mi><mi mathvariant="bold">x</mi></mrow></math>
+  <span class="num">(2-14)</span>
+  <p>Normalizamos <math><mi mathvariant="bold">x</mi></math> para ter comprimento 1 (<math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi><mo>=</mo><mn>1</mn></math>) e denotamos os autovetores normalizados por <math><mi mathvariant="bold">e</mi></math>.</p>
+</div>
+
+<p>Leia (2-14) devagar, porque ela é o coração do capítulo. Uma matriz, em geral, faz duas coisas com um vetor: <em>gira</em> e <em>estica</em>. Um autovetor é uma direção especial em que a matriz <strong>não gira nada</strong> — ela só estica, pelo fator <math><mi>λ</mi></math>. Encontrar os autovetores é encontrar os eixos naturais da transformação.</p>
+
+<p>Os autovalores saem da <strong>equação característica</strong> <math><mo>|</mo><mi>A</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>, e para cada <math><msub><mi>λ</mi><mi>i</mi></msub></math> o autovetor sai resolvendo <math><mi>A</mi><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><mo>=</mo><msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math> e normalizando.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.9, conferido</span>
+  <p>Para <math><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>5</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>, a equação característica é <math><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>25</mn><mo>=</mo><mn>0</mn></math>, com raízes <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>6</mn></math> e <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>4</mn></math>. Os autovetores normalizados são <math><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mo>−</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>]</mo></math>.</p>
+  <p>Note dois fatos que vão se repetir: os autovalores somam <math><mn>6</mn><mo>+</mo><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>2</mn></math>, que é o <strong>traço</strong> de <math><mi>A</mi></math>; e o produto <math><mn>6</mn><mo>×</mo><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>24</mn></math> é o <strong>determinante</strong> (Exercício 2.12). São duas conferências instantâneas — use-as sempre. E repare que esta <math><mi>A</mi></math> tem um autovalor negativo: ela <em>não</em> é definida positiva, e portanto não serve como matriz de distância.</p>
+</div>
+
+<h2 id="s4">4. A decomposição espectral</h2>
+
+<h3 id="s4-1">4.1 O enunciado e o que ele diz</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Decomposição espectral (2-16)</span>
+  <p>Toda matriz <strong>simétrica</strong> <math><mi>A</mi></math> de dimensão <math><mi>k</mi><mo>×</mo><mi>k</mi></math> pode ser escrita como</p>
+  <math display="block">
+    <mrow>
+      <mi>A</mi><mo>=</mo>
+      <msub><mi>λ</mi><mn>1</mn></msub><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>+</mo>
+      <msub><mi>λ</mi><mn>2</mn></msub><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>+</mo><mo>⋯</mo><mo>+</mo>
+      <msub><mi>λ</mi><mi>k</mi></msub><msub><mi mathvariant="bold">e</mi><mi>k</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>k</mi><mo>′</mo></msubsup>
+      <mo>=</mo>
+      <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover>
+      <msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup>
+    </mrow>
+  </math>
+  <p>onde <math><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>λ</mi><mi>k</mi></msub></math> são os autovalores e <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">e</mi><mi>k</mi></msub></math> os autovetores normalizados associados, com <math><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></math> e <math><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">e</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></math> para <math><mi>i</mi><mo>≠</mo><mi>j</mi></math>.</p>
+</div>
+
+<p>Vale traduzir. Cada parcela <math><msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup></math> é uma matriz <math><mi>k</mi><mo>×</mo><mi>k</mi></math> inteira (produto externo — veja o aviso da seção 3.1), mas de <em>posto 1</em>: ela só "enxerga" a direção <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math>. A decomposição diz que uma matriz simétrica é a <strong>soma de <math><mi>k</mi></math> peças unidirecionais</strong>, cada uma pesada pelo seu autovalor.</p>
+
+<p>Em forma matricial, pondo os autovetores como colunas de <math><mi>P</mi></math> e os autovalores na diagonal de <math><mi mathvariant="normal">Λ</mi></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>A</mi><mo>=</mo><mi>P</mi><mi mathvariant="normal">Λ</mi><msup><mi>P</mi><mo>′</mo></msup><mo>,</mo><mspace width="1.6em"/><mi>P</mi><msup><mi>P</mi><mo>′</mo></msup><mo>=</mo><msup><mi>P</mi><mo>′</mo></msup><mi>P</mi><mo>=</mo><mi>I</mi></mrow></math>
+<span class="num">(2-20)</span>
+</div>
+
+<p>E aqui está a leitura que faz tudo se encaixar: <math><mi>P</mi></math> é ortogonal, logo é uma <strong>rotação</strong>. A equação diz que <em>qualquer matriz simétrica vira diagonal se você girar para o sistema de eixos certo</em> — e os eixos certos são os autovetores. É exatamente o que aconteceu no Exercício 1.9: girando 26° a matriz de covariâncias ficou diagonal, e os elementos da diagonal eram os autovalores.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Duas conferências que sempre valem</span>
+  <ul>
+    <li><math><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>λ</mi><mi>i</mi></msub><mo>=</mo><mtext>traço</mtext><mo>(</mo><mi>A</mi><mo>)</mo></math> — a soma dos autovalores é a soma da diagonal.</li>
+    <li><math><munder><mo>∏</mo><mi>i</mi></munder><msub><mi>λ</mi><mi>i</mi></msub><mo>=</mo><mo>|</mo><mi>A</mi><mo>|</mo></math> — o produto é o determinante (Exercício 2.12).</li>
+  </ul>
+  <p>Quando <math><mi>A</mi><mo>=</mo><mi>S</mi></math>, a primeira ganha nome estatístico: a soma dos autovalores é a <strong>variância total</strong>. É o denominador da "proporção de variância explicada" do capítulo 8. E a segunda é a <strong>variância generalizada</strong> do capítulo 3.</p>
+</div>
+
+<h3 id="s4-2">4.2 Exemplo 2.10, completo</h3>
+
+<p>Seja</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><mn>13</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>2</mn></mtd></mtr>
+  <mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>13</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr>
+  <mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>10</mn></mtd></mtr>
+</mtable><mo>]</mo></mrow></mrow></math>
+</div>
+
+<p>A equação característica <math><mo>|</mo><mi>A</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> dá <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>9</mn></math>, <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>9</mn></math> e <math><msub><mi>λ</mi><mn>3</mn></msub><mo>=</mo><mn>18</mn></math>. (Confira: <math><mn>9</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>18</mn><mo>=</mo><mn>36</mn><mo>=</mo><mn>13</mn><mo>+</mo><mn>13</mn><mo>+</mo><mn>10</mn></math>, o traço. ✓)</p>
+
+<p>Para <math><mi>λ</mi><mo>=</mo><mn>9</mn></math>, resolver <math><mi>A</mi><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>=</mo><mn>9</mn><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> dá o sistema</p>
+
+<div class="eq">
+<math display="block"><mrow><mtable columnalign="left">
+  <mtr><mtd><mn>13</mn><msub><mi>e</mi><mn>11</mn></msub><mo>−</mo><mn>4</mn><msub><mi>e</mi><mn>21</mn></msub><mo>+</mo><mn>2</mn><msub><mi>e</mi><mn>31</mn></msub><mo>=</mo><mn>9</mn><msub><mi>e</mi><mn>11</mn></msub></mtd></mtr>
+  <mtr><mtd><mo>−</mo><mn>4</mn><msub><mi>e</mi><mn>11</mn></msub><mo>+</mo><mn>13</mn><msub><mi>e</mi><mn>21</mn></msub><mo>−</mo><mn>2</mn><msub><mi>e</mi><mn>31</mn></msub><mo>=</mo><mn>9</mn><msub><mi>e</mi><mn>21</mn></msub></mtd></mtr>
+  <mtr><mtd><mn>2</mn><msub><mi>e</mi><mn>11</mn></msub><mo>−</mo><mn>2</mn><msub><mi>e</mi><mn>21</mn></msub><mo>+</mo><mn>10</mn><msub><mi>e</mi><mn>31</mn></msub><mo>=</mo><mn>9</mn><msub><mi>e</mi><mn>31</mn></msub></mtd></mtr>
+</mtable></mrow></math>
+</div>
+
+<p>Passando tudo para a esquerda ficam três equações homogêneas em três incógnitas, <strong>mas duas delas são redundantes</strong> — e é isso que dá liberdade de escolha. Escolhendo <math><msub><mi>e</mi><mn>11</mn></msub><mo>=</mo><msub><mi>e</mi><mn>21</mn></msub><mo>=</mo><mn>1</mn></math>, a terceira equação dá <math><msub><mi>e</mi><mn>31</mn></msub><mo>=</mo><mn>0</mn></math>. Normalizando (dividindo por <math><msqrt><mrow><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>0</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt></math>):</p>
+
+<div class="eq">
+<math display="block"><mrow>
+  <msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mfrac><mn>1</mn><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mn>0</mn><mo>]</mo></mrow>
+  <mo>,</mo><mspace width="1.2em"/>
+  <msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><mn>1</mn><msqrt><mn>18</mn></msqrt></mfrac><mo>,</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><msqrt><mn>18</mn></msqrt></mfrac><mo>,</mo><mfrac><mrow><mo>−</mo><mn>4</mn></mrow><msqrt><mn>18</mn></msqrt></mfrac><mo>]</mo></mrow>
+  <mo>,</mo><mspace width="1.2em"/>
+  <msubsup><mi mathvariant="bold">e</mi><mn>3</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>,</mo><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>3</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>]</mo></mrow>
+</mrow></math>
+</div>
+
+<p>com <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math> para <math><mi>λ</mi><mo>=</mo><mn>9</mn></math> e <math><msub><mi mathvariant="bold">e</mi><mn>3</mn></msub></math> para <math><mi>λ</mi><mo>=</mo><mn>18</mn></math>. Verificando um deles: <math><mi>A</mi><msub><mi mathvariant="bold">e</mi><mn>3</mn></msub><mo>=</mo><mo>[</mo><mn>12</mn><mo>,</mo><mo>−</mo><mn>12</mn><mo>,</mo><mn>6</mn><mo>]</mo><mo>=</mo><mn>18</mn><mo>×</mo><mo>[</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>/</mo><mn>3</mn></math> ✓. E os três são mutuamente ortogonais.</p>
+
+<p>A decomposição espectral é então <math><mi>A</mi><mo>=</mo><mn>9</mn><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>+</mo><mn>9</mn><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>+</mo><mn>18</mn><msub><mi mathvariant="bold">e</mi><mn>3</mn></msub><msubsup><mi mathvariant="bold">e</mi><mn>3</mn><mo>′</mo></msubsup></math>, e as três matrizes de posto 1 são:</p>
+
+<div class="eq">
+<math display="block"><mrow>
+  <mn>9</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mo>+</mo>
+  <mn>9</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>1</mn><mn>18</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><mn>18</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>4</mn></mrow><mn>18</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><mn>18</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>18</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>18</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>4</mn></mrow><mn>18</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>18</mn></mfrac></mtd><mtd><mfrac><mn>16</mn><mn>18</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mo>+</mo>
+  <mn>18</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>4</mn><mn>9</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>4</mn></mrow><mn>9</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>9</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>4</mn></mrow><mn>9</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>9</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>9</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>2</mn><mn>9</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>9</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>9</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+</mrow></math>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Autovalor repetido: a liberdade que aparece</span>
+  <p>Aqui <math><mi>λ</mi><mo>=</mo><mn>9</mn></math> aparece <strong>duas vezes</strong>, e isso tem consequência: <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math> <em>não são únicos</em>. Qualquer par ortonormal dentro do plano gerado por eles serve igualmente bem — foi por isso que o livro pôde "arbitrariamente" fixar <math><msub><mi>e</mi><mn>11</mn></msub><mo>=</mo><msub><mi>e</mi><mn>21</mn></msub><mo>=</mo><mn>1</mn></math>. Só a direção <math><msub><mi mathvariant="bold">e</mi><mn>3</mn></msub></math>, de autovalor distinto, é determinada (a menos de sinal).</p>
+  <p>Guarde para o capítulo 8: quando dois autovalores de <math><mi>S</mi></math> são próximos, as componentes principais correspondentes ficam <strong>instáveis</strong> — pequenas mudanças nos dados as giram dentro do plano. Interpretar individualmente componentes com autovalores quase iguais é um erro clássico, e a raiz dele é este exemplo. Note também que os sinais dos autovetores são arbitrários: <math><mi mathvariant="bold">e</mi></math> e <math><mo>−</mo><mi mathvariant="bold">e</mi></math> servem igualmente, e softwares diferentes escolhem diferente.</p>
+</div>
+
+<pre><code><span class="cmt"># --- Exemplo 2.10: decomposição espectral ---</span>
+A &lt;- matrix(c(13, -4,  2,
+              -4, 13, -2,
+               2, -2, 10), 3, 3, byrow = TRUE)
+
+ee &lt;- eigen(A)                    <span class="cmt"># simétrica: autovalores reais, autovetores ortogonais</span>
+ee$values
+<span class="out">## [1] 18  9  9</span>
+
+<span class="cmt"># reconstrói A somando as três peças de posto 1</span>
+Rec &lt;- matrix(0, 3, 3)
+for (i in 1:3) Rec &lt;- Rec + ee$values[i] * ee$vectors[, i] %*% t(ee$vectors[, i])
+all.equal(Rec, A)
+<span class="out">## [1] TRUE</span>
+
+<span class="cmt"># as duas conferências instantâneas</span>
+c(sum(ee$values), sum(diag(A)))
+<span class="out">## [1] 36 36</span>
+c(prod(ee$values), det(A))
+<span class="out">## [1] 1458 1458</span>
+</code></pre>
+
+
+<h2 id="s5">5. Matrizes definidas positivas e distância</h2>
+
+<h3 id="s5-1">5.1 Formas quadráticas</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definições (2-17), (2-18)</span>
+  <p>Uma matriz simétrica <math><mi>A</mi></math> (<math><mi>k</mi><mo>×</mo><mi>k</mi></math>) é <strong>não negativa definida</strong> se <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>≥</mo><mn>0</mn></math> para todo <math><mi mathvariant="bold">x</mi></math>. É <strong>definida positiva</strong> se, além disso, a igualdade só vale para <math><mi mathvariant="bold">x</mi><mo>=</mo><mn>0</mn></math> — isto é, se</p>
+  <math display="block"><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>&gt;</mo><mn>0</mn><mspace width="1.4em"/><mtext>para todo</mtext><mspace width="0.5em"/><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></mrow></math>
+  <p>A expressão <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi></math> — que só tem termos quadráticos <math><msubsup><mi>x</mi><mi>i</mi><mn>2</mn></msubsup></math> e produtos <math><msub><mi>x</mi><mi>i</mi></msub><msub><mi>x</mi><mi>k</mi></msub></math> — chama-se <strong>forma quadrática</strong>.</p>
+</div>
+
+<p>É a dívida do capítulo 1 sendo paga. A "distância" de <math><mi mathvariant="bold">x</mi></math> à origem exige <math><msup><mrow><mo>(</mo><mtext>distância</mtext><mo>)</mo></mrow><mn>2</mn></msup><mo>&gt;</mo><mn>0</mn></math> para <math><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></math>, e escrever a equação (1-22) em forma matricial dá</p>
+
+<div class="eq">
+<math display="block"><mrow><mn>0</mn><mo>&lt;</mo><msup><mrow><mo>(</mo><mtext>distância</mtext><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mspace width="1.4em"/><mtext>para</mtext><mspace width="0.5em"/><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></mrow></math>
+<span class="num">(2-19)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">A equivalência que fecha o capítulo 1</span>
+  <p><strong>Distância é determinada por uma forma quadrática definida positiva. E, reciprocamente, toda forma quadrática definida positiva pode ser interpretada como uma distância ao quadrado.</strong></p>
+  <p>Para um ponto fixo <math><mi mathvariant="bold">μ</mi></math> qualquer no lugar da origem, o quadrado da distância é <math><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup><mi>A</mi><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></math>. Fixe essa expressão: ela é literalmente o expoente da densidade normal multivariada do capítulo 4, com <math><mi>A</mi><mo>=</mo><msup><mi mathvariant="bold">Σ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>.</p>
+</div>
+
+<h3 id="s5-2">5.2 O critério dos autovalores</h3>
+
+<p>Como decidir se <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>&gt;</mo><mn>0</mn></math> para <em>todos</em> os infinitos <math><mi mathvariant="bold">x</mi></math>? A decomposição espectral resolve em uma linha. Para <math><mi>k</mi><mo>=</mo><mn>2</mn></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msubsup><mi>y</mi><mn>2</mn><mn>2</mn></msubsup></mrow></math>
+</div>
+
+<p>com <math><msub><mi>y</mi><mi>i</mi></msub><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math>. Ou seja: <strong>nos eixos dos autovetores, a forma quadrática vira uma soma de quadrados pesada pelos autovalores</strong>, sem termo cruzado nenhum. Se todos os <math><msub><mi>λ</mi><mi>i</mi></msub></math> forem positivos, a soma é positiva a menos que todos os <math><msub><mi>y</mi><mi>i</mi></msub></math> sejam zero — e como <math><mi mathvariant="bold">y</mi><mo>=</mo><msup><mi>E</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></math> com <math><mi>E</mi></math> ortogonal (logo invertível), <math><mi mathvariant="bold">y</mi><mo>=</mo><mn>0</mn></math> forçaria <math><mi mathvariant="bold">x</mi><mo>=</mo><mn>0</mn></math>. Daí:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">O critério (Exercício 2.17)</span>
+  <p>Uma matriz simétrica <math><mi>A</mi></math> é <strong>definida positiva</strong> se e somente se <strong>todo autovalor de <math><mi>A</mi></math> é positivo</strong>. É <strong>não negativa definida</strong> se e somente se todos os autovalores são <math><mo>≥</mo><mn>0</mn></math>.</p>
+  <p>Prova da ida, em uma linha: de <math><mi>A</mi><mi mathvariant="bold">e</mi><mo>=</mo><mi>λ</mi><mi mathvariant="bold">e</mi></math>, multiplicando à esquerda por <math><msup><mi mathvariant="bold">e</mi><mo>′</mo></msup></math>, vem <math><msup><mi mathvariant="bold">e</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">e</mi><mo>=</mo><mi>λ</mi><msup><mi mathvariant="bold">e</mi><mo>′</mo></msup><mi mathvariant="bold">e</mi><mo>=</mo><mi>λ</mi></math>. O lado esquerdo é positivo por hipótese, logo <math><mi>λ</mi><mo>&gt;</mo><mn>0</mn></math>.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.11 — <math><mn>3</mn><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mn>2</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math></span>
+  <p>Em forma matricial, com o coeficiente do termo cruzado dividido por 2 nas duas posições fora da diagonal:</p>
+  <math display="block"><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mo>−</mo><msqrt><mn>2</mn></msqrt></mtd></mtr>
+    <mtr><mtd><mo>−</mo><msqrt><mn>2</mn></msqrt></mtd><mtd><mn>2</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>A equação característica é <math><mo>(</mo><mn>3</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>(</mo><mn>2</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></math>, ou <math><msup><mi>λ</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mi>λ</mi><mo>+</mo><mn>4</mn><mo>=</mo><mn>0</mn></math>, com raízes <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>4</mn></math> e <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>. Ambos positivos ⇒ <strong>definida positiva</strong>. E a forma vale <math><mn>4</mn><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>y</mi><mn>2</mn><mn>2</mn></msubsup><mo>&gt;</mo><mn>0</mn></math>.</p>
+  <p><strong>Atenção ao fator 2.</strong> O termo cruzado <math><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math> vira <math><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><msub><mi>a</mi><mn>21</mn></msub><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt></math>, porque a forma quadrática soma <em>as duas</em> posições simétricas. Errar isso é o deslize mais frequente destes exercícios: divida sempre o coeficiente do produto cruzado por 2.</p>
+</div>
+
+<h3 id="s5-3">5.3 A elipse, finalmente explicada</h3>
+
+<p>Os pontos a distância constante <math><mi>c</mi></math> da origem satisfazem <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>, que nos eixos dos autovetores vira</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msubsup><mi>y</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msub><mi>λ</mi><mn>2</mn></msub><msubsup><mi>y</mi><mn>2</mn><mn>2</mn></msubsup></mrow></math>
+</div>
+
+<p>uma elipse em <math><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> e <math><msub><mi>y</mi><mn>2</mn></msub><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math>, justamente porque <math><msub><mi>λ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn></math>. Verificando: <math><mi mathvariant="bold">x</mi><mo>=</mo><mi>c</mi><msubsup><mi>λ</mi><mn>1</mn><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msubsup><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> satisfaz <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mrow><mo>(</mo><mi>c</mi><msubsup><mi>λ</mi><mn>1</mn><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msubsup><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math> ✓.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A receita para desenhar qualquer elipse deste livro</span>
+  <p>Os pontos a distância <math><mi>c</mi></math> da origem, sob <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>, formam uma elipse (hiperelipsoide se <math><mi>p</mi><mo>&gt;</mo><mn>2</mn></math>) com:</p>
+  <ul>
+    <li><strong>direções dos eixos</strong> = os autovetores <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math> de <math><mi>A</mi></math>;</li>
+    <li><strong>semi-eixo na direção <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math></strong> = <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>.</li>
+  </ul>
+  <p>Repare no <strong>inverso da raiz</strong>: o eixo mais <em>longo</em> corresponde ao <em>menor</em> autovalor de <math><mi>A</mi></math>. Faz sentido — <math><mi>A</mi></math> é a matriz de <em>pesos</em>; onde ela pesa pouco, é preciso ir mais longe para acumular a mesma distância.</p>
+</div>
+
+<figure>
+  <img src="img/fig-02-06.png" alt="Elipse inclinada centrada na origem, com os eixos e1 e e2 saindo da origem nas direções dos autovetores e os semi-eixos rotulados c sobre raiz de lambda 1 e c sobre raiz de lambda 2.">
+  <figcaption><b>Figura 2.6</b> — Pontos a distância constante <math><mi>c</mi></math> da origem (<math><mi>p</mi><mo>=</mo><mn>2</mn></math>, <math><mn>1</mn><mo>≤</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>λ</mi><mn>2</mn></msub></math>). Os eixos da elipse estão nas direções <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math>, com semi-comprimentos <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mn>1</mn></msub></msqrt></math> e <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mn>2</mn></msub></msqrt></math>. Como <math><msub><mi>λ</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>λ</mi><mn>2</mn></msub></math>, o eixo <em>maior</em> é o de <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math>.</figcaption>
+</figure>
+
+<p>Em <math><mi>p</mi><mo>&gt;</mo><mn>2</mn></math> nada muda estruturalmente: os pontos a distância <math><mi>c</mi><mo>=</mo><msqrt><msup><mi>c</mi><mn>2</mn></msup></msqrt></math> ficam sobre o hiperelipsoide <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>λ</mi><mi>p</mi></msub><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msub><mi mathvariant="bold">e</mi><mi>p</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></math>, com semi-comprimento <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> na direção <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math>.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Onde você vai usar esta receita</span>
+  <p>Com <math><mi>A</mi><mo>=</mo><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, os autovalores de <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> são <math><mn>1</mn><mo>/</mo><msub><mi>λ</mi><mi>i</mi></msub></math> com os <math><msub><mi>λ</mi><mi>i</mi></msub></math> de <math><mi>S</mi></math>, e os autovetores são <em>os mesmos</em>. O semi-eixo vira então <math><mi>c</mi><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> — proporcional ao <em>desvio-padrão</em> naquela direção. É essa conta que produz as elipses de confiança do capítulo 5 e os contornos da normal multivariada do capítulo 4. Vale escrever no caderno: <strong>eixos = autovetores de <math><mi>S</mi></math>; semi-eixos <math><mo>∝</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>.</strong></p>
+</div>
+
+
+<h2 id="s6">6. A matriz raiz quadrada</h2>
+
+<p>A decomposição espectral permite escrever a inversa de graça. Como <math><mi>A</mi><mo>=</mo><mi>P</mi><mi mathvariant="normal">Λ</mi><msup><mi>P</mi><mo>′</mo></msup></math> com <math><mi>P</mi><msup><mi>P</mi><mo>′</mo></msup><mo>=</mo><mi>I</mi></math>, basta verificar que <math><mo>(</mo><mi>P</mi><msup><mi mathvariant="normal">Λ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><msup><mi>P</mi><mo>′</mo></msup><mo>)</mo><mo>(</mo><mi>P</mi><mi mathvariant="normal">Λ</mi><msup><mi>P</mi><mo>′</mo></msup><mo>)</mo><mo>=</mo><mi>I</mi></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mi>P</mi><msup><mi mathvariant="normal">Λ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><msup><mi>P</mi><mo>′</mo></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><mfrac><mn>1</mn><msub><mi>λ</mi><mi>i</mi></msub></mfrac><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup></mrow></math>
+<span class="num">(2-21)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">A ideia geral</span>
+  <p>Como <math><mi mathvariant="normal">Λ</mi></math> é diagonal, aplicar uma função a <math><mi>A</mi></math> é aplicá-la aos <em>autovalores</em>, mantendo os autovetores. Inverter <math><mi>A</mi></math> é inverter cada <math><msub><mi>λ</mi><mi>i</mi></msub></math>; tirar a raiz de <math><mi>A</mi></math> é tirar a raiz de cada <math><msub><mi>λ</mi><mi>i</mi></msub></math>. Essa é a razão de a decomposição espectral ser tão útil: ela converte problemas de matriz em problemas de números.</p>
+</div>
+
+<p>Com <math><msup><mi mathvariant="normal">Λ</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> a diagonal dos <math><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>, define-se a <strong>matriz raiz quadrada</strong>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi>A</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup><mo>=</mo><mi>P</mi><msup><mi mathvariant="normal">Λ</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>P</mi><mo>′</mo></msup></mrow></math>
+<span class="num">(2-22)</span>
+</div>
+
+<p>Ela requer <math><msub><mi>λ</mi><mi>i</mi></msub><mo>&gt;</mo><mn>0</mn></math>, isto é, <math><mi>A</mi></math> definida positiva — e satisfaz as propriedades esperadas: é simétrica, <math><msup><mi>A</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>A</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mi>A</mi></math>, e <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>λ</mi><mi>i</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msubsup><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup></math> é sua inversa.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Para que serve, concretamente</span>
+  <p><math><msup><mi mathvariant="bold">Σ</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> é a operação de <strong>padronizar um vetor aleatório</strong>: se <math><mi>Cov</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>)</mo><mo>=</mo><mi mathvariant="bold">Σ</mi></math>, então <math><mi mathvariant="bold">Z</mi><mo>=</mo><msup><mi mathvariant="bold">Σ</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></math> tem média <math><mn>0</mn></math> e covariância <math><mi>I</mi></math> — pela regra <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math> da seção 8. É o análogo multivariado de <math><mo>(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><mo>)</mo><mo>/</mo><mi>σ</mi></math>, e é ele que transforma a distância de Mahalanobis numa distância euclidiana comum:</p>
+  <math display="block"><mrow><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup><msup><mi mathvariant="bold">Σ</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">z</mi><mo>′</mo></msup><mi mathvariant="bold">z</mi></mrow></math>
+  <p>A elipse vira círculo. Reaparece nos capítulos 4, 5 e 11.</p>
+</div>
+
+<h2 id="s7">7. Vetores aleatórios: <math><mi mathvariant="bold">μ</mi></math> e <math><mi mathvariant="bold">Σ</mi></math></h2>
+
+<p>Até aqui, matrizes de números. Agora entram as matrizes de <em>variáveis aleatórias</em> — e com elas a estatística volta ao capítulo.</p>
+
+<h3 id="s7-1">7.1 Esperança de uma matriz aleatória</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição (2-23)</span>
+  <p>Um <strong>vetor aleatório</strong> é um vetor cujos elementos são variáveis aleatórias; uma <strong>matriz aleatória</strong>, idem. A esperança de uma matriz aleatória é a matriz das esperanças de cada elemento:</p>
+  <math display="block"><mrow><mi>E</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>=</mo><mo>{</mo><mi>E</mi><mo>(</mo><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>)</mo><mo>}</mo></mrow></math>
+  <p>calculada por integral (caso contínuo) ou por soma (caso discreto).</p>
+</div>
+
+<p>Nada de novo conceitualmente — é esperança elemento a elemento. Mas isso já basta para as duas regras operacionais que vamos usar sem parar (Exercício 2.40):</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>E</mi><mo>(</mo><mi>X</mi><mo>+</mo><mi>Y</mi><mo>)</mo><mo>=</mo><mi>E</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>+</mo><mi>E</mi><mo>(</mo><mi>Y</mi><mo>)</mo><mo>,</mo><mspace width="2em"/><mi>E</mi><mo>(</mo><mi>A</mi><mi>X</mi><mi>B</mi><mo>)</mo><mo>=</mo><mi>A</mi><mspace width="0.2em"/><mi>E</mi><mo>(</mo><mi>X</mi><mo>)</mo><mspace width="0.2em"/><mi>B</mi></mrow></math>
+<span class="num">(2-24)</span>
+</div>
+
+<p>A segunda é a que faz o trabalho pesado: <strong>matrizes de constantes atravessam a esperança</strong>, saindo de cada lado na ordem em que estavam.</p>
+
+<h3 id="s7-2">7.2 O vetor de médias e a matriz de covariâncias</h3>
+
+<p>Para <math><msup><mi mathvariant="bold">X</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>X</mi><mi>p</mi></msub><mo>]</mo></math>, cada elemento tem sua média marginal <math><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><mi>E</mi><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>)</mo></math> e sua variância marginal, que o livro escreve <math><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math> em vez do tradicional <math><msubsup><mi>σ</mi><mi>i</mi><mn>2</mn></msubsup></math> — pela mesma razão de índice duplo do capítulo 1. A associação entre pares é a <strong>covariância</strong>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mi>E</mi><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>)</mo><mo>(</mo><msub><mi>X</mi><mi>k</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>k</mi></msub><mo>)</mo></mrow></math>
+<span class="num">(2-26)</span>
+</div>
+
+<p>Empilhando tudo:</p>
+
+<div class="eq">
+<math display="block"><mrow>
+  <mi mathvariant="bold">μ</mi><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>)</mo><mo>,</mo>
+  <mspace width="2em"/>
+  <mi mathvariant="bold">Σ</mi><mo>=</mo><mi>Cov</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>)</mo><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup>
+</mrow></math>
+<span class="num">(2-30), (2-32)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">O truque de leitura</span>
+  <p>Por que <math><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup></math> e não o contrário? Porque coluna vezes linha é o <strong>produto externo</strong> (seção 3.1): um vetor <math><mi>p</mi><mo>×</mo><mn>1</mn></math> vezes um <math><mn>1</mn><mo>×</mo><mi>p</mi></math> dá uma matriz <math><mi>p</mi><mo>×</mo><mi>p</mi></math>, cuja entrada <math><mo>(</mo><mi>i</mi><mo>,</mo><mi>k</mi><mo>)</mo></math> é <math><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>)</mo><mo>(</mo><msub><mi>X</mi><mi>k</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>k</mi></msub><mo>)</mo></math>. Tomando esperança elemento a elemento, sai <math><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> em cada posição. Se fosse <math><msup><mrow><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></math>, sairia um único número — a soma das variâncias.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.13 — <math><mi mathvariant="bold">Σ</mi></math> de um caso discreto, na mão</span>
+  <p>A distribuição conjunta de <math><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><msub><mi>X</mi><mn>2</mn></msub><mo>)</mo></math>:</p>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th><math><msub><mi>x</mi><mn>1</mn></msub></math> \ <math><msub><mi>x</mi><mn>2</mn></msub></math></th><th>0</th><th>1</th><th><math><msub><mi>p</mi><mn>1</mn></msub><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>)</mo></math></th></tr></thead>
+    <tbody>
+      <tr><td>−1</td><td>0,24</td><td>0,06</td><td>0,3</td></tr>
+      <tr><td>0</td><td>0,16</td><td>0,14</td><td>0,3</td></tr>
+      <tr><td>1</td><td>0,40</td><td>0,00</td><td>0,4</td></tr>
+      <tr><th class="txt"><math><msub><mi>p</mi><mn>2</mn></msub><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math></th><th>0,8</th><th>0,2</th><th>1</th></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Das marginais, <math><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>0</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn></math> e <math><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>2</mn></math>. Então:</p>
+  <math display="block"><mrow><msub><mi>σ</mi><mn>11</mn></msub><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>)</mo><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>0</mn><mo>,</mo><mn>3</mn><mo>)</mo><mo>+</mo><msup><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>9</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>69</mn></mrow></math>
+  <math display="block"><mrow><msub><mi>σ</mi><mn>22</mn></msub><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mo>)</mo><mo>+</mo><msup><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>16</mn><mo>,</mo><mspace width="1.4em"/><msub><mi>σ</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>08</mn></mrow></math>
+  <math display="block"><mrow><mi mathvariant="bold">μ</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn><mo>,</mo><mn>1</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo><mn>2</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><mi mathvariant="bold">Σ</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn><mo>,</mo><mn>69</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>08</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>08</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>16</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>
+  <p>(Daria <math><msub><mi>ρ</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>241</mn></math>.) Repare na célula <math><mi>P</mi><mo>(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math> enquanto <math><msub><mi>p</mi><mn>1</mn></msub><mo>(</mo><mn>1</mn><mo>)</mo><msub><mi>p</mi><mn>2</mn></msub><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>4</mn><mo>×</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>08</mn></math>: a conjunta <em>não</em> é o produto das marginais, logo as variáveis não são independentes.</p>
+</div>
+
+<h3 id="s7-3">7.3 Independência × covariância nula</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição (2-27), (2-28)</span>
+  <p><math><msub><mi>X</mi><mi>i</mi></msub></math> e <math><msub><mi>X</mi><mi>k</mi></msub></math> são <strong>estatisticamente independentes</strong> se <math><mi>P</mi><mo>[</mo><msub><mi>X</mi><mi>i</mi></msub><mo>≤</mo><msub><mi>x</mi><mi>i</mi></msub><mtext> e </mtext><msub><mi>X</mi><mi>k</mi></msub><mo>≤</mo><msub><mi>x</mi><mi>k</mi></msub><mo>]</mo><mo>=</mo><mi>P</mi><mo>[</mo><msub><mi>X</mi><mi>i</mi></msub><mo>≤</mo><msub><mi>x</mi><mi>i</mi></msub><mo>]</mo><mi>P</mi><mo>[</mo><msub><mi>X</mi><mi>k</mi></msub><mo>≤</mo><msub><mi>x</mi><mi>k</mi></msub><mo>]</mo></math> para todos os pares. As <math><mi>p</mi></math> variáveis são <strong>mutuamente independentes</strong> se a densidade conjunta se fatora: <math><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>p</mi></msub><mo>)</mo><mo>=</mo><msub><mi>f</mi><mn>1</mn></msub><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>)</mo><mo>⋯</mo><msub><mi>f</mi><mi>p</mi></msub><mo>(</mo><msub><mi>x</mi><mi>p</mi></msub><mo>)</mo></math>.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">A seta que só vale num sentido</span>
+  <p>A fatoração implica <math><mi>Cov</mi><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>,</mo><msub><mi>X</mi><mi>k</mi></msub><mo>)</mo><mo>=</mo><mn>0</mn></math>. Ou seja:</p>
+  <math display="block"><mrow><msub><mi>X</mi><mi>i</mi></msub><mo>,</mo><msub><mi>X</mi><mi>k</mi></msub><mspace width="0.4em"/><mtext>independentes</mtext><mspace width="1em"/><mo>⟹</mo><mspace width="1em"/><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></math>
+  <span class="num">(2-29)</span>
+  <p><strong>A recíproca é falsa em geral</strong> — existem situações com <math><mi>Cov</mi><mo>=</mo><mn>0</mn></math> em que as variáveis não são independentes. Já vimos a versão amostral disso no capítulo 1: <math><mi>r</mi><mo>=</mo><mn>0</mn></math> não significa ausência de associação, apenas ausência de associação <em>linear</em>. Uma relação em U tem covariância nula e dependência total.</p>
+  <p>Guarde a exceção, porque ela é usada o livro inteiro: <strong>sob normalidade multivariada, covariância nula <em>é</em> independência</strong> (cap. 4). É uma propriedade especial da normal, não uma regra geral — e confundir as duas coisas é um dos erros conceituais mais caros da estatística aplicada.</p>
+</div>
+
+<h3 id="s7-4">7.4 De <math><mi mathvariant="bold">Σ</mi></math> para <math><mi mathvariant="bold">ρ</mi></math> e de volta</h3>
+
+<p>Frequentemente convém separar a informação das variâncias <math><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math> da informação sobre associação. A <strong>correlação populacional</strong> é</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>ρ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mrow><msqrt><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt><mspace width="0.2em"/><msqrt><msub><mi>σ</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt></mrow></mfrac></mrow></math>
+<span class="num">(2-33)</span>
+</div>
+
+<p>Definindo a <strong>matriz de desvios-padrão</strong> <math><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> como a diagonal com <math><msqrt><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math> na posição <math><mi>i</mi></math>, as duas conversões ficam em uma linha cada:</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">ρ</mi><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mi mathvariant="bold">Σ</mi><mo>,</mo><mspace width="2.4em"/><mi mathvariant="bold">ρ</mi><mo>=</mo><msup><mrow><mo>(</mo><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">Σ</mi><msup><mrow><mo>(</mo><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>
+<span class="num">(2-36), (2-37)</span>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.14, resolvido</span>
+  <p>Com</p>
+  <math display="block"><mrow><mi mathvariant="bold">Σ</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>9</mn></mtd><mtd><mo>−</mo><mn>3</mn></mtd></mtr>
+    <mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>3</mn></mtd><mtd><mn>25</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>os desvios são <math><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn></math>, <math><msqrt><mn>9</mn></msqrt><mo>=</mo><mn>3</mn></math> e <math><msqrt><mn>25</mn></msqrt><mo>=</mo><mn>5</mn></math>, logo</p>
+  <math display="block"><mrow><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>5</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mspace width="1.4em"/>
+  <msup><mrow><mo>(</mo><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>)</mo></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mfrac><mn>1</mn><mn>3</mn></mfrac></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mfrac><mn>1</mn><mn>5</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>e cada correlação é a covariância dividida pelo produto dos dois desvios:</p>
+  <math display="block"><mrow><mi mathvariant="bold">ρ</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mfrac><mn>1</mn><mn>6</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>10</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>1</mn><mn>6</mn></mfrac></mtd><mtd><mn>1</mn></mtd><mtd><mfrac><mrow><mo>−</mo><mn>3</mn></mrow><mn>15</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>2</mn><mn>10</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>3</mn></mrow><mn>15</mn></mfrac></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>167</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>200</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn><mo>,</mo><mn>167</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>200</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn><mo>,</mo><mn>200</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>200</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>Note como <math><mi mathvariant="bold">ρ</mi></math> reordena a leitura: em <math><mi mathvariant="bold">Σ</mi></math>, a covariância <math><msub><mi>σ</mi><mn>23</mn></msub><mo>=</mo><mo>−</mo><mn>3</mn></math> parecia a maior em módulo depois das variâncias; em <math><mi mathvariant="bold">ρ</mi></math>, as associações 1–3 e 2–3 têm exatamente a mesma força (0,2), e a 1–2 é a mais fraca. <strong>Comparar covariâncias entre pares de variáveis com escalas diferentes não significa nada</strong> — é para isso que serve <math><mi mathvariant="bold">ρ</mi></math>.</p>
+</div>
+
+<h3 id="s7-5">7.5 Particionando <math><mi mathvariant="bold">Σ</mi></math></h3>
+
+<p>Muitas vezes as características medidas se dividem naturalmente em grupos — consumo e renda; traços de personalidade e características físicas. Separando <math><mi mathvariant="bold">X</mi></math> em <math><msup><mi mathvariant="bold">X</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup></math> (<math><mi>q</mi></math> variáveis) e <math><msup><mi mathvariant="bold">X</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></msup></math> (<math><mi>p</mi><mo>−</mo><mi>q</mi></math> variáveis), a matriz de covariâncias se parte em blocos:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi mathvariant="bold">Σ</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><msub><mi mathvariant="bold">Σ</mi><mn>11</mn></msub></mtd><mtd><msub><mi mathvariant="bold">Σ</mi><mn>12</mn></msub></mtd></mtr>
+  <mtr><mtd><msub><mi mathvariant="bold">Σ</mi><mn>21</mn></msub></mtd><mtd><msub><mi mathvariant="bold">Σ</mi><mn>22</mn></msub></mtd></mtr>
+</mtable><mo>]</mo></mrow>
+<mspace width="1.6em"/><mtext>com</mtext><mspace width="0.8em"/><msub><mi mathvariant="bold">Σ</mi><mn>12</mn></msub><mo>=</mo><msubsup><mi mathvariant="bold">Σ</mi><mn>21</mn><mo>′</mo></msubsup></mrow></math>
+<span class="num">(2-40)</span>
+</div>
+
+<ul>
+  <li><math><msub><mi mathvariant="bold">Σ</mi><mn>11</mn></msub></math> (<math><mi>q</mi><mo>×</mo><mi>q</mi></math>) é a covariância <em>dentro</em> do primeiro grupo;</li>
+  <li><math><msub><mi mathvariant="bold">Σ</mi><mn>22</mn></msub></math> é a covariância dentro do segundo;</li>
+  <li><math><msub><mi mathvariant="bold">Σ</mi><mn>12</mn></msub></math> (<math><mi>q</mi><mo>×</mo><mo>(</mo><mi>p</mi><mo>−</mo><mi>q</mi><mo>)</mo></math>) traz as covariâncias <em>entre</em> os grupos — e <strong>não é simétrica nem sequer quadrada</strong>.</li>
+</ul>
+
+<div class="caixa pratica">
+  <span class="rotulo">Por que particionar</span>
+  <p>Todo o capítulo 10 (correlação canônica) é sobre o bloco <math><msub><mi mathvariant="bold">Σ</mi><mn>12</mn></msub></math>: quando ele é zero, os dois conjuntos de variáveis nada têm a dizer um sobre o outro. Já a distribuição condicional de <math><msup><mi mathvariant="bold">X</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup></math> dado <math><msup><mi mathvariant="bold">X</mi><mrow><mo>(</mo><mn>2</mn><mo>)</mo></mrow></msup></math>, no caso normal, tem covariância <math><msub><mi mathvariant="bold">Σ</mi><mn>11</mn></msub><mo>−</mo><msub><mi mathvariant="bold">Σ</mi><mn>12</mn></msub><msubsup><mi mathvariant="bold">Σ</mi><mn>22</mn><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><msub><mi mathvariant="bold">Σ</mi><mn>21</mn></msub></math> — o "complemento de Schur", que aparece no capítulo 4 e é a base da regressão multivariada.</p>
+  <p>Tudo isso vale igualmente para as versões <em>amostrais</em>: <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><msub><mi>S</mi><mi>n</mi></msub></math> se particionam do mesmo jeito (equações 2-46 e 2-47).</p>
+</div>
+
+
+<h2 id="s8">8. Combinações lineares: <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math></h2>
+
+<p>Este é, na prática, o resultado mais usado do capítulo. Comece no caso escalar, com <math><mi>Z</mi><mo>=</mo><mi>a</mi><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mi>b</mi><msub><mi>X</mi><mn>2</mn></msub></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>Var</mi><mo>(</mo><mi>a</mi><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mi>b</mi><msub><mi>X</mi><mn>2</mn></msub><mo>)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><mn>2</mn><mi>a</mi><mi>b</mi><msub><mi>σ</mi><mn>12</mn></msub></mrow></math>
+<span class="num">(2-41)</span>
+</div>
+
+<p>Escrevendo <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo>]</mo></math>, isso é exatamente <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">c</mi></math> — a mesma forma quadrática da seção 5. E a generalização para <math><mi>q</mi></math> combinações simultâneas <math><mi mathvariant="bold">Z</mi><mo>=</mo><mi>C</mi><mi mathvariant="bold">X</mi></math>, com <math><mi>C</mi></math> de dimensão <math><mi>q</mi><mo>×</mo><mi>p</mi></math>, é:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">O resultado (2-45)</span>
+  <math display="block"><mrow>
+    <msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mi>E</mi><mo>(</mo><mi>C</mi><mi mathvariant="bold">X</mi><mo>)</mo><mo>=</mo><mi>C</mi><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">X</mi></msub>
+    <mo>,</mo><mspace width="2.4em"/>
+    <msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mi>Cov</mi><mo>(</mo><mi>C</mi><mi mathvariant="bold">X</mi><mo>)</mo><mo>=</mo><mi>C</mi><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">X</mi></msub><msup><mi>C</mi><mo>′</mo></msup>
+  </mrow></math>
+  <p>A média <em>atravessa</em> a matriz. A covariância recebe a matriz dos <strong>dois lados</strong>, com transposta à direita — porque covariância é uma forma quadrática, e formas quadráticas se transformam assim.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">O erro que todo mundo comete uma vez</span>
+  <p>Escrever <math><mi>C</mi><mi mathvariant="bold">Σ</mi></math> ou <math><mi>C</mi><mi mathvariant="bold">Σ</mi><mi>C</mi></math> em vez de <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math>. Duas defesas: (1) <strong>as dimensões denunciam</strong> — <math><mo>(</mo><mi>q</mi><mo>×</mo><mi>p</mi><mo>)</mo><mo>(</mo><mi>p</mi><mo>×</mo><mi>p</mi><mo>)</mo><mo>(</mo><mi>p</mi><mo>×</mo><mi>q</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>q</mi><mo>×</mo><mi>q</mi><mo>)</mo></math>, que é o único formato possível para uma covariância de <math><mi>q</mi></math> variáveis; (2) o resultado tem que ser simétrico, e <math><mi>C</mi><mi mathvariant="bold">Σ</mi><msup><mi>C</mi><mo>′</mo></msup></math> é, enquanto <math><mi>C</mi><mi mathvariant="bold">Σ</mi></math> em geral não é.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 2.15 — soma e diferença</span>
+  <p>Com <math><msub><mi>Z</mi><mn>1</mn></msub><mo>=</mo><msub><mi>X</mi><mn>1</mn></msub><mo>−</mo><msub><mi>X</mi><mn>2</mn></msub></math> e <math><msub><mi>Z</mi><mn>2</mn></msub><mo>=</mo><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><msub><mi>X</mi><mn>2</mn></msub></math>, isto é, <math><mi>C</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>:</p>
+  <math display="block"><mrow><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd><msub><mi>μ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>μ</mi><mn>2</mn></msub></mtd></mtr></mtable><mo>]</mo></mrow>
+  <mspace width="1.6em"/>
+  <msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><msub><mi>σ</mi><mn>11</mn></msub><mo>−</mo><mn>2</mn><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd><msub><mi>σ</mi><mn>11</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>22</mn></msub></mtd></mtr>
+    <mtr><mtd><msub><mi>σ</mi><mn>11</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><mn>2</mn><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>22</mn></msub></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>Olhe para o elemento fora da diagonal: <math><msub><mi>σ</mi><mn>11</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>22</mn></msub></math>. <strong>Se as duas variáveis tiverem variâncias iguais, ele se anula</strong> — a soma e a diferença de duas variáveis com variâncias idênticas são não correlacionadas, <em>independentemente</em> de <math><msub><mi>σ</mi><mn>12</mn></msub></math>. É um resultado clássico, e é a semente da análise de perfis (cap. 6) e do gráfico de Bland–Altman usado em concordância de medidas.</p>
+</div>
+
+
+<h2 id="s9">9. Desigualdades e maximização</h2>
+
+<p>Princípios de maximização são centrais em várias técnicas: a análise discriminante procura a combinação linear que <em>maximiza</em> a separação entre grupos relativamente à variabilidade interna; componentes principais são as combinações lineares de <em>máxima</em> variabilidade. As três ferramentas desta seção são o que torna esses problemas resolúveis.</p>
+
+<h3 id="s9-1">9.1 Cauchy–Schwarz</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Desigualdade de Cauchy–Schwarz (2-48)</span>
+  <math display="block"><mrow><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≤</mo><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>)</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow></math>
+  <p>com <strong>igualdade se e somente se</strong> <math><mi mathvariant="bold">b</mi><mo>=</mo><mi>c</mi><mi mathvariant="bold">d</mi></math> para alguma constante <math><mi>c</mi></math> — isto é, se os vetores forem colineares.</p>
+</div>
+
+<p>A prova é bonita e vale acompanhar, porque é o mesmo truque de "completar o quadrado" do Exercício 1.10. Considere <math><mi mathvariant="bold">b</mi><mo>−</mo><mi>x</mi><mi mathvariant="bold">d</mi></math> com <math><mi>x</mi></math> escalar arbitrário. Como comprimento é positivo,</p>
+
+<div class="eq">
+<math display="block"><mrow><mn>0</mn><mo>&lt;</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">b</mi><mo>−</mo><mi>x</mi><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi mathvariant="bold">b</mi><mo>−</mo><mi>x</mi><mi mathvariant="bold">d</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow></math>
+</div>
+
+<p>É um polinômio de segundo grau em <math><mi>x</mi></math>. Completando o quadrado com <math><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><mn>0</mn><mo>&lt;</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>−</mo><mfrac><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mrow><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></mrow></mfrac><mo>+</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mfrac><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></mrow><mrow><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></mrow></mfrac><mo>)</mo></mrow><mn>2</mn></msup></mrow></math>
+</div>
+
+<p>Escolhendo <math><mi>x</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>/</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></math>, o último termo zera e sobra <math><mn>0</mn><mo>&lt;</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>−</mo><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></math>. ∎</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">A dívida do capítulo 1, paga</span>
+  <p>Divida os dois lados de (2-48) por <math><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>)</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></math>: obtém-se <math><msup><mo>cos</mo><mn>2</mn></msup><mo>(</mo><mi>θ</mi><mo>)</mo><mo>≤</mo><mn>1</mn></math>. Tomando <math><mi mathvariant="bold">b</mi></math> e <math><mi mathvariant="bold">d</mi></math> como as colunas <em>centradas</em> de dados, isso é exatamente <math><mo>|</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>|</mo><mo>≤</mo><mn>1</mn></math> — a propriedade 1 da correlação, prometida no capítulo 1 e agora demonstrada. E a condição de igualdade diz quando <math><mi>r</mi><mo>=</mo><mo>±</mo><mn>1</mn></math>: exatamente quando os dois vetores são colineares, isto é, quando os pontos caem <em>perfeitamente</em> sobre uma reta.</p>
+</div>
+
+<h3 id="s9-2">9.2 A versão estendida e o lema de maximização</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Cauchy–Schwarz estendida (2-49)</span>
+  <p>Para <math><mi>B</mi></math> definida positiva:</p>
+  <math display="block"><mrow><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≤</mo><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">b</mi><mo>)</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow></math>
+  <p>com igualdade se e somente se <math><mi mathvariant="bold">b</mi><mo>=</mo><mi>c</mi><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi></math>.</p>
+</div>
+
+<p>A prova é elegante: escreva <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>I</mi><mi mathvariant="bold">d</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>=</mo><msup><mrow><mo>(</mo><msup><mi>B</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">b</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>)</mo></math> e aplique Cauchy–Schwarz aos dois vetores entre parênteses. <strong>É aqui que a raiz quadrada da seção 6 ganha utilidade</strong> — ela existe justamente para permitir essa inserção de <math><mi>I</mi><mo>=</mo><msup><mi>B</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Lema de maximização (2-50)</span>
+  <p>Para <math><mi>B</mi></math> definida positiva e <math><mi mathvariant="bold">d</mi></math> dado, e qualquer <math><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></math>:</p>
+  <math display="block"><mrow><munder><mo movablelimits="false">max</mo><mrow><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></mrow></munder><mfrac><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></mrow></mfrac><mo>=</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi></mrow></math>
+  <p>com o máximo atingido em <math><mi mathvariant="bold">x</mi><mo>=</mo><mi>c</mi><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi></math> para qualquer <math><mi>c</mi><mo>≠</mo><mn>0</mn></math>.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Leia essa razão como estatística</span>
+  <p>Interprete <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi></math> como a <em>diferença entre grupos</em> na combinação linear <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> (com <math><mi mathvariant="bold">d</mi><mo>=</mo><msub><mi mathvariant="bold">μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mn>2</mn></msub></math>) e <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></math> como a <em>variância dentro dos grupos</em> daquela mesma combinação (seção 8!). A razão é então "separação ao quadrado sobre variabilidade" — e o lema diz que ela é maximizada por</p>
+  <math display="block"><mrow><mi mathvariant="bold">x</mi><mo>∝</mo><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><msub><mi mathvariant="bold">μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mn>2</mn></msub><mo>)</mo></mrow></math>
+  <p>Essa é a <strong>função discriminante linear de Fisher</strong>, que o capítulo 11 vai deduzir. Ela já está aqui, pronta, escondida numa desigualdade de álgebra. E o valor máximo <math><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi></math> é a distância de Mahalanobis ao quadrado entre as duas populações.</p>
+</div>
+
+<h3 id="s9-3">9.3 Autovalores como valores extremos</h3>
+
+<div class="caixa definicao">
+  <span class="rotulo">Maximização na esfera unitária (2-51), (2-52)</span>
+  <p>Seja <math><mi>B</mi></math> definida positiva com autovalores <math><msub><mi>λ</mi><mn>1</mn></msub><mo>≥</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>≥</mo><mo>⋯</mo><mo>≥</mo><msub><mi>λ</mi><mi>p</mi></msub><mo>≥</mo><mn>0</mn></math> e autovetores normalizados <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">e</mi><mi>p</mi></msub></math>. Então</p>
+  <math display="block"><mrow><munder><mo movablelimits="false">max</mo><mrow><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></mrow><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></mrow></mfrac><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><mspace width="0.6em"/><mo>(</mo><mtext>em </mtext><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>)</mo><mo>,</mo><mspace width="1.6em"/><munder><mo movablelimits="false">min</mo><mrow><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></mrow></munder><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></mrow><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></mrow></mfrac><mo>=</mo><msub><mi>λ</mi><mi>p</mi></msub><mspace width="0.6em"/><mo>(</mo><mtext>em </mtext><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mi>p</mi></msub><mo>)</mo></mrow></math>
+  <p>e, restringindo às direções perpendiculares às anteriores,</p>
+  <math display="block"><mrow><munder><mo movablelimits="false">max</mo><mrow><mi mathvariant="bold">x</mi><mo>⊥</mo><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">e</mi><mi>k</mi></msub></mrow></munder><mfrac><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></mrow><mrow><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></mrow></mfrac><mo>=</mo><msub><mi>λ</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.6em"/><mo>(</mo><mtext>em </mtext><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>)</mo></mrow></math>
+</div>
+
+<p>A prova em uma linha: pondo <math><mi mathvariant="bold">y</mi><mo>=</mo><msup><mi>P</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></math>, a razão vira <math><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>λ</mi><mi>i</mi></msub><msubsup><mi>y</mi><mi>i</mi><mn>2</mn></msubsup><mo>/</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>y</mi><mi>i</mi><mn>2</mn></msubsup></math>, que é uma <strong>média ponderada dos autovalores</strong>, com pesos <math><msubsup><mi>y</mi><mi>i</mi><mn>2</mn></msubsup></math> somando 1 depois de normalizar. Toda média ponderada está entre o menor e o maior valor — e atinge o maior quando todo o peso vai para <math><msub><mi>λ</mi><mn>1</mn></msub></math>, ou seja, quando <math><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math>.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">O que isso significa, em uma frase</span>
+  <p><strong>Os autovalores de <math><mi>B</mi></math> são os valores extremos da forma quadrática <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></math> sobre os pontos a distância 1 da origem</strong>, e os autovetores dizem <em>onde</em> esses extremos ocorrem.</p>
+  <p>Ponha <math><mi>B</mi><mo>=</mo><mi>S</mi></math> e leia de novo: <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">x</mi></math> é a variância amostral da combinação linear <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> (seção 8). Então: <em>a combinação linear de coeficientes normalizados com máxima variância é <math><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mi mathvariant="bold">X</mi></math>, e essa variância vale <math><msub><mi>λ</mi><mn>1</mn></msub></math>. A seguinte, entre as perpendiculares à primeira, é <math><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mi mathvariant="bold">X</mi></math>, com variância <math><msub><mi>λ</mi><mn>2</mn></msub></math>.</em></p>
+  <p>Isto é a <strong>definição inteira de componentes principais</strong>. O capítulo 8 não terá quase nada a acrescentar em teoria — a matemática está toda aqui.</p>
+</div>
+
+<h2 id="recall">Cartões de recall ativo</h2>
+
+<p>Tente responder antes de abrir. Se hesitar, volte à seção.</p>
+
+<details class="recall">
+  <summary>Como se escreve "<math><mi mathvariant="bold">x</mi></math> e <math><mi mathvariant="bold">y</mi></math> são perpendiculares" em álgebra?</summary>
+  <div class="resposta">
+    <p><math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>=</mo><mn>0</mn></math>. Vem de <math><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">y</mi><mo>/</mo><mo>(</mo><msub><mi>L</mi><mi mathvariant="bold">x</mi></msub><msub><mi>L</mi><mi mathvariant="bold">y</mi></msub><mo>)</mo></math>: o cosseno só se anula quando o produto interno se anula.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é a condição para <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> existir, e por que ela importa na prática?</summary>
+  <div class="resposta">
+    <p>As colunas de <math><mi>A</mi></math> precisam ser <strong>linearmente independentes</strong>. Importa porque colunas <em>quase</em> dependentes produzem inversas numericamente erradas (Exercício 2.10: duas matrizes que diferem na sexta casa têm inversas com sinal trocado e escala tripla). Sempre confira <math><mi>A</mi><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mi>I</mi></math> quando a inversa vier de software.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>O que caracteriza uma matriz ortogonal, e o que ela faz geometricamente?</summary>
+  <div class="resposta">
+    <p><math><mi>Q</mi><msup><mi>Q</mi><mo>′</mo></msup><mo>=</mo><msup><mi>Q</mi><mo>′</mo></msup><mi>Q</mi><mo>=</mo><mi>I</mi></math>, ou seja <math><msup><mi>Q</mi><mo>′</mo></msup><mo>=</mo><msup><mi>Q</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>. Linhas (e colunas) têm comprimento 1 e são mutuamente perpendiculares. Geometricamente é uma <strong>rotação</strong> (com possível reflexão): preserva comprimentos e ângulos, porque <math><msup><mrow><mo>(</mo><mi>Q</mi><mi mathvariant="bold">x</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi>Q</mi><mi mathvariant="bold">x</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Enuncie a decomposição espectral e diga o que <math><mi>P</mi></math> significa geometricamente.</summary>
+  <div class="resposta">
+    <p><math><mi>A</mi><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>λ</mi><mi>i</mi></msub><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub><msubsup><mi mathvariant="bold">e</mi><mi>i</mi><mo>′</mo></msubsup><mo>=</mo><mi>P</mi><mi mathvariant="normal">Λ</mi><msup><mi>P</mi><mo>′</mo></msup></math>, válida para <math><mi>A</mi></math> simétrica. <math><mi>P</mi></math> tem os autovetores como colunas e é <strong>ortogonal</strong>: é a rotação que leva aos eixos em que <math><mi>A</mi></math> fica <em>diagonal</em>. Toda matriz simétrica vira diagonal no sistema de eixos certo.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Como testar se uma matriz simétrica é definida positiva?</summary>
+  <div class="resposta">
+    <p>Verificando se <strong>todos os autovalores são positivos</strong>. Equivalentemente, <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>&gt;</mo><mn>0</mn></math> para todo <math><mi mathvariant="bold">x</mi><mo>≠</mo><mn>0</mn></math> — mas testar isso diretamente é impossível (são infinitos <math><mi mathvariant="bold">x</mi></math>), e a decomposição espectral converte o problema em olhar <math><mi>k</mi></math> números. No caso <math><mn>2</mn><mo>×</mo><mn>2</mn></math> basta <math><msub><mi>a</mi><mn>11</mn></msub><mo>&gt;</mo><mn>0</mn></math> e <math><mo>|</mo><mi>A</mi><mo>|</mo><mo>&gt;</mo><mn>0</mn></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Dada <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>, onde ficam os eixos da elipse e quanto medem?</summary>
+  <div class="resposta">
+    <p>Eixos nas direções dos <strong>autovetores</strong> <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math>; semi-eixo na direção <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math> igual a <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>. Atenção ao <em>inverso</em> da raiz: o eixo mais longo corresponde ao <strong>menor</strong> autovalor de <math><mi>A</mi></math>. (Com <math><mi>A</mi><mo>=</mo><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, o semi-eixo vira <math><mi>c</mi><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> com os <math><msub><mi>λ</mi><mi>i</mi></msub></math> de <math><mi>S</mi></math> — proporcional ao desvio-padrão naquela direção.)</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que <math><mi mathvariant="bold">Σ</mi><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">X</mi><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup></math> e não o contrário?</summary>
+  <div class="resposta">
+    <p>Porque coluna vezes linha é o <strong>produto externo</strong>: <math><mo>(</mo><mi>p</mi><mo>×</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>1</mn><mo>×</mo><mi>p</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>p</mi><mo>×</mo><mi>p</mi><mo>)</mo></math>, e a entrada <math><mo>(</mo><mi>i</mi><mo>,</mo><mi>k</mi><mo>)</mo></math> é o produto dos desvios, cuja esperança é <math><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>. A ordem invertida daria um único número: a soma das variâncias.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Covariância nula implica independência?</summary>
+  <div class="resposta">
+    <p><strong>Não</strong> — só a seta inversa vale: independência ⟹ <math><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mn>0</mn></math>. Covariância mede associação <em>linear</em>; pode haver dependência forte não linear com covariância zero. <strong>Exceção importante:</strong> sob normalidade multivariada as duas coisas coincidem (cap. 4) — mas isso é propriedade da normal, não regra geral.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Se <math><mi mathvariant="bold">Z</mi><mo>=</mo><mi>C</mi><mi mathvariant="bold">X</mi></math>, quanto valem <math><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">Z</mi></msub></math> e <math><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">Z</mi></msub></math>?</summary>
+  <div class="resposta">
+    <p><math><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mi>C</mi><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">X</mi></msub></math> e <math><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">Z</mi></msub><mo>=</mo><mi>C</mi><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">X</mi></msub><msup><mi>C</mi><mo>′</mo></msup></math> — matriz dos <em>dois</em> lados, com transposta à direita. Confira pelas dimensões: <math><mo>(</mo><mi>q</mi><mo>×</mo><mi>p</mi><mo>)</mo><mo>(</mo><mi>p</mi><mo>×</mo><mi>p</mi><mo>)</mo><mo>(</mo><mi>p</mi><mo>×</mo><mi>q</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>q</mi><mo>×</mo><mi>q</mi><mo>)</mo></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>O que os autovalores de <math><mi>B</mi></math> significam em termos de maximização?</summary>
+  <div class="resposta">
+    <p><math><msub><mi>λ</mi><mn>1</mn></msub></math> é o <strong>máximo</strong> de <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">x</mi></math> sobre a esfera unitária <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi><mo>=</mo><mn>1</mn></math>, atingido em <math><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math>; <math><msub><mi>λ</mi><mi>p</mi></msub></math> é o mínimo, em <math><mi mathvariant="bold">x</mi><mo>=</mo><msub><mi mathvariant="bold">e</mi><mi>p</mi></msub></math>; e restringindo às direções perpendiculares às <math><mi>k</mi></math> primeiras, o máximo é <math><msub><mi>λ</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math>. Com <math><mi>B</mi><mo>=</mo><mi>S</mi></math> isso <em>é</em> a definição de componentes principais.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Que resultado do capítulo 1 a desigualdade de Cauchy–Schwarz demonstra?</summary>
+  <div class="resposta">
+    <p>Que <math><mo>|</mo><mi>r</mi><mo>|</mo><mo>≤</mo><mn>1</mn></math>. Dividindo <math><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≤</mo><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">b</mi><mo>)</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></math> pelo lado direito sai <math><msup><mo>cos</mo><mn>2</mn></msup><mo>(</mo><mi>θ</mi><mo>)</mo><mo>≤</mo><mn>1</mn></math>; com as colunas centradas de dados, <math><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>. A igualdade (colinearidade) é o caso <math><mi>r</mi><mo>=</mo><mo>±</mo><mn>1</mn></math>.</p>
+  </div>
+</details>
+
+
+<h2 id="exercicios">Exercícios resolvidos</h2>
+
+<div class="exercicio">
+  <h3>Exercício 2.6 e 2.7 — autovalores, decomposição e inversa</h3>
+  <div class="enunciado">
+    <p>Seja <math><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>9</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>6</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>. (2.6) <em>A</em> é simétrica? Mostre que é definida positiva. (2.7) Determine autovalores e autovetores; escreva a decomposição espectral; encontre <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> e seus autovalores e autovetores.</p>
+  </div>
+
+  <h4>Simetria e positividade</h4>
+  <p><math><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><msub><mi>a</mi><mn>21</mn></msub><mo>=</mo><mo>−</mo><mn>2</mn></math>, logo <math><mi>A</mi><mo>=</mo><msup><mi>A</mi><mo>′</mo></msup></math>. Para a positividade, a equação característica:</p>
+  <math display="block"><mrow><mo>|</mo><mi>A</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><mo>(</mo><mn>9</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>(</mo><mn>6</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>−</mo><mn>4</mn><mo>=</mo><msup><mi>λ</mi><mn>2</mn></msup><mo>−</mo><mn>15</mn><mi>λ</mi><mo>+</mo><mn>50</mn><mo>=</mo><mn>0</mn></mrow></math>
+  <math display="block"><mrow><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>10</mn><mo>,</mo><mspace width="1.4em"/><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>5</mn></mrow></math>
+  <p>Ambos positivos ⇒ <strong>definida positiva</strong>. (Confira: <math><mn>10</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>15</mn></math> = traço ✓; <math><mn>10</mn><mo>×</mo><mn>5</mn><mo>=</mo><mn>50</mn></math> = determinante ✓.)</p>
+
+  <h4>Autovetores</h4>
+  <p>Para <math><mi>λ</mi><mo>=</mo><mn>10</mn></math>: <math><mn>9</mn><msub><mi>e</mi><mn>1</mn></msub><mo>−</mo><mn>2</mn><msub><mi>e</mi><mn>2</mn></msub><mo>=</mo><mn>10</mn><msub><mi>e</mi><mn>1</mn></msub></math>, ou seja <math><msub><mi>e</mi><mn>1</mn></msub><mo>=</mo><mo>−</mo><mn>2</mn><msub><mi>e</mi><mn>2</mn></msub></math>. Tomando <math><mo>[</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> e normalizando por <math><msqrt><mn>5</mn></msqrt></math>. Para <math><mi>λ</mi><mo>=</mo><mn>5</mn></math>, o autovetor é perpendicular ao primeiro:</p>
+  <math display="block"><mrow><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><msqrt><mn>5</mn></msqrt></mfrac><mo>]</mo></mrow><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>894</mn><mo>,</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>447</mn><mo>]</mo><mo>,</mo><mspace width="1.4em"/><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>,</mo><mfrac><mn>2</mn><msqrt><mn>5</mn></msqrt></mfrac><mo>]</mo></mrow><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>447</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>894</mn><mo>]</mo></mrow></math>
+
+  <h4>Decomposição espectral</h4>
+  <math display="block"><mrow><mi>A</mi><mo>=</mo><mn>10</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>4</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>5</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>5</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>+</mo><mn>5</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>1</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>5</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>2</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>5</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>Somando: <math><mn>8</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>9</mn></math>, <math><mo>−</mo><mn>4</mn><mo>+</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn></math>, <math><mn>2</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>6</mn></math> ✓.</p>
+
+  <h4>A inversa</h4>
+  <p>Pela fórmula <math><mn>2</mn><mo>×</mo><mn>2</mn></math>, <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>(</mo><mn>1</mn><mo>/</mo><mn>50</mn><mo>)</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>6</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mn>9</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>, ou seja</p>
+  <math display="block"><mrow><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn><mo>,</mo><mn>12</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>04</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo><mn>04</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>18</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>
+
+  <p>Os autovalores de <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> são <math><mn>1</mn><mo>/</mo><mn>10</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn></math> e <math><mn>1</mn><mo>/</mo><mn>5</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>2</mn></math>, e <strong>os autovetores são exatamente os mesmos</strong> — só a ordem se inverte: o autovetor de <em>maior</em> autovalor de <math><mi>A</mi></math> passa a ser o de <em>menor</em> autovalor de <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>.</p>
+
+  <div class="caixa definicao">
+    <span class="rotulo">Guarde esta regra</span>
+    <p><strong>Inverter uma matriz simétrica preserva os autovetores e inverte os autovalores.</strong> Sai direto de (2-21). É a razão de a elipse <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math> ter os mesmos eixos da nuvem de dados, e de o eixo mais longo dela ser o de maior variância — como já tínhamos visto no Exercício 1.9.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 2.8 e 2.9 — quando a matriz <em>não</em> é definida positiva</h3>
+  <div class="enunciado">
+    <p>Seja <math><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>. Encontre <math><msub><mi>λ</mi><mn>1</mn></msub></math>, <math><msub><mi>λ</mi><mn>2</mn></msub></math> e os autovetores normalizados; determine a decomposição espectral. Depois encontre <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>, seus autovalores e autovetores, e compare as decomposições.</p>
+  </div>
+
+  <math display="block"><mrow><mo>|</mo><mi>A</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>−</mo><mn>4</mn><mo>=</mo><msup><mi>λ</mi><mn>2</mn></msup><mo>+</mo><mi>λ</mi><mo>−</mo><mn>6</mn><mo>=</mo><mn>0</mn><mspace width="1.4em"/><mo>⟹</mo><mspace width="1em"/><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>2</mn><mo>,</mo><mspace width="0.8em"/><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>3</mn></mrow></math>
+
+  <p>Os autovetores normalizados são <math><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>2</mn><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>,</mo><mn>1</mn><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>,</mo><mo>−</mo><mn>2</mn><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>]</mo></math>, e</p>
+
+  <math display="block"><mrow><mi>A</mi><mo>=</mo><mn>2</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>4</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>5</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>2</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>5</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>−</mo><mn>3</mn><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>1</mn><mn>5</mn></mfrac></mtd><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>5</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>5</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>5</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+
+  <p>A inversa é <math><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mo>(</mo><mn>1</mn><mo>/</mo><mo>(</mo><mo>−</mo><mn>6</mn><mo>)</mo><mo>)</mo><mrow><mo>[</mo><mtable><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn><mo>/</mo><mn>3</mn></mtd><mtd><mn>1</mn><mo>/</mo><mn>3</mn></mtd></mtr><mtr><mtd><mn>1</mn><mo>/</mo><mn>3</mn></mtd><mtd><mo>−</mo><mn>1</mn><mo>/</mo><mn>6</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>, com autovalores <math><mn>1</mn><mo>/</mo><mn>2</mn></math> e <math><mo>−</mo><mn>1</mn><mo>/</mo><mn>3</mn></math> — de novo os recíprocos, com os mesmos autovetores.</p>
+
+  <div class="caixa aviso">
+    <span class="rotulo">O ponto do exercício</span>
+    <p><math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>3</mn><mo>&lt;</mo><mn>0</mn></math>: esta matriz é simétrica, tem decomposição espectral perfeita, e <strong>não é definida positiva</strong>. Na direção <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math> a forma quadrática é <em>negativa</em>: <math><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mi>A</mi><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>3</mn></math>.</p>
+    <p>Consequências: <math><mi>A</mi></math> não serve como matriz de distância; não tem raiz quadrada real; e os contornos <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math> não são elipses, são <strong>hipérboles</strong>. Compare com o Exercício 2.6: decomposição espectral existe para qualquer simétrica, mas <em>positividade</em> é uma exigência a mais — e é ela que separa "matriz" de "matriz de covariâncias".</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 2.18 — elipses de distância constante</h3>
+  <div class="enunciado">
+    <p>Considere os pontos <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math> cujas "distâncias" à origem são dadas por <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mn>3</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math>, para <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> e <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math>. Determine os eixos maior e menor e seus comprimentos. Esboce e comente as posições. O que acontece quando <math><msup><mi>c</mi><mn>2</mn></msup></math> cresce?</p>
+  </div>
+
+  <p>Em forma matricial (lembre de <strong>dividir o termo cruzado por 2</strong>):</p>
+  <math display="block"><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mo>−</mo><msqrt><mn>2</mn></msqrt></mtd></mtr>
+    <mtr><mtd><mo>−</mo><msqrt><mn>2</mn></msqrt></mtd><mtd><mn>3</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+
+  <p>Equação característica: <math><mo>(</mo><mn>4</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>(</mo><mn>3</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>−</mo><mn>2</mn><mo>=</mo><msup><mi>λ</mi><mn>2</mn></msup><mo>−</mo><mn>7</mn><mi>λ</mi><mo>+</mo><mn>10</mn><mo>=</mo><mn>0</mn></math>, com <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>5</mn></math> e <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>2</mn></math>. Positivos ⇒ são elipses de fato.</p>
+
+  <p>Autovetores: para <math><mi>λ</mi><mo>=</mo><mn>5</mn></math>, <math><mn>4</mn><msub><mi>e</mi><mn>1</mn></msub><mo>−</mo><msqrt><mn>2</mn></msqrt><msub><mi>e</mi><mn>2</mn></msub><mo>=</mo><mn>5</mn><msub><mi>e</mi><mn>1</mn></msub></math>, ou <math><msub><mi>e</mi><mn>1</mn></msub><mo>=</mo><mo>−</mo><msqrt><mn>2</mn></msqrt><msub><mi>e</mi><mn>2</mn></msub></math>. Normalizando:</p>
+
+  <math display="block"><mrow><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mrow><mo>[</mo><mfrac><msqrt><mn>2</mn></msqrt><msqrt><mn>3</mn></msqrt></mfrac><mo>,</mo><mfrac><mrow><mo>−</mo><mn>1</mn></mrow><msqrt><mn>3</mn></msqrt></mfrac><mo>]</mo></mrow><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>816</mn><mo>,</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>577</mn><mo>]</mo><mo>,</mo><mspace width="1.4em"/><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>577</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>816</mn><mo>]</mo></mrow></math>
+
+  <div class="rolagem">
+  <table>
+    <caption>Semi-eixos <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> das duas elipses.</caption>
+    <thead><tr><th></th><th>direção</th><th><math><mi>λ</mi></math></th><th><math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> (<math><mi>c</mi><mo>=</mo><mn>1</mn></math>)</th><th><math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> (<math><mi>c</mi><mo>=</mo><mn>2</mn></math>)</th></tr></thead>
+    <tbody>
+      <tr><td class="txt">eixo <strong>menor</strong></td><td class="txt"><math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math> (−35,3°)</td><td>5</td><td>0,447</td><td>0,894</td></tr>
+      <tr><td class="txt">eixo <strong>maior</strong></td><td class="txt"><math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math> (54,7°)</td><td>2</td><td>0,707</td><td>1,414</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>Posição e comentário.</strong> Os dois eixos são perpendiculares entre si e <em>inclinados</em> em relação aos eixos coordenados — a inclinação é obra do termo cruzado <math><mo>−</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math>. O eixo <em>maior</em> fica na direção de <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math>, a do <em>menor</em> autovalor, como manda a receita da seção 5.3.</p>
+
+  <p><strong>O que acontece quando <math><msup><mi>c</mi><mn>2</mn></msup></math> cresce:</strong> as elipses são <strong>concêntricas e homotéticas</strong> — mesma orientação, mesma razão entre eixos, apenas escaladas por <math><mi>c</mi></math>. Passar de <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math> para <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>4</mn></math> dobra <em>ambos</em> os semi-eixos (fator <math><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn></math>), e a área quadruplica. A família inteira de elipses é uma única forma inflada.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Onde isso reaparece</span>
+    <p>Exatamente assim se desenham as regiões de confiança do capítulo 5: mudar o nível de confiança de 90% para 95% <em>não</em> muda a forma nem a orientação da elipse — só a infla, porque só muda <math><msup><mi>c</mi><mn>2</mn></msup></math>. Forma e orientação vêm dos dados (de <math><mi>S</mi></math>); o tamanho vem do nível de confiança.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercícios 2.25 e 2.26 — de <math><mi mathvariant="bold">Σ</mi></math> para <math><mi mathvariant="bold">ρ</mi></math>, e correlação com uma combinação linear</h3>
+  <div class="enunciado">
+    <p>Seja <math><mi mathvariant="bold">X</mi></math> com matriz de covariâncias <math><mi mathvariant="bold">Σ</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>25</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>9</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>. (2.25) Determine <math><mi mathvariant="bold">ρ</mi></math> e <math><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> e verifique <math><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">ρ</mi><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mi mathvariant="bold">Σ</mi></math>. (2.26) Encontre <math><msub><mi>ρ</mi><mn>13</mn></msub></math> e a correlação entre <math><msub><mi>X</mi><mn>1</mn></msub></math> e <math><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>X</mi><mn>2</mn></msub><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>X</mi><mn>3</mn></msub></math>.</p>
+  </div>
+
+  <h4>2.25 — as duas matrizes</h4>
+  <p>Os desvios são <math><msqrt><mn>25</mn></msqrt><mo>=</mo><mn>5</mn></math>, <math><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn></math> e <math><msqrt><mn>9</mn></msqrt><mo>=</mo><mn>3</mn></math>:</p>
+
+  <math display="block"><mrow><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>5</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mspace width="1.4em"/>
+  <mi mathvariant="bold">ρ</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>10</mn></mfrac></mtd><mtd><mfrac><mn>4</mn><mn>15</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mn>10</mn></mfrac></mtd><mtd><mn>1</mn></mtd><mtd><mfrac><mn>1</mn><mn>6</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>4</mn><mn>15</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>6</mn></mfrac></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow>
+  <mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>200</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>267</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>200</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>167</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn><mo>,</mo><mn>267</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>167</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+
+  <p>A verificação é imediata: <math><msup><mi>V</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> à esquerda multiplica a linha <math><mi>i</mi></math> por <math><msqrt><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math> e à direita multiplica a coluna <math><mi>k</mi></math> por <math><msqrt><msub><mi>σ</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt></math>, desfazendo exatamente a divisão que definiu <math><msub><mi>ρ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>.</p>
+
+  <h4>2.26 (a)</h4>
+  <math display="block"><mrow><msub><mi>ρ</mi><mn>13</mn></msub><mo>=</mo><mfrac><mn>4</mn><mrow><msqrt><mn>25</mn></msqrt><msqrt><mn>9</mn></msqrt></mrow></mfrac><mo>=</mo><mfrac><mn>4</mn><mn>15</mn></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>267</mn></mrow></math>
+
+  <h4>2.26 (b) — a parte que exige a seção 8</h4>
+  <p>Seja <math><mi>Y</mi><mo>=</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> com <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>]</mo></math>, e <math><msub><mi>X</mi><mn>1</mn></msub><mo>=</mo><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> com <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>]</mo></math>. Precisamos de três números.</p>
+
+  <p><strong>Covariância</strong> (pelo mesmo argumento do Exercício 2.28, <math><mi>Cov</mi><mo>(</mo><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>,</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">c</mi></math>):</p>
+  <math display="block"><mrow><mi>Cov</mi><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><mi>Y</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>σ</mi><mn>13</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>(</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>1</mn></mrow></math>
+
+  <p><strong>Variância de <math><mi>Y</mi></math></strong> (por <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">c</mi></math>, equação 2-41):</p>
+  <math display="block"><mrow><mi>Var</mi><mo>(</mo><mi>Y</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mn>2</mn><mo>·</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msub><mi>σ</mi><mn>23</mn></msub><mo>=</mo><mfrac><mn>4</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>2</mn><mn>4</mn></mfrac><mo>=</mo><mn>3</mn><mo>,</mo><mn>75</mn></mrow></math>
+
+  <p><strong>A correlação</strong>, com <math><mi>Var</mi><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>)</mo><mo>=</mo><mn>25</mn></math>:</p>
+  <math display="block"><mrow><mi>Corr</mi><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><mi>Y</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><msqrt><mn>25</mn></msqrt><mspace width="0.2em"/><msqrt><mrow><mn>3</mn><mo>,</mo><mn>75</mn></mrow></msqrt></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>5</mn><mo>×</mo><mn>1</mn><mo>,</mo><mn>936</mn></mrow></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>103</mn></mrow></math>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Um resultado que costuma surpreender</span>
+    <p><math><msub><mi>X</mi><mn>1</mn></msub></math> correlaciona <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>200</mn></math> com <math><msub><mi>X</mi><mn>2</mn></msub></math> e <math><mo>+</mo><mn>0</mn><mo>,</mo><mn>267</mn></math> com <math><msub><mi>X</mi><mn>3</mn></msub></math>. Com a <em>média</em> das duas, a correlação despenca para <math><mn>0</mn><mo>,</mo><mn>103</mn></math> — <strong>menor que qualquer uma das duas em módulo</strong>. Motivo: as duas associações têm <em>sinais opostos</em> e se cancelam parcialmente no numerador (<math><mo>−</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>1</mn></math>).</p>
+    <p>A lição vale para índices compostos em geral: <strong>somar variáveis que se relacionam em direções opostas com o alvo destrói informação.</strong> É por isso que, ao construir escores (cap. 8 e 9), os pesos raramente devem ser todos iguais — e por que se inverte o sinal de itens "negativos" antes de somar.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 2.36 — máximo e mínimo na esfera unitária</h3>
+  <div class="enunciado">
+    <p>Encontre os valores máximo e mínimo da forma quadrática <math><mn>4</mn><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mn>4</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><mn>6</mn><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math> para todos os pontos com <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi mathvariant="bold">x</mi><mo>=</mo><mn>1</mn></math>.</p>
+  </div>
+
+  <p>Pela seção 9.3, não há nada a otimizar: os extremos <em>são</em> os autovalores. A matriz é</p>
+  <math display="block"><mrow><mi>B</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>4</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable><mo>]</mo></mrow><mspace width="1.4em"/><mo>|</mo><mi>B</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><mn>4</mn><mo>−</mo><mi>λ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><mn>9</mn><mo>=</mo><mn>0</mn></mrow></math>
+
+  <p>que dá <math><mn>4</mn><mo>−</mo><mi>λ</mi><mo>=</mo><mo>±</mo><mn>3</mn></math>, isto é <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>7</mn></math> e <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>. Logo:</p>
+
+  <ul>
+    <li><strong>Máximo <math><mo>=</mo><mn>7</mn></math></strong>, atingido em <math><msubsup><mi mathvariant="bold">e</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>]</mo></math> — a diagonal a 45°.</li>
+    <li><strong>Mínimo <math><mo>=</mo><mn>1</mn></math></strong>, atingido em <math><msubsup><mi mathvariant="bold">e</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>,</mo><mo>−</mo><mn>1</mn><mo>/</mo><msqrt><mn>2</mn></msqrt><mo>]</mo></math> — a antidiagonal.</li>
+  </ul>
+
+  <p>Confira à mão: em <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math>, <math><mn>4</mn><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>+</mo><mn>4</mn><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>+</mo><mn>6</mn><mo>(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo><mo>=</mo><mn>7</mn></math> ✓; em <math><msub><mi mathvariant="bold">e</mi><mn>2</mn></msub></math>, <math><mn>2</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>1</mn></math> ✓. E em <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>]</mo></math> — que também está na esfera — dá 4, entre 1 e 7, como tem de ser.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Traduzindo para estatística</span>
+    <p>Se <math><mi>B</mi></math> fosse a matriz de covariâncias de <math><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><msub><mi>X</mi><mn>2</mn></msub><mo>)</mo></math>, o exercício estaria dizendo: entre todas as combinações lineares com coeficientes normalizados, a de <strong>maior variância</strong> é <math><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><msub><mi>X</mi><mn>2</mn></msub><mo>)</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math>, com variância 7; e a de <strong>menor</strong> variância é <math><mo>(</mo><msub><mi>X</mi><mn>1</mn></msub><mo>−</mo><msub><mi>X</mi><mn>2</mn></msub><mo>)</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math>, com variância 1. Como <math><msub><mi>ρ</mi><mn>12</mn></msub><mo>=</mo><mn>3</mn><mo>/</mo><mn>4</mn></math> é alta e positiva, a soma acumula a variação e a diferença a cancela — e o total <math><mn>7</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>8</mn></math> é o traço, preservado. Essas duas combinações são a primeira e a segunda componentes principais.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 2.35 — a Cauchy–Schwarz estendida na prática</h3>
+  <div class="enunciado">
+    <p>Com <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>]</mo></math> e <math><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, verifique <math><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>≤</mo><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">b</mi><mo>)</mo><mo>(</mo><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>)</mo></math> para <math><mi>B</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>.</p>
+  </div>
+
+  <p>Lado esquerdo: <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>+</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn></math>, logo <math><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">d</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>.</p>
+
+  <p>Lado direito, primeira parcela:</p>
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>B</mi><mi mathvariant="bold">b</mi><mo>=</mo><mn>2</mn><msup><mrow><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>4</mn><mo>)</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>+</mo><mn>5</mn><msup><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>32</mn><mo>+</mo><mn>48</mn><mo>+</mo><mn>45</mn><mo>=</mo><mn>125</mn></mrow></math>
+
+  <p>Para a segunda, <math><mo>|</mo><mi>B</mi><mo>|</mo><mo>=</mo><mn>10</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>6</mn></math> e</p>
+  <math display="block"><mrow><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mn>2</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><msup><mi mathvariant="bold">d</mi><mo>′</mo></msup><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>=</mo><mfrac><mrow><mn>5</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn></mrow><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>11</mn><mn>6</mn></mfrac><mo>=</mo><mn>1</mn><mo>,</mo><mn>833</mn></mrow></math>
+
+  <p>Produto: <math><mn>125</mn><mo>×</mo><mn>1</mn><mo>,</mo><mn>833</mn><mo>=</mo><mn>229</mn><mo>,</mo><mn>17</mn></math>. E de fato <math><mn>1</mn><mo>≤</mo><mn>229</mn><mo>,</mo><mn>17</mn></math> ✓ — com folga enorme, o que já indica que <math><mi mathvariant="bold">b</mi></math> está longe de ser proporcional a <math><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi></math> (a condição de igualdade). De fato <math><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">d</mi><mo>∝</mo><mo>[</mo><mn>7</mn><mo>,</mo><mn>4</mn><mo>]</mo></math>, que nada tem a ver com <math><mo>[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>3</mn><mo>]</mo></math>.</p>
+</div>
+
+<pre><code><span class="cmt"># --- Os exercícios do capítulo 2, todos em poucas linhas ---</span>
+<span class="cmt"># Ex. 2.6/2.7</span>
+A &lt;- matrix(c(9, -2, -2, 6), 2, 2)
+eigen(A)$values
+<span class="out">## [1] 10  5</span>
+eigen(solve(A))$values           <span class="cmt"># os recíprocos, ordem invertida</span>
+<span class="out">## [1] 0.2 0.1</span>
+
+<span class="cmt"># Ex. 2.18: eixos e semi-eixos da elipse</span>
+A18 &lt;- matrix(c(4, -sqrt(2), -sqrt(2), 3), 2, 2)
+e18 &lt;- eigen(A18)
+e18$values
+<span class="out">## [1] 5 2</span>
+1 / sqrt(e18$values)             <span class="cmt"># semi-eixos para c = 1</span>
+<span class="out">## [1] 0.4472136 0.7071068</span>
+
+<span class="cmt"># Ex. 2.25/2.26</span>
+S &lt;- matrix(c(25, -2, 4,
+              -2,  4, 1,
+               4,  1, 9), 3, 3, byrow = TRUE)
+cov2cor(S)                       <span class="cmt"># faz V^(-1/2) S V^(-1/2) de uma vez</span>
+<span class="out">##            [,1]       [,2]      [,3]</span>
+<span class="out">## [1,]  1.0000000 -0.2000000 0.2666667</span>
+<span class="out">## [2,] -0.2000000  1.0000000 0.1666667</span>
+<span class="out">## [3,]  0.2666667  0.1666667 1.0000000</span>
+
+a &lt;- c(1, 0, 0); cc &lt;- c(0, .5, .5)
+(t(a) %*% S %*% cc) / sqrt((t(a) %*% S %*% a) * (t(cc) %*% S %*% cc))
+<span class="out">##           [,1]</span>
+<span class="out">## [1,] 0.1032796</span>
+
+<span class="cmt"># Ex. 2.36: extremos na esfera unitária = autovalores</span>
+eigen(matrix(c(4, 3, 3, 4), 2, 2))$values
+<span class="out">## [1] 7 1</span>
+</code></pre>
+
+
+<div class="nota">
+  <p><strong>Fonte:</strong> Johnson, R. A. &amp; Wichern, D. W. <em>Applied Multivariate Statistical Analysis</em>, 4ª ed., Prentice Hall, 1998 — capítulo 2, págs. 49–115 (o Suplemento 2A, págs. 86–107, fica como referência). Figuras 2.1 a 2.6 reproduzidas do original para fins de estudo pessoal.</p>
+</div>
+
+<nav class="nav-rodape">
+  <span><a href="../cap01/01-00-aspectos-da-analise-multivariada.html">← Cap. 1 — Aspectos da Análise Multivariada</a></span>
+  <span><a href="../index.html">Menu →</a></span>
+</nav>
+
+
+</div>
+<script>
+/* Em tela larga a barra lateral fica sempre aberta (o CSS esconde o
+   alternador). Abaixo de 62rem ela vira aba: aí começa fechada e fecha
+   sozinha ao escolher um link. Nada aqui depende de rede ou biblioteca —
+   sem JavaScript a barra apenas fica sempre aberta, que é o estado bom. */
+(function () {
+  var menu = document.querySelector(".menu-lateral");
+  if (!menu) return;
+
+  /* Seções com subtópicos: clicar no título abre a lista e segue o link.
+     Só ABRE — para fechar, clique na setinha. É preciso fazer à mão porque
+     o navegador dá prioridade ao <a> e não alterna o <details> sozinho.
+     Sem JavaScript a setinha continua abrindo e fechando normalmente. */
+  menu.querySelectorAll("details.sub > summary > a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var d = a.closest("details.sub");
+      if (d) d.open = true;
+    });
+  });
+
+  if (!window.matchMedia) return;
+  var estreito = window.matchMedia("(max-width: 62rem)");
+  function ajustar() { menu.open = !estreito.matches; }
+  ajustar();
+  estreito.addEventListener("change", ajustar);
+  menu.querySelectorAll(".painel a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (estreito.matches) menu.open = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

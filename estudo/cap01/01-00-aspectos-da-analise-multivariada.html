@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Johnson & Wichern, Prentice Hall) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Cap. 1 — Aspectos da Análise Multivariada</title>
+<link rel="stylesheet" href="../assets/tema.css?v=1">
+<link rel="stylesheet" href="../assets/estilo.css?v=1">
+</head>
+<body>
+
+<details class="menu-lateral" open>
+  <summary>Índice da aula</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Cap. 1 — Aspectos</p>
+    <ol>
+      <li><a href="#s1">O que a análise multivariada quer</a></li>
+      <li><a href="#s2">A organização dos dados: o arranjo <math><mi>X</mi></math></a></li>
+      <li><details class="sub">
+        <summary><a href="#s3">As quatro estatísticas descritivas</a></summary>
+        <ul class="subitens">
+          <li><a href="#s3-1">3.1 Média amostral</a></li>
+          <li><a href="#s3-2">3.2 Variância amostral, e a briga do divisor</a></li>
+          <li><a href="#s3-3">3.3 Covariância amostral</a></li>
+          <li><a href="#s3-4">3.4 Correlação amostral</a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s4">Os três arranjos: <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math></a></summary>
+        <ul class="subitens">
+          <li><a href="#s4-1">4.1 Exemplo 1.2 resolvido à mão</a></li>
+          <li><a href="#s4-2">4.2 Os mesmos arranjos em R</a></li>
+        </ul>
+      </details></li>
+      <li><a href="#s5">O que covariância e correlação <em>não</em> veem</a></li>
+      <li><a href="#s6">Duas geometrias para o mesmo <math><mi>X</mi></math></a></li>
+      <li><a href="#s7">Como olhar para dados multivariados</a></li>
+      <li><details class="sub">
+        <summary><a href="#s8">Distância — o conceito central</a></summary>
+        <ul class="subitens">
+          <li><a href="#s8-1">8.1 A distância euclidiana e por que ela não serve</a></li>
+          <li><a href="#s8-2">8.2 Distância estatística: dividir pelo desvio</a></li>
+          <li><a href="#s8-3">8.3 Quando há correlação: girar os eixos</a></li>
+          <li><a href="#s8-4">8.4 A forma geral e a matriz de pesos</a></li>
+          <li><a href="#s8-5">8.5 O que qualquer distância precisa satisfazer</a></li>
+        </ul>
+      </details></li>
+      <li><a href="#recall">Cartões de recall ativo</a></li>
+      <li><a href="#exercicios">Exercícios resolvidos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="../index.html">Menu</a>
+      <a href="../cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Cap. 2 →</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha"><a href="../index.html">Menu</a> · Johnson &amp; Wichern, 4ª ed. · Capítulo 1 · págs. 1–47</p>
+  <h1>Aspectos da Análise Multivariada</h1>
+  <p class="subtitulo">Como organizar dados de <math><mi>p</mi></math> variáveis, como resumi-los em três arranjos, e por que a distância euclidiana é a medida errada.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Ao final desta aula você deve saber</span>
+  <ul>
+    <li>Enunciar os <strong>cinco objetivos</strong> da análise multivariada e reconhecer qual deles um problema real pede.</li>
+    <li>Montar o arranjo de dados <math><mi>X</mi></math> de dimensão <math><mi>n</mi><mo>×</mo><mi>p</mi></math> e ler a notação <math><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math> sem hesitar.</li>
+    <li>Calcular <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub></math>, <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e organizá-los nos arranjos <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math>.</li>
+    <li>Explicar por que <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> não muda se o divisor for <math><mi>n</mi></math> ou <math><mi>n</mi><mo>−</mo><mn>1</mn></math>, nem sob mudança linear de unidade.</li>
+    <li>Dizer o que covariância e correlação deixam de ver — e o que os gráficos veem.</li>
+    <li>Distinguir as duas geometrias: <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões e <math><mi>p</mi></math> pontos em <math><mi>n</mi></math> dimensões.</li>
+    <li>Construir a <strong>distância estatística</strong> e justificar cada peso a partir da variabilidade e da correlação.</li>
+    <li>Reconhecer a distância estatística como forma quadrática e saber quando ela é legítima.</li>
+  </ul>
+</div>
+
+
+
+<h2 id="s1">1. O que a análise multivariada quer</h2>
+
+<p>Este é um livro sobre o que fazer quando você mediu <em>muitas coisas ao mesmo tempo</em> nas mesmas unidades. Johnson &amp; Wichern abrem lembrando que a investigação científica é um processo iterativo: você formula uma explicação, coleta dados, a análise sugere uma explicação modificada, e nesse vaivém variáveis vão sendo acrescentadas e descartadas. A complexidade dos fenômenos reais obriga a registrar muitas variáveis por unidade — e é aí que a análise univariada, uma variável de cada vez, deixa de bastar.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Definição</span>
+  <p><strong>Análise multivariada</strong> (<em class="en">multivariate analysis</em>) é o corpo de métodos estatísticos destinado a extrair informação de conjuntos de dados que contêm medições <em>simultâneas</em> de várias variáveis sobre os mesmos itens.</p>
+</div>
+
+<p>A palavra que carrega o peso é <em>simultâneas</em>. Analisar sete poluentes um a um não é análise multivariada — é sete análises univariadas. O que torna o problema multivariado é que as variáveis vêm em pacote, variam juntas, e é essa estrutura conjunta que interessa.</p>
+
+<p>Vale registrar de saída um ponto de método que o livro faz questão de marcar: na maior parte deste curso os dados são <strong>observacionais</strong>, e não experimentais. Em economia, ecologia, geologia e sociologia raramente se controla a geração dos dados. Só nos capítulos 6 e 7 aparecem delineamentos com manipulação deliberada. Isso não é um detalhe: significa que quase toda conclusão daqui em diante é sobre <em>associação</em>, e transformá-la em conclusão causal exige um argumento que os dados sozinhos não dão.</p>
+
+<h4>Os cinco objetivos</h4>
+
+<p>Não existe uma taxonomia limpa de técnicas multivariadas — o próprio livro chama a área de <em>"mixed bag"</em>. O que organiza a escolha do método não é a técnica, é o <strong>objetivo</strong>. São cinco:</p>
+
+<ol>
+  <li><strong>Redução de dados ou simplificação estrutural.</strong> Representar o fenômeno tão simplesmente quanto possível sem sacrificar informação valiosa. → componentes principais (cap. 8), análise fatorial (cap. 9).</li>
+  <li><strong>Ordenação e agrupamento.</strong> Criar grupos de objetos "parecidos", ou obter regras para classificar objetos em grupos já definidos. → discriminação e classificação (cap. 11), agrupamento (cap. 12).</li>
+  <li><strong>Investigação da dependência entre variáveis.</strong> As variáveis são mutuamente independentes, ou algumas dependem das outras? Como? → correlação canônica (cap. 10).</li>
+  <li><strong>Predição.</strong> Determinar relações entre variáveis para prever os valores de umas a partir das outras. → regressão multivariada (cap. 7).</li>
+  <li><strong>Construção e teste de hipóteses.</strong> Formular hipóteses estatísticas em termos de parâmetros de populações multivariadas e testá-las. → inferência sobre vetores de médias (cap. 5 e 6).</li>
+</ol>
+
+<p>Repare que o mapa do livro inteiro está nessa lista. Ao encontrar um problema novo, a primeira pergunta útil não é "que técnica uso?", e sim "qual desses cinco objetivos eu tenho?".</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">A citação que vale o capítulo</span>
+  <p>Johnson &amp; Wichern fecham a abertura citando F. H. C. Marriott, e a advertência deve ser lida com atenção: se os resultados discordam da opinião informada, não admitem interpretação lógica simples e não aparecem claramente numa apresentação gráfica, eles provavelmente estão errados. Não há mágica em métodos numéricos, e há muitas maneiras de eles falharem — não são <em>máquinas de salsicha</em> que transformam automaticamente montes de números em pacotes de fato científico.</p>
+  <p>Guarde as três provas: <strong>opinião informada</strong>, <strong>interpretação simples</strong>, <strong>gráfico</strong>. Um resultado multivariado que não passa nas três merece desconfiança, por mais elegante que seja a álgebra que o produziu.</p>
+</div>
+
+
+<h2 id="s2">2. A organização dos dados: o arranjo <math><mi>X</mi></math></h2>
+
+<p>Tudo começa com uma convenção de notação que vai valer 800 páginas. Escolhem-se <math><mi>p</mi><mo>≥</mo><mn>1</mn></math> variáveis e registram-se seus valores em cada item, indivíduo ou unidade experimental. A notação é:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub>
+    <mo>=</mo>
+    <mtext>medição da variável </mtext><mi>k</mi><mtext> no item </mtext><mi>j</mi>
+  </mrow>
+</math>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">A ordem dos índices</span>
+  <p>Primeiro o <strong>item</strong>, depois a <strong>variável</strong>: <math><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math> é a linha <math><mi>j</mi></math>, coluna <math><mi>k</mi></math>. Parece óbvio agora, mas no capítulo 2 aparecem <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>, onde <em>os dois</em> índices são variáveis. Confundir os papéis é a origem mais comum de erro de transposição em código — e uma transposta trocada num produto <math><msup><mi>X</mi><mo>′</mo></msup><mi>X</mi></math> não dá erro, dá um número errado.</p>
+</div>
+
+<p>Com <math><mi>n</mi></math> medições sobre <math><mi>p</mi></math> variáveis, os dados formam um arranjo retangular de <math><mi>n</mi></math> linhas e <math><mi>p</mi></math> colunas:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>X</mi><mo>=</mo>
+    <mrow>
+      <mo>[</mo>
+      <mtable>
+        <mtr><mtd><msub><mi>x</mi><mn>11</mn></msub></mtd><mtd><msub><mi>x</mi><mn>12</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>1</mn><mi>k</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+        <mtr><mtd><msub><mi>x</mi><mn>21</mn></msub></mtd><mtd><msub><mi>x</mi><mn>22</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd></mtr>
+        <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd></mtr>
+        <mtr><mtd><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub></mtd><mtd><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>j</mi><mi>p</mi></mrow></msub></mtd></mtr>
+        <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd></mtr>
+        <mtr><mtd><msub><mi>x</mi><mrow><mi>n</mi><mn>1</mn></mrow></msub></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mn>2</mn></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mi>k</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mi>p</mi></mrow></msub></mtd></mtr>
+      </mtable>
+      <mo>]</mo>
+    </mrow>
+  </mrow>
+</math>
+</div>
+
+<p><strong>Linha = item. Coluna = variável.</strong> É a convenção do livro inteiro, e é também a de qualquer <code>data.frame</code>.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 1.1 — quatro recibos de livraria</span>
+  <p>Quatro recibos de uma livraria universitária. A variável 1 é o valor total da venda (em dólares) e a variável 2 é o número de livros vendidos:</p>
+  <div class="rolagem">
+  <table>
+    <thead><tr><th class="txt">Variável</th><th>Recibo 1</th><th>Recibo 2</th><th>Recibo 3</th><th>Recibo 4</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>1</mn></msub></math> — venda (US$)</td><td>42</td><td>52</td><td>48</td><td>58</td></tr>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>2</mn></msub></math> — nº de livros</td><td>4</td><td>5</td><td>4</td><td>3</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Na notação: <math><msub><mi>x</mi><mn>11</mn></msub><mo>=</mo><mn>42</mn></math>, <math><msub><mi>x</mi><mn>12</mn></msub><mo>=</mo><mn>4</mn></math>, <math><msub><mi>x</mi><mn>21</mn></msub><mo>=</mo><mn>52</mn></math>, <math><msub><mi>x</mi><mn>22</mn></msub><mo>=</mo><mn>5</mn></math>, e assim por diante. O arranjo é <math><mn>4</mn><mo>×</mo><mn>2</mn></math>:</p>
+  <math display="block">
+    <mrow><mi>X</mi><mo>=</mo>
+      <mrow><mo>[</mo><mtable>
+        <mtr><mtd><mn>42</mn></mtd><mtd><mn>4</mn></mtd></mtr>
+        <mtr><mtd><mn>52</mn></mtd><mtd><mn>5</mn></mtd></mtr>
+        <mtr><mtd><mn>48</mn></mtd><mtd><mn>4</mn></mtd></mtr>
+        <mtr><mtd><mn>58</mn></mtd><mtd><mn>3</mn></mtd></mtr>
+      </mtable><mo>]</mo></mrow>
+    </mrow>
+  </math>
+  <p>Trivial? É. Mas note que a tabela do enunciado veio <em>transposta</em> em relação a <math><mi>X</mi></math> — variáveis nas linhas. Isso acontece o tempo todo com dados reais, e é onde o erro entra.</p>
+</div>
+
+
+<h2 id="s3">3. As quatro estatísticas descritivas</h2>
+
+<p>Um conjunto grande de dados é volumoso, e o volume é por si só um obstáculo: o olho não extrai informação de mil linhas. A saída é resumir com poucos números — as <strong>estatísticas descritivas</strong>. O livro se apoia em três tipos de resumo: <strong>localização</strong>, <strong>variação</strong> e <strong>associação linear</strong>.</p>
+
+<h3 id="s3-1">3.1 Média amostral</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mi>n</mi></mfrac>
+    <munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+    <msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub>
+    <mo>,</mo><mspace width="1.4em"/>
+    <mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>p</mi>
+  </mrow>
+</math>
+<span class="num">(1-1)</span>
+</div>
+
+<p>Uma média por variável, ou seja, <math><mi>p</mi></math> médias. A soma corre sobre <math><mi>j</mi></math> (os itens) com <math><mi>k</mi></math> fixo — está se percorrendo uma <em>coluna</em> de <math><mi>X</mi></math>.</p>
+
+<h3 id="s3-2">3.2 Variância amostral, e a briga do divisor</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msubsup><mi>s</mi><mi>k</mi><mn>2</mn></msubsup><mo>=</mo>
+    <msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mi>n</mi></mfrac>
+    <munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+    <msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow><mn>2</mn></msup>
+    <mo>,</mo><mspace width="1.4em"/>
+    <mi>k</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mi>p</mi>
+  </mrow>
+</math>
+<span class="num">(1-2), (1-3)</span>
+</div>
+
+<p>Duas observações do livro merecem parágrafo próprio.</p>
+
+<p><strong>Primeira: o divisor.</strong> Johnson &amp; Wichern usam <math><mi>n</mi></math>, e não <math><mi>n</mi><mo>−</mo><mn>1</mn></math>. Muitos autores usam <math><mi>n</mi><mo>−</mo><mn>1</mn></math> e há razão teórica para isso — é o divisor que torna o estimador não viesado, e importa quando <math><mi>n</mi></math> é pequeno. O livro avisa que as duas versões serão sempre distinguidas <em>exibindo a expressão apropriada</em>. Na prática:</p>
+
+<ul>
+  <li><math><msub><mi>S</mi><mi>n</mi></msub></math> (com <math><mi>n</mi></math>) é a matriz que aparece na <strong>geometria</strong> e na <strong>máxima verossimilhança</strong> — é o estimador de MV de <math><mi mathvariant="normal">Σ</mi></math>, e reaparece no cap. 4.</li>
+  <li><math><mi>S</mi></math> (com <math><mi>n</mi><mo>−</mo><mn>1</mn></math>) é a que aparece na <strong>inferência</strong> — <math><msup><mi>T</mi><mn>2</mn></msup></math> de Hotelling, MANOVA, tudo do cap. 5 em diante.</li>
+</ul>
+
+<div class="caixa aviso">
+  <span class="rotulo">Armadilha profissional</span>
+  <p>Software não avisa qual dos dois está usando. Em R, <code>var()</code> e <code>cov()</code> usam <math><mi>n</mi><mo>−</mo><mn>1</mn></math>; o livro, nas seções descritivas, usa <math><mi>n</mi></math>. Numa amostra de <math><mi>n</mi><mo>=</mo><mn>4</mn></math> a diferença é de 33% na variância — nada desprezível. Ao comparar sua saída com um número do livro, <strong>a primeira coisa a checar é o divisor</strong>, e não a fórmula. Já a <em>correlação</em> é imune a isso, pelo motivo que veremos na seção 3.4.</p>
+</div>
+
+<p><strong>Segunda: a notação de índice duplo.</strong> Escrever <math><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></math> em vez de <math><msubsup><mi>s</mi><mi>k</mi><mn>2</mn></msubsup></math> parece capricho, mas não é: as variâncias vão ocupar a diagonal de uma matriz, e o índice duplo já indica a posição — linha <math><mi>k</mi></math>, coluna <math><mi>k</mi></math>. A raiz <math><msqrt><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt></math> é o <strong>desvio-padrão amostral</strong>, e é ela — não a variância — que está na mesma unidade das observações.</p>
+
+<h3 id="s3-3">3.3 Covariância amostral</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mi>n</mi></mfrac>
+    <munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+    <mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow>
+    <mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(1-4)</span>
+</div>
+
+<p>É o <em>produto médio dos desvios em relação às respectivas médias</em>. A leitura do sinal sai direto da fórmula, e vale fazê-la em voz alta uma vez:</p>
+
+<ul>
+  <li>Se valores grandes de uma variável aparecem junto com valores grandes da outra (e os pequenos também juntos), os dois desvios têm o mesmo sinal, o produto é positivo, e <math><msub><mi>s</mi><mn>12</mn></msub><mo>&gt;</mo><mn>0</mn></math>.</li>
+  <li>Se grandes de uma acompanham pequenos da outra, os desvios têm sinais opostos e <math><msub><mi>s</mi><mn>12</mn></msub><mo>&lt;</mo><mn>0</mn></math>.</li>
+  <li>Sem associação particular, os produtos positivos e negativos se cancelam e <math><msub><mi>s</mi><mn>12</mn></msub><mo>≈</mo><mn>0</mn></math>.</li>
+</ul>
+
+<p>Duas propriedades imediatas, e as duas são usadas o tempo todo: <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>s</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> (a fórmula é simétrica nos dois fatores) e <math><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math> é a própria variância (basta pôr <math><mi>k</mi><mo>=</mo><mi>i</mi></math>). Ou seja: <strong>variância é um caso particular de covariância</strong>, o que é exatamente o motivo de as duas caberem na mesma matriz.</p>
+
+<p>Também se usam as somas sem dividir por <math><mi>n</mi></math> — as <strong>somas de quadrados e de produtos cruzados</strong>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>w</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo>
+    <munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+    <mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow>
+    <mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow>
+    <mspace width="1.4em"/><mtext>logo</mtext><mspace width="0.6em"/>
+    <msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>w</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>/</mo><mi>n</mi>
+  </mrow>
+</math>
+<span class="num">(1-6), (1-7)</span>
+</div>
+
+<p>Guarde a sigla: a matriz dos <math><msub><mi>w</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> é a <strong>SQPC</strong> (soma de quadrados e produtos cruzados, <em class="en">SSCP</em>). Ela é a personagem principal do capítulo 6 (MANOVA), onde se decompõe a SQPC total em "entre grupos" e "dentro de grupos" — a versão multivariada da decomposição da soma de quadrados da ANOVA.</p>
+
+<h3 id="s3-4">3.4 Correlação amostral</h3>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo>
+    <mfrac>
+      <msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub>
+      <mrow><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt><mspace width="0.2em"/><msqrt><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt></mrow>
+    </mfrac>
+    <mo>=</mo>
+    <mfrac>
+      <mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow></mrow>
+      <mrow><msqrt><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></msqrt>
+      <mspace width="0.25em"/>
+      <msqrt><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></msqrt></mrow>
+    </mfrac>
+  </mrow>
+</math>
+<span class="num">(1-5)</span>
+</div>
+
+<p>A segunda forma explica a primeira: o divisor <math><mi>n</mi></math> aparece uma vez no numerador e duas meias-vezes no denominador, e portanto <strong>se cancela</strong>. Daí a propriedade prática mais útil de todas:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Por que a correlação não se importa com o divisor</span>
+  <p><math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> tem exatamente o mesmo valor quer se use <math><mi>n</mi></math> ou <math><mi>n</mi><mo>−</mo><mn>1</mn></math>, desde que o mesmo divisor seja usado nas três quantidades <math><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math>, <math><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></math> e <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>. É uma razão, e a constante some.</p>
+</div>
+
+<p>Há uma segunda leitura de <math><mi>r</mi></math>, mais profunda que a fórmula: <strong>a correlação é a covariância dos dados padronizados</strong>. Se você substituir cada <math><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub></math> por</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mfrac><mrow><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub></mrow><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></mfrac>
+  </mrow>
+</math>
+</div>
+
+<p>então as duas variáveis passam a estar centradas em zero e medidas em unidades de desvio-padrão — ficam <em>comensuráveis</em> —, e a covariância dessas versões padronizadas é <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>. Essa observação é a semente de todo o capítulo 8: fazer componentes principais sobre <math><mi>R</mi></math> em vez de <math><mi>S</mi></math> é exatamente decidir padronizar antes.</p>
+
+<h4>As três propriedades de <math><mi>r</mi></math></h4>
+
+<ol>
+  <li><math><mo>−</mo><mn>1</mn><mo>≤</mo><mi>r</mi><mo>≤</mo><mn>1</mn></math>. Sempre. (No cap. 2 isso sai de graça da desigualdade de Cauchy–Schwarz.)</li>
+  <li><math><mi>r</mi></math> mede a força da associação <strong>linear</strong>. <math><mi>r</mi><mo>=</mo><mn>0</mn></math> significa ausência de associação <em>linear</em> — não ausência de associação. O sinal dá a direção.</li>
+  <li><math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> não muda sob transformações lineares <math><msub><mi>y</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>=</mo><mi>a</mi><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>+</mo><mi>b</mi></math> e <math><msub><mi>y</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>=</mo><mi>c</mi><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>+</mo><mi>d</mi></math>, <strong>desde que <math><mi>a</mi></math> e <math><mi>c</mi></math> tenham o mesmo sinal</strong>.</li>
+</ol>
+
+<p>A propriedade 3 é o que faz a correlação ser adimensional: trocar polegadas por centímetros, ou Celsius por Fahrenheit, não muda <math><mi>r</mi></math> — muda <math><msub><mi>s</mi><mn>12</mn></msub></math> drasticamente. A ressalva do sinal também tem conteúdo: se <math><mi>a</mi><mo>&gt;</mo><mn>0</mn></math> e <math><mi>c</mi><mo>&lt;</mo><mn>0</mn></math>, o valor absoluto se preserva mas o <em>sinal inverte</em>, porque uma das variáveis foi refletida.</p>
+
+
+<h2 id="s4">4. Os três arranjos: <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math></h2>
+
+<p>As estatísticas descritivas de <math><mi>p</mi></math> variáveis se organizam em três arranjos, e é assim que elas serão manipuladas do capítulo 2 em diante:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mover><mi>x</mi><mo>¯</mo></mover><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub></mtd></mtr>
+      <mtr><mtd><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub></mtd></mtr>
+      <mtr><mtd><mo>⋮</mo></mtd></mtr>
+      <mtr><mtd><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>p</mi></msub></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+    <mo>,</mo><mspace width="1.4em"/>
+    <msub><mi>S</mi><mi>n</mi></msub><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><msub><mi>s</mi><mn>11</mn></msub></mtd><mtd><msub><mi>s</mi><mn>12</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>s</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><msub><mi>s</mi><mn>12</mn></msub></mtd><mtd><msub><mi>s</mi><mn>22</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>s</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋱</mo></mtd><mtd><mo>⋮</mo></mtd></mtr>
+      <mtr><mtd><msub><mi>s</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd><mtd><msub><mi>s</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+    <mo>,</mo><mspace width="1.4em"/>
+    <mi>R</mi><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><mn>1</mn></mtd><mtd><msub><mi>r</mi><mn>12</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>r</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><msub><mi>r</mi><mn>12</mn></msub></mtd><mtd><mn>1</mn></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>r</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋱</mo></mtd><mtd><mo>⋮</mo></mtd></mtr>
+      <mtr><mtd><msub><mi>r</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd><mtd><msub><mi>r</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><mn>1</mn></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(1-8)</span>
+</div>
+
+<p>Três fatos estruturais, todos consequência de <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>s</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math>:</p>
+
+<ul>
+  <li><math><mover><mi>x</mi><mo>¯</mo></mover></math> é <math><mi>p</mi><mo>×</mo><mn>1</mn></math>; <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math> são <math><mi>p</mi><mo>×</mo><mi>p</mi></math>. <strong>O tamanho depende de <math><mi>p</mi></math>, não de <math><mi>n</mi></math></strong> — resumir 4 ou 4 milhões de itens dá arranjos do mesmo tamanho. É esse fato que torna o resumo útil.</li>
+  <li>Ambas são <strong>simétricas</strong>: a entrada <math><mi>i</mi><mi>k</mi></math> é igual à <math><mi>k</mi><mi>i</mi></math>.</li>
+  <li><math><mi>R</mi></math> tem <strong>1 na diagonal</strong>, porque a correlação de uma variável com ela mesma é <math><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>/</mo><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>=</mo><mn>1</mn></math>. Se sua matriz de correlações não tiver 1 na diagonal, há erro no código.</li>
+</ul>
+
+<p>O subscrito <math><mi>n</mi></math> em <math><msub><mi>S</mi><mi>n</mi></msub></math> é um lembrete deliberado do divisor usado. Vale copiar essa disciplina.</p>
+
+<h3 id="s4-1">4.1 Exemplo 1.2 resolvido à mão</h3>
+
+<p>Com os quatro recibos do Exemplo 1.1, achar <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math>. As médias:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mn>4</mn></mfrac><mo>(</mo><mn>42</mn><mo>+</mo><mn>52</mn><mo>+</mo><mn>48</mn><mo>+</mo><mn>58</mn><mo>)</mo><mo>=</mo><mn>50</mn>
+    <mo>,</mo><mspace width="1.6em"/>
+    <msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mn>4</mn></mfrac><mo>(</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>3</mn><mo>)</mo><mo>=</mo><mn>4</mn>
+  </mrow>
+</math>
+</div>
+
+<p>As variâncias, com divisor <math><mi>n</mi><mo>=</mo><mn>4</mn></math>:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>s</mi><mn>11</mn></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mn>4</mn></mfrac>
+    <mrow><mo>[</mo><msup><mrow><mo>(</mo><mn>42</mn><mo>−</mo><mn>50</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>52</mn><mo>−</mo><mn>50</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>48</mn><mo>−</mo><mn>50</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mn>58</mn><mo>−</mo><mn>50</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo></mrow>
+    <mo>=</mo><mfrac><mn>136</mn><mn>4</mn></mfrac><mo>=</mo><mn>34</mn>
+  </mrow>
+</math>
+</div>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>s</mi><mn>22</mn></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mn>4</mn></mfrac>
+    <mrow><mo>[</mo><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>+</mo><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo></mrow>
+    <mo>=</mo><mfrac><mn>2</mn><mn>4</mn></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>5</mn>
+  </mrow>
+</math>
+</div>
+
+<p>E a covariância — repare que só o primeiro e o quarto recibos contribuem, porque nos outros dois o desvio de <math><msub><mi>x</mi><mn>2</mn></msub></math> é zero:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>s</mi><mn>12</mn></msub><mo>=</mo>
+    <mfrac><mn>1</mn><mn>4</mn></mfrac>
+    <mrow><mo>[</mo><mo>(</mo><mo>−</mo><mn>8</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>8</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>]</mo></mrow>
+    <mo>=</mo><mfrac><mrow><mo>−</mo><mn>6</mn></mrow><mn>4</mn></mfrac><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn>
+  </mrow>
+</math>
+</div>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msub><mi>r</mi><mn>12</mn></msub><mo>=</mo>
+    <mfrac><mrow><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></mrow><mrow><msqrt><mn>34</mn></msqrt><mspace width="0.2em"/><msqrt><mn>0</mn><mo>,</mo><mn>5</mn></msqrt></mrow></mfrac>
+    <mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>3638</mn><mo>≈</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>36</mn>
+  </mrow>
+</math>
+</div>
+
+<p>Os três arranjos, então:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mover><mi>x</mi><mo>¯</mo></mover><mo>=</mo>
+    <mrow><mo>[</mo><mtable><mtr><mtd><mn>50</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd></mtr></mtable><mo>]</mo></mrow>
+    <mo>,</mo><mspace width="1.4em"/>
+    <msub><mi>S</mi><mi>n</mi></msub><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><mn>34</mn></mtd><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+      <mtr><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+    <mo>,</mo><mspace width="1.4em"/>
+    <mi>R</mi><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>36</mn></mtd></mtr>
+      <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>36</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+  </mrow>
+</math>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Leia os números antes de seguir</span>
+  <p><math><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>34</mn></math> e <math><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>5</mn></math>: a venda em dólares varia <em>68 vezes mais</em> que a contagem de livros. Isso não diz que dólares "importam mais" — diz que as unidades são diferentes. É exatamente essa incomensurabilidade que motivará a seção 8 (distância) e a escolha entre <math><mi>S</mi></math> e <math><mi>R</mi></math> no capítulo 8.</p>
+  <p>E <math><msub><mi>s</mi><mn>12</mn></msub><mo>&lt;</mo><mn>0</mn></math>: nestes quatro recibos, contas maiores vieram com <em>menos</em> livros — livros mais caros. Com <math><mi>n</mi><mo>=</mo><mn>4</mn></math> não se conclui nada, mas o sinal é o tipo de leitura que se deve fazer sempre.</p>
+</div>
+
+<h3 id="s4-2">4.2 Os mesmos arranjos em R</h3>
+
+<pre><code><span class="cmt"># --- Exemplo 1.2: quatro recibos de livraria (Johnson & Wichern, p. 10) ---</span>
+X &lt;- matrix(c(42, 4,
+              52, 5,
+              48, 4,
+              58, 3), ncol = 2, byrow = TRUE,
+            dimnames = list(NULL, c("venda", "livros")))
+
+n &lt;- nrow(X)
+
+colMeans(X)                       <span class="cmt"># o vetor x-barra</span>
+<span class="out">##  venda livros </span>
+<span class="out">##     50      4 </span>
+
+<span class="cmt"># cov() de R usa divisor n-1; o livro usa n nas seções descritivas.</span>
+S  &lt;- cov(X)                      <span class="cmt"># divisor n-1</span>
+Sn &lt;- S * (n - 1) / n             <span class="cmt"># converte para o S_n do livro</span>
+
+Sn
+<span class="out">##        venda livros</span>
+<span class="out">## venda   34.0   -1.5</span>
+<span class="out">## livros  -1.5    0.5</span>
+
+S
+<span class="out">##            venda    livros</span>
+<span class="out">## venda  45.333333 -2.000000</span>
+<span class="out">## livros -2.000000  0.666667</span>
+
+cor(X)                            <span class="cmt"># R: imune ao divisor</span>
+<span class="out">##             venda     livros</span>
+<span class="out">## venda   1.0000000 -0.3638034</span>
+<span class="out">## livros -0.3638034  1.0000000</span>
+</code></pre>
+
+<div class="caixa definicao">
+  <span class="rotulo">Repare nesta linha</span>
+  <p><math><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mi>S</mi><mo>×</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>/</mo><mi>n</mi></math>. É a conversão que você vai usar toda vez que comparar sua saída com um número deste livro. E note que <code>cor(X)</code> devolve <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>3638</mn></math> tanto a partir de <math><mi>S</mi></math> quanto de <math><msub><mi>S</mi><mi>n</mi></msub></math> — a prova prática da propriedade da seção 3.4.</p>
+</div>
+
+<p>Vale conferir também que <math><mi>R</mi></math> sai de <math><msub><mi>S</mi><mi>n</mi></msub></math> por padronização — é a operação que reaparecerá em forma matricial no capítulo 2 como <math><mi>R</mi><mo>=</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>S</mi><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>:</p>
+
+<pre><code>D_meio &lt;- diag(1 / sqrt(diag(Sn)))     <span class="cmt"># D^(-1/2)</span>
+D_meio %*% Sn %*% D_meio
+<span class="out">##            [,1]       [,2]</span>
+<span class="out">## [1,]  1.0000000 -0.3638034</span>
+<span class="out">## [2,] -0.3638034  1.0000000</span>
+</code></pre>
+
+
+<h2 id="s5">5. O que covariância e correlação <em>não</em> veem</h2>
+
+<p>Johnson &amp; Wichern são explícitos: <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> <em>não transmitem tudo</em> o que há para saber sobre a associação entre duas variáveis. Há dois problemas, e os dois são graves.</p>
+
+<p><strong>Problema 1: associações não lineares.</strong> Covariância e correlação medem associação <em>ao longo de uma reta</em>. Uma relação em U perfeita e determinística pode ter <math><mi>r</mi><mo>≈</mo><mn>0</mn></math>. O número não é falso — é que ele responde a uma pergunta que não era a sua.</p>
+
+<p><strong>Problema 2: observações atípicas.</strong> Como a fórmula soma produtos de desvios, um ponto com desvios grandes nas duas variáveis domina a soma. O resultado é que <math><mi>r</mi></math> pode indicar associação onde há pouca, ou esconder a que existe.</p>
+
+<figure>
+  <img src="img/fig-01-03.png" alt="Diagrama de dispersão de lucro por empregado contra número de empregados para 16 editoras, com Dun &amp; Bradstreet e Time Warner destacadas como observações atípicas.">
+  <figcaption><b>Figura 1.3</b> — Lucro por empregado × número de empregados para 16 editoras (dados da <em>Forbes</em>, 30 de abril de 1990). Dun &amp; Bradstreet é a maior em número de empregados mas típica em produtividade; Time Warner tem número típico de empregados mas lucro por empregado comparativamente pequeno (negativo).</figcaption>
+</figure>
+
+<p>O Exemplo 1.3 mostra o estrago em números. A correlação entre <math><msub><mi>x</mi><mn>1</mn></msub></math> (empregados) e <math><msub><mi>x</mi><mn>2</mn></msub></math> (lucro por empregado) muda assim conforme se removem as duas observações atípicas:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Exemplo 1.3 — efeito de duas observações sobre <math><msub><mi>r</mi><mn>12</mn></msub></math>, em <math><mi>n</mi><mo>=</mo><mn>16</mn></math> empresas.</caption>
+  <thead><tr><th class="txt">Conjunto usado</th><th><math><msub><mi>r</mi><mn>12</mn></msub></math></th></tr></thead>
+  <tbody>
+    <tr><td class="txt">Todas as 16 empresas</td><td>−0,39</td></tr>
+    <tr><td class="txt">Todas, exceto Dun &amp; Bradstreet</td><td>−0,56</td></tr>
+    <tr><td class="txt">Todas, exceto Time Warner</td><td>−0,39</td></tr>
+    <tr><td class="txt">Excluindo as duas</td><td>−0,50</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Uma única empresa entre dezesseis move a correlação de −0,39 para −0,56 — uma mudança de 44% na magnitude. E note a assimetria: remover Time Warner não muda nada (−0,39), embora ela seja visualmente tão "estranha" quanto a outra. Ser atípico numa variável não é o mesmo que ser influente sobre <math><mi>r</mi></math>; o que dá influência é ser extremo <em>na direção certa</em>. Essa distinção — atípico × influente — volta com força no capítulo 7 (diagnóstico em regressão).</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">A regra profissional</span>
+  <p>Observações suspeitas devem ser tratadas corrigindo erros óbvios de registro e agindo conforme a causa identificada. E o livro dá a instrução operacional: <strong>os valores de <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> devem ser reportados com e sem essas observações.</strong> Não é "limpar os dados e seguir": é mostrar as duas contas e deixar visível o quanto a conclusão depende delas.</p>
+</div>
+
+
+<h2 id="s6">6. Duas geometrias para o mesmo <math><mi>X</mi></math></h2>
+
+<p>Aqui entra a ideia que estrutura o resto do livro. A mesma matriz <math><mi>X</mi></math> pode ser lida de duas maneiras geometricamente diferentes, e cada uma revela coisas distintas.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">As duas leituras de <math><mi>X</mi></math></span>
+  <p><strong><math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões</strong> (o "espaço das variáveis"). Cada <em>linha</em> de <math><mi>X</mi></math> é um ponto; os eixos são as variáveis. O item <math><mi>j</mi></math> fica a <math><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub></math> unidades no primeiro eixo, <math><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub></math> no segundo, e assim por diante. É o diagrama de dispersão generalizado. Mostra o padrão de variabilidade e as semelhanças <em>entre itens</em> — grupos de itens aparecem como aglomerados.</p>
+  <p><strong><math><mi>p</mi></math> pontos em <math><mi>n</mi></math> dimensões</strong> (o "espaço dos itens"). Cada <em>coluna</em> de <math><mi>X</mi></math> é um ponto — ou melhor, um vetor. A coluna <math><mi>i</mi></math>, com as <math><mi>n</mi></math> medições da variável <math><mi>i</mi></math>, determina o <math><mi>i</mi></math>-ésimo ponto. Mostra as relações <em>entre variáveis</em>.</p>
+</div>
+
+<p>A segunda leitura parece esquisita — quem desenha um espaço de 41 dimensões? — mas é ela que dá o resultado mais bonito do capítulo 3: a <strong>proximidade angular</strong> entre dois vetores-coluna centrados é exatamente a correlação amostral entre as duas variáveis. Ou seja, <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><mo>cos</mo><mi>θ</mi></math>, com <math><mi>θ</mi></math> o ângulo entre as duas colunas centradas. As três propriedades da correlação (limitada a <math><mo>±</mo><mn>1</mn></math>, invariante a escala, zero significando "perpendicular") deixam de ser fatos algébricos e viram fatos geométricos óbvios.</p>
+
+<p>Vale carregar as duas leituras juntas o curso inteiro: quando o assunto é <em>classificar itens</em> (caps. 11 e 12) pensa-se em <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões; quando é <em>reduzir variáveis</em> (caps. 8 e 9) pensa-se em <math><mi>p</mi></math> pontos em <math><mi>n</mi></math> dimensões.</p>
+
+
+<h2 id="s7">7. Como olhar para dados multivariados</h2>
+
+<p>Gráficos são auxílios importantes e frequentemente negligenciados. Não dá para plotar tudo simultaneamente, mas plotar variáveis uma a uma e aos pares já rende muito. O básico é o <strong>diagrama de dispersão</strong> (<em class="en">scatter plot</em>) com os <strong>diagramas de pontos marginais</strong> (<em class="en">dot diagrams</em>) nas bordas:</p>
+
+<figure>
+  <img src="img/fig-01-01.png" alt="Diagrama de dispersão de sete pontos em duas dimensões, com o diagrama de pontos marginal da variável x1 abaixo.">
+  <figcaption><b>Figura 1.1</b> — Diagrama de dispersão e diagramas de pontos marginais para os sete pares <math><mo>(</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>)</mo></math>, <math><mo>(</mo><mn>4</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>)</mo></math>, …, <math><mo>(</mo><mn>5</mn><mo>,</mo><mn>7</mn><mo>,</mo><mn>5</mn><mo>)</mo></math>. Os diagramas marginais se obtêm projetando os pontos sobre cada eixo.</figcaption>
+</figure>
+
+<p>O livro faz aqui um argumento que vale internalizar. Ele toma os mesmos sete valores de <math><msub><mi>x</mi><mn>1</mn></msub></math>, <strong>apenas reordenados</strong>, e emparelha com os mesmos valores de <math><msub><mi>x</mi><mn>2</mn></msub></math>. Resultado: os diagramas marginais ficam <em>idênticos</em>, mas o diagrama de dispersão fica completamente diferente — o que era associação positiva vira negativa, e <math><msub><mi>s</mi><mn>12</mn></msub></math> troca de sinal. Já <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub></math>, <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub></math>, <math><msub><mi>s</mi><mn>11</mn></msub></math> e <math><msub><mi>s</mi><mn>22</mn></msub></math> não mudam nada.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A moral, em uma frase</span>
+  <p>A informação dos diagramas marginais <strong>não basta</strong> para reconstruir o diagrama de dispersão; e o fato de dois conjuntos terem marginais iguais <strong>não é visível</strong> no diagrama de dispersão. Os dois tipos de gráfico se complementam — não competem. É a versão gráfica de uma verdade que atravessa o livro: <em>as marginais não determinam a conjunta</em>. A mesma frase, dita com distribuições em vez de gráficos, é o motivo de a normal multivariada do capítulo 4 não ser "só p normais univariadas".</p>
+</div>
+
+<h4>A matriz de dispersão e o <em class="en">brushing</em></h4>
+
+<p>Com <math><mi>p</mi></math> variáveis há <math><mi>p</mi><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>/</mo><mn>2</mn></math> pares, e a forma padrão de mostrá-los todos é a <strong>matriz de dispersão</strong>. O Exemplo 1.6 usa os dados de qualidade de papel da Tabela 1.2 — 41 corpos de prova medidos em densidade (<math><msub><mi>x</mi><mn>1</mn></msub></math>), resistência na direção da máquina (<math><msub><mi>x</mi><mn>2</mn></msub></math>) e resistência na direção transversal (<math><msub><mi>x</mi><mn>3</mn></msub></math>):</p>
+
+<figure>
+  <img src="img/fig-01-06.png" alt="Matriz 3 por 3 de diagramas de dispersão dos dados de qualidade de papel, com os nomes e as faixas das variáveis na diagonal.">
+  <figcaption><b>Figura 1.6</b> — Matriz de dispersão dos dados de qualidade de papel (Tabela 1.2). Nas caixas da diagonal SO–NE aparecem o nome da variável e sua faixa em três dígitos. Repare no ponto isolado à direita nos painéis que envolvem a densidade — é o corpo de prova 25 — e nos <em>dois aglomerados</em> visíveis em vários painéis.</figcaption>
+</figure>
+
+<p>Duas coisas saltam aos olhos, e nenhuma delas apareceria numa tabela de correlações:</p>
+
+<ol>
+  <li><strong>O corpo de prova 25</strong> tem densidade 0,971 quando o resto varia entre 0,758 e 0,845 — atípico em <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>3</mn></msub><mo>)</mo></math> e em <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math>, mas <em>não</em> em <math><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><msub><mi>x</mi><mn>3</mn></msub><mo>)</mo></math>. Um ponto pode ser atípico em algumas projeções e passar despercebido em outras — e no capítulo 4 veremos que ele pode ser atípico <em>em nenhuma</em> projeção univariada e ainda assim ser um <em class="en">outlier</em> multivariado.</li>
+  <li><strong>Dois aglomerados separados.</strong> Selecionando eletronicamente os pontos destacados de um painel, eles se acendem em todos os outros — a operação chamada <strong><em class="en">brushing</em></strong>. Foi assim que se descobriu que os corpos de prova 16–21, 34 e 38–41 vinham de <em>um rolo de papel mais antigo</em>, incluído para completar o número de camadas do papelão.</li>
+</ol>
+
+<div class="caixa pratica">
+  <span class="rotulo">O que este exemplo realmente ensina</span>
+  <p>A estrutura de grupo não estava em nenhuma variável do arquivo — estava na <em>procedência física</em> do material, que ninguém registrou. O gráfico não "descobriu" isso sozinho: ele levantou uma pergunta que mandou alguém <strong>voltar ao processo</strong> e investigar. Análise de dados multivariados quase sempre funciona assim, e é a razão de o livro insistir tanto em olhar antes de modelar.</p>
+</div>
+
+<h4>Estrelas e faces de Chernoff</h4>
+
+<p>Para <math><mi>p</mi></math> maior, há representações que codificam um item inteiro num desenho. Nas <strong>estrelas</strong>, traçam-se <math><mi>p</mi></math> raios igualmente espaçados a partir do centro de um círculo de raio de referência; o comprimento de cada raio é o valor de uma variável, e as pontas se ligam:</p>
+
+<figure>
+  <img src="img/fig-01-10.png" alt="Cinco estrelas de oito raios, uma para cada uma das cinco primeiras concessionárias de energia elétrica.">
+  <figcaption><b>Figura 1.10</b> — Estrelas para as cinco primeiras das 22 concessionárias de energia da Tabela 12.5. São oito variáveis, logo octógonos distorcidos. As observações foram padronizadas; como a menor observação padronizada entre essas cinco foi <math><mo>−</mo><mn>1</mn><mo>,</mo><mn>6</mn></math>, esse valor foi tratado como zero (o centro do círculo). As variáveis são ordenadas em sentido horário a partir das 12 horas.</figcaption>
+</figure>
+
+<p>Nas <strong>faces de Chernoff</strong>, cada variável controla uma característica facial — largura do rosto, curvatura da boca, comprimento do nariz, inclinação dos olhos. A justificativa é psicológica: pessoas reagem a rostos, e detectam semelhança e diferença entre faces com uma facilidade que não têm com colunas de números.</p>
+
+<figure>
+  <img src="img/fig-01-11.png" alt="Vinte e duas faces de Chernoff agrupadas subjetivamente em sete conjuntos.">
+  <figcaption><b>Figura 1.11</b> — Faces de Chernoff para as 22 concessionárias, agrupadas subjetivamente em sete conjuntos. Com essa atribuição de variáveis a características faciais, as empresas se agrupam em boa medida por <em>localização geográfica</em> — uma variável que não estava nos dados.</figcaption>
+</figure>
+
+<div class="caixa aviso">
+  <span class="rotulo">A limitação que o livro admite</span>
+  <p>Nas estrelas, <strong>cada variável recebe peso visual igual</strong>, quer importe ou não. E nas faces, a atribuição de variáveis a características é feita pelo analista: <em>escolhas diferentes produzem resultados diferentes</em>, e normalmente é preciso iterar antes de chegar a algo satisfatório. O olho humano não é igualmente sensível a todas as características — a curvatura da boca salta mais que a inclinação dos olhos —, então a "semelhança" percebida depende de uma decisão arbitrária.</p>
+  <p>Por isso o livro posiciona essas técnicas com cuidado: elas servem melhor para <strong>verificar</strong> (1) um agrupamento sugerido por conhecimento do assunto ou (2) o resultado final de um algoritmo de agrupamento — não para descobrir grupos do zero. Compare com componentes principais (cap. 8) e escalonamento multidimensional (cap. 12), que reduzem a duas dimensões por um critério <em>explícito</em> e verificável.</p>
+</div>
+
+
+<h2 id="s8">8. Distância — o conceito central</h2>
+
+<p>Chegamos ao ponto que justifica o capítulo inteiro. A frase do livro merece ser citada: embora possam parecer formidáveis, <em>a maioria das técnicas multivariadas se baseia no conceito simples de distância</em>. Componentes principais, discriminação, agrupamento, detecção de <em class="en">outliers</em>, testes de hipótese sobre médias — todos, no fundo, medem uma distância. Escolher a distância errada estraga tudo o que vem depois.</p>
+
+<h3 id="s8-1">8.1 A distância euclidiana e por que ela não serve</h3>
+
+<p>A distância em linha reta de <math><mi>P</mi><mo>=</mo><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math> à origem é o teorema de Pitágoras, e em <math><mi>p</mi></math> dimensões:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><mo>⋯</mo><mo>+</mo><msubsup><mi>x</mi><mi>p</mi><mn>2</mn></msubsup></mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(1-10)</span>
+</div>
+
+<p>Os pontos a uma distância quadrática constante <math><msup><mi>c</mi><mn>2</mn></msup></math> da origem satisfazem <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mo>⋯</mo><mo>+</mo><msubsup><mi>x</mi><mi>p</mi><mn>2</mn></msubsup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math> — a equação de uma <strong>hiperesfera</strong> (um círculo se <math><mi>p</mi><mo>=</mo><mn>2</mn></math>). E entre dois pontos quaisquer:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>p</mi></msub><mo>−</mo><msub><mi>y</mi><mi>p</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(1-12)</span>
+</div>
+
+<p>E aqui o livro dá o veredito: <strong>a distância euclidiana é insatisfatória para a maioria dos propósitos estatísticos.</strong> O motivo cabe numa frase: <em>cada coordenada contribui igualmente para o cálculo</em>. Olhe a figura:</p>
+
+<figure>
+  <img src="img/fig-01-14.png" alt="Nuvem de pontos muito mais espalhada na direção horizontal x1 do que na vertical x2.">
+  <figcaption><b>Figura 1.14</b> — Uma nuvem com variabilidade muito maior na direção <math><msub><mi>x</mi><mn>1</mn></msub></math> do que na direção <math><msub><mi>x</mi><mn>2</mn></msub></math>, e as duas variando de forma independente.</figcaption>
+</figure>
+
+<p>Um afastamento de, digamos, 3 unidades na direção <math><msub><mi>x</mi><mn>1</mn></msub></math> é banal — a nuvem inteira se espalha por aí. As mesmas 3 unidades na direção <math><msub><mi>x</mi><mn>2</mn></msub></math> seriam <em>espantosas</em>: nenhum ponto da amostra chega perto. A distância euclidiana atribui o mesmo valor às duas, o que contraria o que os dados dizem.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A ideia que resolve</span>
+  <p>Coordenadas sujeitas a muita variabilidade devem ser <strong>ponderadas menos</strong> do que coordenadas pouco variáveis. Distância não é uma propriedade só da geometria dos eixos — depende de <em>quanto os dados variam em cada direção</em>. Daí o nome <strong>distância estatística</strong>: ela é calculada a partir de um conjunto de observações, que fica <em>fixo</em>, enquanto o ponto <math><mi>P</mi></math> varia.</p>
+</div>
+
+<h3 id="s8-2">8.2 Distância estatística: dividir pelo desvio</h3>
+
+<p>O caminho é o mais simples possível: dividir cada coordenada pelo seu desvio-padrão amostral, obtendo coordenadas padronizadas <math><msubsup><mi>x</mi><mn>1</mn><mo>*</mo></msubsup><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>/</mo><msqrt><msub><mi>s</mi><mn>11</mn></msub></msqrt></math> e <math><msubsup><mi>x</mi><mn>2</mn><mo>*</mo></msubsup><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><mo>/</mo><msqrt><msub><mi>s</mi><mn>22</mn></msub></msqrt></math>, e só então aplicar Pitágoras:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow><msup><mrow><mo>(</mo><msubsup><mi>x</mi><mn>1</mn><mo>*</mo></msubsup><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><msubsup><mi>x</mi><mn>2</mn><mo>*</mo></msubsup><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt>
+    <mo>=</mo>
+    <msqrt><mrow><mfrac><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><msub><mi>s</mi><mn>11</mn></msub></mfrac><mo>+</mo><mfrac><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><msub><mi>s</mi><mn>22</mn></msub></mfrac></mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(1-13)</span>
+</div>
+
+<p>Comparando com Pitágoras puro, a diferença são os pesos <math><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>/</mo><msub><mi>s</mi><mn>11</mn></msub></math> e <math><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn><mo>/</mo><msub><mi>s</mi><mn>22</mn></msub></math>. Se as variâncias forem iguais, os pesos são iguais e a euclidiana volta a servir — <strong>a euclidiana é o caso particular em que os dados não pedem correção</strong>.</p>
+
+<p>Os pontos a distância quadrática constante <math><msup><mi>c</mi><mn>2</mn></msup></math> agora satisfazem</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mfrac><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><msub><mi>s</mi><mn>11</mn></msub></mfrac><mo>+</mo>
+    <mfrac><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><msub><mi>s</mi><mn>22</mn></msub></mfrac><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup>
+  </mrow>
+</math>
+<span class="num">(1-14)</span>
+</div>
+
+<p>que é a equação de uma <strong>elipse</strong> centrada na origem, com eixos coincidindo com os eixos coordenados e semi-eixos <math><mi>c</mi><msqrt><msub><mi>s</mi><mn>11</mn></msub></msqrt></math> e <math><mi>c</mi><msqrt><msub><mi>s</mi><mn>22</mn></msub></msqrt></math>:</p>
+
+<figure>
+  <img src="img/fig-01-15.png" alt="Elipse centrada na origem com semi-eixos c vezes raiz de s11 na horizontal e c vezes raiz de s22 na vertical.">
+  <figcaption><b>Figura 1.15</b> — A elipse de distância estatística constante <math><msup><mi>d</mi><mn>2</mn></msup><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>s</mi><mn>11</mn></msub><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>/</mo><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>. A elipse é <em>mais longa</em> na direção de maior variância — que é precisamente o efeito desejado.</figcaption>
+</figure>
+
+<div class="caixa definicao">
+  <span class="rotulo">Guarde esta troca</span>
+  <p><strong>Distância euclidiana ⇒ contornos circulares. Distância estatística ⇒ contornos elípticos.</strong> Toda vez que você vir uma elipse neste livro — região de confiança no capítulo 5, contorno da normal multivariada no capítulo 4, fronteira de classificação no capítulo 11 — ela veio de uma distância estatística. É sempre a mesma ideia reaparecendo.</p>
+</div>
+
+<h4>Exemplo 1.11, resolvido</h4>
+
+<p>Com <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>0</mn></math>, <math><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>4</mn></math>, <math><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>1</mn></math> e variáveis não relacionadas, o quadrado da distância é <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><mn>4</mn><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>/</mo><mn>1</mn></math>. Os pontos a distância 1 da origem:</p>
+
+<div class="rolagem">
+<table>
+  <caption>Exemplo 1.11 — quatro pontos à distância estatística 1 da origem.</caption>
+  <thead><tr><th>Ponto <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math></th><th>Conta</th><th><math><msup><mi>d</mi><mn>2</mn></msup></math></th><th>Distância euclidiana</th></tr></thead>
+  <tbody>
+    <tr><td>(0, 1)</td><td class="txt">0/4 + 1/1</td><td>1</td><td>1,00</td></tr>
+    <tr><td>(0, −1)</td><td class="txt">0/4 + 1/1</td><td>1</td><td>1,00</td></tr>
+    <tr><td>(2, 0)</td><td class="txt">4/4 + 0/1</td><td>1</td><td>2,00</td></tr>
+    <tr><td>(1, √3/2)</td><td class="txt">1/4 + 0,75/1</td><td>1</td><td>1,32</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+  <img src="img/fig-01-16.png" alt="Elipse de distância unitária, com semi-eixo maior 2 no eixo x1 e semi-eixo menor 1 no eixo x2.">
+  <figcaption><b>Figura 1.16</b> — A elipse de distância unitária <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>/</mo><mn>4</mn><mo>+</mo><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><mn>1</mn></math>. Semi-eixo maior <math><msqrt><mn>4</mn></msqrt><mo>=</mo><mn>2</mn></math> ao longo de <math><msub><mi>x</mi><mn>1</mn></msub></math>, semi-eixo menor <math><msqrt><mn>1</mn></msqrt><mo>=</mo><mn>1</mn></math> ao longo de <math><msub><mi>x</mi><mn>2</mn></msub></math>. Todos os pontos da elipse estão à <em>mesma</em> distância estatística da origem.</figcaption>
+</figure>
+
+<p>A última coluna da tabela é o ponto da lição: euclidianamente esses quatro pontos estão a distâncias que vão de 1 a 2 — <strong>o dobro</strong>. Estatisticamente, todos os quatro estão igualmente distantes. É a resposta certa: um afastamento de 2 unidades numa direção onde o desvio é 2 é tão comum quanto 1 unidade onde o desvio é 1.</p>
+
+<p>A generalização para um ponto fixo <math><mi>Q</mi></math> e para <math><mi>p</mi></math> dimensões é imediata:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow>
+      <mfrac><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><msub><mi>s</mi><mn>11</mn></msub></mfrac><mo>+</mo>
+      <mfrac><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><msub><mi>s</mi><mn>22</mn></msub></mfrac><mo>+</mo><mo>⋯</mo><mo>+</mo>
+      <mfrac><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>p</mi></msub><mo>−</mo><msub><mi>y</mi><mi>p</mi></msub><mo>)</mo></mrow><mn>2</mn></msup><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></mfrac>
+    </mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(1-16)</span>
+</div>
+
+<p>Os contornos são <strong>hiperelipsoides</strong> centrados em <math><mi>Q</mi></math>, com eixos <em>paralelos</em> aos eixos coordenados. Guarde esse "paralelos": é o que vai mudar na próxima seção.</p>
+
+<h3 id="s8-3">8.3 Quando há correlação: girar os eixos</h3>
+
+<p>A fórmula (1-16) ainda não cobre os casos importantes, porque supõe que as coordenadas variam <em>independentemente</em>. Na prática elas quase nunca variam:</p>
+
+<figure>
+  <img src="img/fig-01-17.png" alt="Nuvem de pontos alongada numa direção oblíqua, com um par de eixos tracejados girados de um ângulo teta em relação aos eixos originais.">
+  <figcaption><b>Figura 1.17</b> — Medições positivamente correlacionadas e um sistema de coordenadas girado. Nos eixos originais a nuvem é oblíqua; nos eixos <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub></math> e <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub></math>, girados de <math><mi>θ</mi></math>, ela volta a parecer com a Figura 1.14 — espalhada num eixo, estreita no outro, e <em>sem</em> inclinação.</figcaption>
+</figure>
+
+<p>A ideia é elegante e vale a pena admirar: <strong>não precisamos de teoria nova</strong>. Se girarmos o sistema de coordenadas de um ângulo <math><mi>θ</mi></math>, mantendo a nuvem parada, no novo sistema a nuvem fica alinhada com os eixos — exatamente a situação da seção anterior. Aí aplicamos (1-13) nas novas coordenadas:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow>
+      <mfrac><msubsup><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn><mn>2</mn></msubsup><msub><mover><mi>s</mi><mo>~</mo></mover><mn>11</mn></msub></mfrac><mo>+</mo>
+      <mfrac><msubsup><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn><mn>2</mn></msubsup><msub><mover><mi>s</mi><mo>~</mo></mover><mn>22</mn></msub></mfrac>
+    </mrow></msqrt>
+    <mspace width="1.6em"/>
+    <mtext>com</mtext>
+    <mspace width="0.8em"/>
+    <mtable columnalign="left">
+      <mtr><mtd><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>sen</mo><mo>(</mo><mi>θ</mi><mo>)</mo></mtd></mtr>
+      <mtr><mtd><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub><mo>=</mo><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>sen</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo></mtd></mtr>
+    </mtable>
+  </mrow>
+</math>
+<span class="num">(1-17), (1-18)</span>
+</div>
+
+<p>Substituindo (1-18) em (1-17) e fazendo a álgebra, a distância volta a ser escrita nas coordenadas originais como</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo>
+    <msqrt><mrow>
+      <msub><mi>a</mi><mn>11</mn></msub><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo>
+      <mn>2</mn><msub><mi>a</mi><mn>12</mn></msub><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo>
+      <msub><mi>a</mi><mn>22</mn></msub><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup>
+    </mrow></msqrt>
+  </mrow>
+</math>
+<span class="num">(1-19)</span>
+</div>
+
+<p>As expressões explícitas de <math><msub><mi>a</mi><mn>11</mn></msub></math>, <math><msub><mi>a</mi><mn>12</mn></msub></math> e <math><msub><mi>a</mi><mn>22</mn></msub></math> em função de <math><mi>θ</mi></math>, <math><msub><mi>s</mi><mn>11</mn></msub></math>, <math><msub><mi>s</mi><mn>12</mn></msub></math> e <math><msub><mi>s</mi><mn>22</mn></msub></math> estão numa nota de rodapé do livro (usaremos no Exercício 1.9), e o próprio livro diz que <em>não são importantes neste ponto</em>. O que é importante é o que apareceu:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">O termo cruzado</span>
+  <p>O produto <math><mn>2</mn><msub><mi>a</mi><mn>12</mn></msub><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math> aparece <strong>por causa da correlação</strong>. Sem correlação, <math><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><mn>0</mn></math> e voltamos a (1-13) com <math><msub><mi>a</mi><mn>11</mn></msub><mo>=</mo><mn>1</mn><mo>/</mo><msub><mi>s</mi><mn>11</mn></msub></math> e <math><msub><mi>a</mi><mn>22</mn></msub><mo>=</mo><mn>1</mn><mo>/</mo><msub><mi>s</mi><mn>22</mn></msub></math>. Geometricamente: <strong>o termo cruzado é o que <em>inclina</em> a elipse</strong>. Sem ele, eixos paralelos aos eixos coordenados; com ele, eixos girados de <math><mi>θ</mi></math>.</p>
+</div>
+
+<figure>
+  <img src="img/fig-01-18.png" alt="Elipse inclinada centrada no ponto Q, com os eixos girados x1-til e x2-til e o ângulo teta marcado.">
+  <figcaption><b>Figura 1.18</b> — Elipse dos pontos a distância constante do ponto <math><mi>Q</mi></math>. Os eixos maior e menor estão ao longo de <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub></math> e <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub></math>, que fazem ângulo <math><mi>θ</mi></math> com os eixos originais.</figcaption>
+</figure>
+
+<p>E por que tudo isso importa? A Figura 1.19 responde melhor que qualquer argumento:</p>
+
+<figure>
+  <img src="img/fig-01-19.png" alt="Nuvem alongada na diagonal, com o ponto Q no centro dela, o ponto P longe à esquerda mas na direção do alongamento, e a origem abaixo.">
+  <figcaption><b>Figura 1.19</b> — Uma nuvem de pontos com centro de gravidade <math><mi>Q</mi></math>, mais um ponto <math><mi>P</mi></math> e a origem <math><mi>O</mi></math>. <strong>Euclidianamente</strong>, <math><mi>P</mi></math> está mais longe de <math><mi>Q</mi></math> do que <math><mi>O</mi></math> está. Mas <math><mi>P</mi></math> "parece" muito mais com os pontos da nuvem do que a origem.</figcaption>
+</figure>
+
+<p>Por quê? Porque <math><mi>P</mi></math> está deslocado ao longo da direção em que a nuvem se espalha, enquanto <math><mi>O</mi></math> está deslocado <em>perpendicularmente</em> a ela. Levando em conta a variabilidade — isto é, medindo com (1-20) —, <math><mi>Q</mi></math> fica <em>mais perto</em> de <math><mi>P</mi></math> do que de <math><mi>O</mi></math>. A distância estatística acerta o que o olho já sabia e a euclidiana errava.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Onde isso vai dar</span>
+  <p>Esta figura é, sem exagero, a justificativa de meio livro. Ela é o argumento de por que a detecção de <em class="en">outliers</em> multivariados (cap. 4) não pode ser feita variável a variável; de por que a região de confiança para <math><mi mathvariant="bold">μ</mi></math> é uma elipse e não um retângulo (cap. 5); e de por que a regra de classificação entre dois grupos normais é uma comparação de distâncias estatísticas (cap. 11).</p>
+</div>
+
+<h3 id="s8-4">8.4 A forma geral e a matriz de pesos</h3>
+
+<p>Em <math><mi>p</mi></math> dimensões, a distância estatística geral entre <math><mi>P</mi></math> e <math><mi>Q</mi></math> é</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msup><mi>d</mi><mn>2</mn></msup><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo>
+    <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></munderover>
+    <munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></munderover>
+    <msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub>
+    <mrow><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo>)</mo></mrow>
+    <mrow><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>y</mi><mi>k</mi></msub><mo>)</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(1-23)</span>
+</div>
+
+<p>e os pesos se organizam numa matriz <math><mi>p</mi><mo>×</mo><mi>p</mi></math> simétrica:</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <mi>A</mi><mo>=</mo>
+    <mrow><mo>[</mo><mtable>
+      <mtr><mtd><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>a</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>a</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd></mtr>
+      <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋱</mo></mtd><mtd><mo>⋮</mo></mtd></mtr>
+      <mtr><mtd><msub><mi>a</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>a</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></mtd></mtr>
+    </mtable><mo>]</mo></mrow>
+  </mrow>
+</math>
+<span class="num">(1-24)</span>
+</div>
+
+<p>A tabela <math><mi>A</mi></math> <strong>é</strong> a função distância: dados os <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>, a distância está determinada. E vem a restrição essencial:</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Os <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> não podem ser quaisquer números</span>
+  <p>Eles precisam ser tais que a distância calculada seja <strong>não negativa para todo par de pontos</strong>. Em nota de rodapé, o livro entrega o nome do que estamos vendo: essas expressões são <strong>formas quadráticas</strong>, e mais precisamente <strong>formas quadráticas definidas positivas</strong> — e diz que elas podem ser exibidas de forma muito mais simples com álgebra matricial, o que será feito na seção 2.3.</p>
+  <p>Ou seja: o capítulo 1 termina abrindo uma porta e apontando para ela. <em>Toda</em> a seção 2.3 do próximo capítulo existe para responder à pergunta "quando é que <math><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><mi>A</mi><mi mathvariant="bold">x</mi><mo>&gt;</mo><mn>0</mn></math>?".</p>
+</div>
+
+<p>Adiantando o destino, para você ler o capítulo 2 sabendo aonde ele vai: em notação matricial, (1-23) é</p>
+
+<div class="eq">
+<math display="block">
+  <mrow>
+    <msup><mi>d</mi><mn>2</mn></msup><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo>
+    <msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">y</mi><mo>)</mo></mrow><mo>′</mo></msup>
+    <mi>A</mi>
+    <mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mi mathvariant="bold">y</mi><mo>)</mo></mrow>
+  </mrow>
+</math>
+</div>
+
+<p>e a escolha <math><mi>A</mi><mo>=</mo><msubsup><mi>S</mi><mi>n</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></math> dá a <strong>distância de Mahalanobis</strong>, que é a distância estatística deste livro do capítulo 4 em diante. No Exercício 1.9 vamos verificar numericamente que os <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> da nota de rodapé — deduzidos puramente por rotação, sem falar em inversa de matriz — <em>são</em> as entradas de <math><msubsup><mi>S</mi><mi>n</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></math>. É um dos momentos mais bonitos do capítulo.</p>
+
+<h3 id="s8-5">8.5 O que qualquer distância precisa satisfazer</h3>
+
+<p>Nem toda distância útil vem de círculos ou elipses. Qualquer função <math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo></math> serve como distância desde que satisfaça, para todo ponto intermediário <math><mi>R</mi></math>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Os quatro axiomas (1-25)</span>
+  <ol>
+    <li><math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo><mi>d</mi><mo>(</mo><mi>Q</mi><mo>,</mo><mi>P</mi><mo>)</mo></math> — <strong>simetria</strong>.</li>
+    <li><math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn></math> se <math><mi>P</mi><mo>≠</mo><mi>Q</mi></math> — <strong>positividade</strong>.</li>
+    <li><math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>=</mo><mn>0</mn></math> se <math><mi>P</mi><mo>=</mo><mi>Q</mi></math>.</li>
+    <li><math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>≤</mo><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>R</mi><mo>)</mo><mo>+</mo><mi>d</mi><mo>(</mo><mi>R</mi><mo>,</mo><mi>Q</mi><mo>)</mo></math> — <strong>desigualdade triangular</strong>.</li>
+  </ol>
+</div>
+
+<p>Guarde esta lista: no capítulo 12 vamos precisar dela para julgar <em>medidas de similaridade</em> inventadas para dados binários ou categóricos, onde não há elipse nenhuma. Vale notar que os axiomas 1 a 3 são fáceis de verificar; a desigualdade triangular é a que costuma falhar em medidas improvisadas — e é ela que garante que "perto de algo que está perto" continue significando "perto".</p>
+
+
+<h2 id="recall">Cartões de recall ativo</h2>
+
+<p>Tente responder antes de abrir. Se hesitar, volte à seção — não adianta reconhecer a resposta, é preciso produzi-la.</p>
+
+<details class="recall">
+  <summary>Em <math><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math>, qual índice é o item e qual é a variável?</summary>
+  <div class="resposta">
+    <p><math><mi>j</mi></math> é o <strong>item</strong> (linha), <math><mi>k</mi></math> é a <strong>variável</strong> (coluna). O arranjo <math><mi>X</mi></math> é <math><mi>n</mi><mo>×</mo><mi>p</mi></math>: <math><mi>n</mi></math> itens nas linhas, <math><mi>p</mi></math> variáveis nas colunas.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> não muda quando se troca o divisor <math><mi>n</mi></math> por <math><mi>n</mi><mo>−</mo><mn>1</mn></math>?</summary>
+  <div class="resposta">
+    <p>Porque <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>/</mo><mo>(</mo><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt><msqrt><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt><mo>)</mo></math> é uma <em>razão</em>: o divisor comum aparece uma vez no numerador e duas meias-vezes no denominador, e se cancela. Escrevendo com as somas <math><msub><mi>w</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> no lugar dos <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>, nenhum divisor aparece.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary><math><mi>r</mi><mo>=</mo><mn>0</mn></math> significa que as duas variáveis são independentes?</summary>
+  <div class="resposta">
+    <p><strong>Não.</strong> Significa ausência de associação <em>linear</em>. Uma relação determinística em U tem <math><mi>r</mi><mo>≈</mo><mn>0</mn></math> e não tem nada de independente. A recíproca vale: independência implica <math><mi>ρ</mi><mo>=</mo><mn>0</mn></math>. (Sob normalidade multivariada as duas coisas coincidem — é uma propriedade especial da normal, vista no cap. 4, não uma regra geral.)</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Os diagramas de pontos marginais determinam o diagrama de dispersão?</summary>
+  <div class="resposta">
+    <p>Não. O livro demonstra isso reordenando os valores de <math><msub><mi>x</mi><mn>1</mn></msub></math>: as marginais ficam idênticas, mas o emparelhamento muda e <math><msub><mi>s</mi><mn>12</mn></msub></math> troca de sinal. Marginais iguais, conjuntas diferentes. É o mesmo fenômeno que, com distribuições, faz a normal multivariada ser mais do que <math><mi>p</mi></math> normais univariadas.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual a diferença entre "<math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões" e "<math><mi>p</mi></math> pontos em <math><mi>n</mi></math> dimensões"?</summary>
+  <div class="resposta">
+    <p>Na primeira, cada <em>linha</em> de <math><mi>X</mi></math> é um ponto e os eixos são as variáveis — é o diagrama de dispersão generalizado, e mostra semelhanças entre <strong>itens</strong>. Na segunda, cada <em>coluna</em> é um vetor em <math><msup><mi mathvariant="double-struck">R</mi><mi>n</mi></msup></math> e o que se lê são relações entre <strong>variáveis</strong>; no capítulo 3 veremos que o cosseno do ângulo entre duas colunas centradas é exatamente <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que a distância euclidiana é inadequada para fins estatísticos?</summary>
+  <div class="resposta">
+    <p>Porque cada coordenada contribui igualmente, ignorando que as variáveis têm variabilidades diferentes (e podem ser correlacionadas). Um afastamento de 3 unidades numa direção onde o desvio é 10 é banal; o mesmo afastamento onde o desvio é 0,5 é extremo. A euclidiana chama os dois de "3".</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é o formato dos contornos de distância constante, com e sem correlação?</summary>
+  <div class="resposta">
+    <p>Sem correlação, <strong>elipses com eixos paralelos aos eixos coordenados</strong>, com semi-eixos <math><mi>c</mi><msqrt><msub><mi>s</mi><mn>11</mn></msub></msqrt></math> e <math><mi>c</mi><msqrt><msub><mi>s</mi><mn>22</mn></msub></msqrt></math>. Com correlação, <strong>elipses inclinadas</strong> de um ângulo <math><mi>θ</mi></math> — a inclinação vem do termo cruzado <math><mn>2</mn><msub><mi>a</mi><mn>12</mn></msub><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math>. Em <math><mi>p</mi></math> dimensões, hiperelipsoides. E o caso <math><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mo>⋯</mo><mo>=</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></math> sem correlação devolve círculos — a euclidiana.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Que restrição os coeficientes <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> precisam satisfazer, e como isso se chama?</summary>
+  <div class="resposta">
+    <p>A distância precisa ser <strong>não negativa para todo par de pontos</strong>, o que faz de <math><msup><mi>d</mi><mn>2</mn></msup></math> uma <strong>forma quadrática definida positiva</strong>. Matricialmente, a matriz simétrica <math><mi>A</mi></math> precisa ser definida positiva — equivalentemente, ter todos os autovalores positivos. É o assunto da seção 2.3.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Quais são os quatro axiomas de distância?</summary>
+  <div class="resposta">
+    <p>Simetria; positividade para pontos distintos; nulidade para pontos iguais; e desigualdade triangular <math><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>Q</mi><mo>)</mo><mo>≤</mo><mi>d</mi><mo>(</mo><mi>P</mi><mo>,</mo><mi>R</mi><mo>)</mo><mo>+</mo><mi>d</mi><mo>(</mo><mi>R</mi><mo>,</mo><mi>Q</mi><mo>)</mo></math>. Os três primeiros são fáceis de checar; a triangular é a que costuma falhar em medidas de similaridade improvisadas.</p>
+  </div>
+</details>
+
+
+<h2 id="exercicios">Exercícios resolvidos</h2>
+
+<p>Todos os números abaixo foram <em>recalculados</em>, não copiados. Salvo aviso, o divisor é <math><mi>n</mi></math>, como no livro.</p>
+
+<div class="exercicio">
+  <h3>Exercício 1.1 — os sete pares da Figura 1.1</h3>
+  <div class="enunciado">
+    <p>Considere os sete pares <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math> da Figura 1.1. Calcule <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub></math>, <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub></math>, <math><msub><mi>s</mi><mn>11</mn></msub></math>, <math><msub><mi>s</mi><mn>22</mn></msub></math> e <math><msub><mi>s</mi><mn>12</mn></msub></math>.</p>
+  </div>
+
+  <div class="rolagem">
+  <table>
+    <thead><tr><th class="txt">Variável</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>1</mn></msub></math></td><td>3</td><td>4</td><td>2</td><td>6</td><td>8</td><td>2</td><td>5</td></tr>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>2</mn></msub></math></td><td>5</td><td>5,5</td><td>4</td><td>7</td><td>10</td><td>5</td><td>7,5</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>As somas são <math><mo>∑</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>=</mo><mn>30</mn></math> e <math><mo>∑</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub><mo>=</mo><mn>44</mn></math>, com <math><mi>n</mi><mo>=</mo><mn>7</mn></math>:</p>
+
+  <math display="block"><mrow><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mfrac><mn>30</mn><mn>7</mn></mfrac><mo>=</mo><mn>4</mn><mo>,</mo><mn>2857</mn><mo>,</mo><mspace width="1.4em"/><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mfrac><mn>44</mn><mn>7</mn></mfrac><mo>=</mo><mn>6</mn><mo>,</mo><mn>2857</mn></mrow></math>
+
+  <p>Os desvios e seus produtos:</p>
+
+  <div class="rolagem">
+  <table>
+    <thead><tr><th><math><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub></math></th><th><math><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub></math></th><th>quadrado 1</th><th>quadrado 2</th><th>produto</th></tr></thead>
+    <tbody>
+      <tr><td>−1,2857</td><td>−1,2857</td><td>1,6531</td><td>1,6531</td><td>1,6531</td></tr>
+      <tr><td>−0,2857</td><td>−0,7857</td><td>0,0816</td><td>0,6173</td><td>0,2245</td></tr>
+      <tr><td>−2,2857</td><td>−2,2857</td><td>5,2245</td><td>5,2245</td><td>5,2245</td></tr>
+      <tr><td>1,7143</td><td>0,7143</td><td>2,9388</td><td>0,5102</td><td>1,2245</td></tr>
+      <tr><td>3,7143</td><td>3,7143</td><td>13,7959</td><td>13,7959</td><td>13,7959</td></tr>
+      <tr><td>−2,2857</td><td>−1,2857</td><td>5,2245</td><td>1,6531</td><td>2,9388</td></tr>
+      <tr><td>0,7143</td><td>1,2143</td><td>0,5102</td><td>1,4745</td><td>0,8673</td></tr>
+      <tr><th class="txt">soma</th><th></th><th>29,4286</th><th>24,9286</th><th>25,9286</th></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Dividindo por <math><mi>n</mi><mo>=</mo><mn>7</mn></math>:</p>
+
+  <math display="block"><mrow><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>4</mn><mo>,</mo><mn>2041</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>3</mn><mo>,</mo><mn>5612</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mn>3</mn><mo>,</mo><mn>7041</mn></mrow></math>
+
+  <p>E, embora não pedido, <math><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mn>3</mn><mo>,</mo><mn>7041</mn><mo>/</mo><mo>(</mo><msqrt><mn>4</mn><mo>,</mo><mn>2041</mn></msqrt><msqrt><mn>3</mn><mo>,</mo><mn>5612</mn></msqrt><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>957</mn></math> — associação linear positiva muito forte, exatamente o que a Figura 1.1 mostra.</p>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Confira o sinal <em>antes</em> de calcular</span>
+    <p>O livro insiste nisso e é bom hábito: olhando a Figura 1.1, valores grandes de <math><msub><mi>x</mi><mn>1</mn></msub></math> vêm com valores grandes de <math><msub><mi>x</mi><mn>2</mn></msub></math>, logo <math><msub><mi>s</mi><mn>12</mn></msub><mo>&gt;</mo><mn>0</mn></math>. Se a conta tivesse dado negativo, haveria erro. Prever o sinal antes é a checagem mais barata que existe.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.2 — preços de carros usados</h3>
+  <div class="enunciado">
+    <p>Um jornal lista preços de carros usados de um compacto importado, com idade <math><msub><mi>x</mi><mn>1</mn></msub></math> em anos e preço de venda <math><msub><mi>x</mi><mn>2</mn></msub></math> em milhares de dólares. (a) Construa o diagrama de dispersão e os diagramas marginais. (b) Infira o sinal de <math><msub><mi>s</mi><mn>12</mn></msub></math> pelo gráfico. (c) Calcule <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub></math>, <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub></math>, <math><msub><mi>s</mi><mn>11</mn></msub></math>, <math><msub><mi>s</mi><mn>22</mn></msub></math>, <math><msub><mi>s</mi><mn>12</mn></msub></math> e <math><msub><mi>r</mi><mn>12</mn></msub></math>, e interprete. (d) Exiba <math><mover><mi>x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math>.</p>
+  </div>
+
+  <div class="rolagem">
+  <table>
+    <thead><tr><th class="txt">Variável</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>1</mn></msub></math> (anos)</td><td>3</td><td>5</td><td>5</td><td>7</td><td>7</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>2</mn></msub></math> (mil US$)</td><td>2,30</td><td>1,90</td><td>1,00</td><td>0,70</td><td>0,30</td><td>1,00</td><td>1,05</td><td>0,45</td><td>0,70</td><td>0,30</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>(a) e (b) — o gráfico e o sinal</h4>
+  <p>Os pontos descem da esquerda para a direita: carros mais velhos custam menos. Logo <math><msub><mi>s</mi><mn>12</mn></msub><mo>&lt;</mo><mn>0</mn></math>, sem precisar calcular nada. O diagrama marginal de <math><msub><mi>x</mi><mn>1</mn></msub></math> mostra a repetição do valor 7 (três carros) e uma cobertura razoavelmente uniforme de 3 a 11 anos; o de <math><msub><mi>x</mi><mn>2</mn></msub></math> é assimétrico à direita, com a maioria dos preços entre 0,30 e 1,05 e um valor isolado em 2,30.</p>
+
+  <h4>(c) — as contas</h4>
+  <p>Com <math><mi>n</mi><mo>=</mo><mn>10</mn></math>, <math><mo>∑</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>=</mo><mn>72</mn></math> e <math><mo>∑</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub><mo>=</mo><mn>9</mn><mo>,</mo><mn>7</mn></math>:</p>
+
+  <math display="block"><mrow><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mn>7</mn><mo>,</mo><mn>2</mn><mtext> anos</mtext><mo>,</mo><mspace width="1.4em"/><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>97</mn><mtext> mil dólares</mtext></mrow></math>
+
+  <p>As somas de quadrados e de produtos cruzados dão <math><msub><mi>w</mi><mn>11</mn></msub><mo>=</mo><mn>53</mn><mo>,</mo><mn>6</mn></math>, <math><msub><mi>w</mi><mn>22</mn></msub><mo>=</mo><mn>3</mn><mo>,</mo><mn>956</mn></math> e <math><msub><mi>w</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>11</mn><mo>,</mo><mn>69</mn></math>. Dividindo por 10:</p>
+
+  <math display="block"><mrow><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>5</mn><mo>,</mo><mn>36</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>3956</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>169</mn></mrow></math>
+
+  <math display="block"><mrow><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mfrac><mrow><mo>−</mo><mn>1</mn><mo>,</mo><mn>169</mn></mrow><mrow><msqrt><mn>5</mn><mo>,</mo><mn>36</mn></msqrt><mspace width="0.2em"/><msqrt><mn>0</mn><mo>,</mo><mn>3956</mn></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mn>1</mn><mo>,</mo><mn>169</mn></mrow><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>3152</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>,</mo><mn>6290</mn><mo>)</mo></mrow></mfrac><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>803</mn></mrow></math>
+
+  <p><strong>Interpretação.</strong> O sinal confirma a leitura do gráfico. A magnitude 0,803 indica associação linear negativa forte: idade explica boa parte da variação de preço nesta amostra. Note ainda que <math><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>169</mn></math> está em <em>anos × milhares de dólares</em> — uma unidade sem sentido intuitivo, e a razão de se preferir <math><mi>r</mi></math> para comunicar. Se os preços fossem dados em dólares em vez de milhares, <math><msub><mi>s</mi><mn>12</mn></msub></math> viraria <math><mo>−</mo><mn>1169</mn></math> e <math><msub><mi>r</mi><mn>12</mn></msub></math> continuaria <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>803</mn></math>.</p>
+
+  <h4>(d) — os arranjos</h4>
+  <math display="block">
+    <mrow>
+      <mover><mi>x</mi><mo>¯</mo></mover><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>7</mn><mo>,</mo><mn>20</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo><mn>97</mn></mtd></mtr></mtable><mo>]</mo></mrow>
+      <mo>,</mo><mspace width="1.2em"/>
+      <msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable>
+        <mtr><mtd><mn>5</mn><mo>,</mo><mn>3600</mn></mtd><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>1690</mn></mtd></mtr>
+        <mtr><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>1690</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>3956</mn></mtd></mtr>
+      </mtable><mo>]</mo></mrow>
+      <mo>,</mo><mspace width="1.2em"/>
+      <mi>R</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+        <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>803</mn></mtd></mtr>
+        <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>803</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+      </mtable><mo>]</mo></mrow>
+    </mrow>
+  </math>
+
+<pre><code>carros &lt;- data.frame(
+  idade = c(3, 5, 5, 7, 7, 7, 8, 9, 10, 11),
+  preco = c(2.30, 1.90, 1.00, .70, .30, 1.00, 1.05, .45, .70, .30)
+)
+n &lt;- nrow(carros)
+
+plot(preco ~ idade, data = carros, pch = 19,
+     xlab = "idade (anos)", ylab = "preço (mil US$)")
+rug(carros$idade, side = 1); rug(carros$preco, side = 2)   <span class="cmt"># marginais</span>
+
+colMeans(carros)
+<span class="out">## idade preco </span>
+<span class="out">##  7.20  0.97 </span>
+
+cov(carros) * (n - 1) / n         <span class="cmt"># S_n, divisor n</span>
+<span class="out">##        idade  preco</span>
+<span class="out">## idade  5.360 -1.1690</span>
+<span class="out">## preco -1.169  0.3956</span>
+
+cor(carros)
+<span class="out">##            idade      preco</span>
+<span class="out">## idade  1.0000000 -0.8027937</span>
+<span class="out">## preco -0.8027937  1.0000000</span>
+</code></pre>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.9 — rotação de eixos e distância estatística</h3>
+  <div class="enunciado">
+    <p>Considere os oito pares abaixo. (a) Faça o diagrama de dispersão e calcule <math><msub><mi>s</mi><mn>11</mn></msub></math>, <math><msub><mi>s</mi><mn>22</mn></msub></math> e <math><msub><mi>s</mi><mn>12</mn></msub></math>. (b) Usando (1-18), obtenha as medições nos eixos girados de <math><mi>θ</mi><mo>=</mo><mn>26</mn><mo>°</mo></math> [use <math><mo>cos</mo><mo>(</mo><mn>26</mn><mo>°</mo><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>899</mn></math> e <math><mo>sen</mo><mo>(</mo><mn>26</mn><mo>°</mo><mo>)</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>438</mn></math>]. (c) Calcule <math><msub><mover><mi>s</mi><mo>~</mo></mover><mn>11</mn></msub></math> e <math><msub><mover><mi>s</mi><mo>~</mo></mover><mn>22</mn></msub></math>. (d) Para o novo ponto <math><mo>(</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></math>, calcule <math><mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo></math> por (1-17). (e) Calcule a mesma distância por (1-19), com os <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> da nota de rodapé, e compare.</p>
+  </div>
+
+  <div class="rolagem">
+  <table>
+    <thead><tr><th class="txt">Variável</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>1</mn></msub></math></td><td>−6</td><td>−3</td><td>−2</td><td>1</td><td>2</td><td>5</td><td>6</td><td>8</td></tr>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>2</mn></msub></math></td><td>−2</td><td>−3</td><td>1</td><td>−1</td><td>2</td><td>1</td><td>5</td><td>3</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>(a) As estatísticas nos eixos originais</h4>
+  <p>Médias <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>375</mn></math> e <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>75</mn></math>, e com divisor <math><mi>n</mi><mo>=</mo><mn>8</mn></math>:</p>
+
+  <math display="block"><mrow><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>20</mn><mo>,</mo><mn>4844</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>6</mn><mo>,</mo><mn>1875</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mn>9</mn><mo>,</mo><mn>0938</mn></mrow></math>
+
+  <p>A correlação é <math><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>808</mn></math> — a nuvem é alongada e inclinada, exatamente a situação da Figura 1.17.</p>
+
+  <h4>(b) As coordenadas giradas</h4>
+  <p>Com <math><mi>c</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>899</mn></math> e <math><mi>s</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>438</mn></math>, cada par vira <math><mo>(</mo><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub><mo>,</mo><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub><mo>)</mo><mo>=</mo><mo>(</mo><mi>c</mi><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><mi>s</mi><msub><mi>x</mi><mn>2</mn></msub><mo>,</mo><mo>−</mo><mi>s</mi><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><mi>c</mi><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math>:</p>
+
+  <div class="rolagem">
+  <table>
+    <thead><tr><th><math><msub><mi>x</mi><mn>1</mn></msub></math></th><th><math><msub><mi>x</mi><mn>2</mn></msub></math></th><th><math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub></math></th><th><math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub></math></th></tr></thead>
+    <tbody>
+      <tr><td>−6</td><td>−2</td><td>−6,270</td><td>0,830</td></tr>
+      <tr><td>−3</td><td>−3</td><td>−4,011</td><td>−1,383</td></tr>
+      <tr><td>−2</td><td>1</td><td>−1,360</td><td>1,775</td></tr>
+      <tr><td>1</td><td>−1</td><td>0,461</td><td>−1,337</td></tr>
+      <tr><td>2</td><td>2</td><td>2,674</td><td>0,922</td></tr>
+      <tr><td>5</td><td>1</td><td>4,933</td><td>−1,291</td></tr>
+      <tr><td>6</td><td>5</td><td>7,584</td><td>1,867</td></tr>
+      <tr><td>8</td><td>3</td><td>8,506</td><td>−0,807</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>(c) As variâncias nos eixos girados</h4>
+  <math display="block"><mrow><msub><mover><mi>s</mi><mo>~</mo></mover><mn>11</mn></msub><mo>=</mo><mn>24</mn><mo>,</mo><mn>9041</mn><mo>,</mo><mspace width="1.4em"/><msub><mover><mi>s</mi><mo>~</mo></mover><mn>22</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mn>7690</mn></mrow></math>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Pare e olhe para esses dois números</span>
+    <p>Antes de girar: variâncias 20,48 e 6,19, com covariância 9,09. Depois de girar 26°: variâncias <strong>24,90 e 1,77</strong> — e a covariância entre <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub></math> e <math><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub></math> cai para <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>025</mn></math>, praticamente zero. A rotação <strong>descorrelacionou</strong> as variáveis.</p>
+    <p>E mais: <math><mn>20</mn><mo>,</mo><mn>4844</mn><mo>+</mo><mn>6</mn><mo>,</mo><mn>1875</mn><mo>=</mo><mn>26</mn><mo>,</mo><mn>672</mn></math> e <math><mn>24</mn><mo>,</mo><mn>9041</mn><mo>+</mo><mn>1</mn><mo>,</mo><mn>7690</mn><mo>=</mo><mn>26</mn><mo>,</mo><mn>673</mn></math>. <strong>A variância total não muda com a rotação</strong> — ela só é <em>redistribuída</em> entre os eixos, e o giro de 26° concentra quase tudo (93%) num único eixo.</p>
+    <p>Isso não é coincidência do exercício. Os autovalores de <math><msub><mi>S</mi><mi>n</mi></msub></math> são <strong>24,903 e 1,769</strong>, e o autovetor do maior faz ângulo de <strong>25,9°</strong> com o eixo <math><msub><mi>x</mi><mn>1</mn></msub></math>. O exercício mandou girar exatamente sobre o <em>eixo principal</em>. Você acabou de calcular à mão, sem saber, a <strong>primeira componente principal</strong> — assunto do capítulo 8. Guarde: rotacionar para descorrelacionar = decomposição espectral de <math><mi>S</mi></math> = componentes principais. É a mesma operação com três nomes.</p>
+  </div>
+
+  <h4>(d) A distância pelas coordenadas giradas</h4>
+  <p>O ponto <math><mi>P</mi><mo>=</mo><mo>(</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>)</mo></math> gira para</p>
+  <math display="block"><mrow><msub><mover><mi>x</mi><mo>~</mo></mover><mn>1</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>899</mn><mo>(</mo><mn>4</mn><mo>)</mo><mo>+</mo><mn>0</mn><mo>,</mo><mn>438</mn><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>2</mn><mo>,</mo><mn>720</mn><mo>,</mo><mspace width="1.2em"/><msub><mover><mi>x</mi><mo>~</mo></mover><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>438</mn><mo>(</mo><mn>4</mn><mo>)</mo><mo>+</mo><mn>0</mn><mo>,</mo><mn>899</mn><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>550</mn></mrow></math>
+
+  <math display="block"><mrow><mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo><msqrt><mrow><mfrac><msup><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>720</mn><mo>)</mo></mrow><mn>2</mn></msup><mrow><mn>24</mn><mo>,</mo><mn>9041</mn></mrow></mfrac><mo>+</mo><mfrac><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>550</mn><mo>)</mo></mrow><mn>2</mn></msup><mrow><mn>1</mn><mo>,</mo><mn>7690</mn></mrow></mfrac></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>0</mn><mo>,</mo><mn>2971</mn><mo>+</mo><mn>7</mn><mo>,</mo><mn>1240</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mo>,</mo><mn>724</mn></mrow></math>
+
+  <p>Repare em como as duas parcelas se comportam: a coordenada <em>maior</em> em módulo (2,72) contribui com 0,30, e a menor (−3,55, na direção estreita) contribui com 7,12 — <strong>24 vezes mais</strong>. Todo o "afastamento" de <math><mi>P</mi></math> vem de ele estar fora do eixo em que a nuvem se espalha. É a lição da Figura 1.19 em números.</p>
+
+  <h4>(e) A distância pela forma quadrática</h4>
+  <p>Com os <math><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> da nota de rodapé, calculados a partir de <math><mi>θ</mi><mo>=</mo><mn>26</mn><mo>°</mo></math> e de <math><msub><mi>s</mi><mn>11</mn></msub></math>, <math><msub><mi>s</mi><mn>12</mn></msub></math>, <math><msub><mi>s</mi><mn>22</mn></msub></math> do item (a):</p>
+
+  <math display="block"><mrow><msub><mi>a</mi><mn>11</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>140900</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>206779</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>a</mi><mn>22</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>464572</mn></mrow></math>
+
+  <math display="block"><mrow><msup><mi>d</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn><mo>,</mo><mn>1409</mn><mo>(</mo><mn>16</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>(</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>2068</mn><mo>)</mo><mo>(</mo><mn>4</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mn>0</mn><mo>,</mo><mn>4646</mn><mo>(</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>7</mn><mo>,</mo><mn>421</mn><mo>,</mo><mspace width="1.2em"/><mi>d</mi><mo>=</mo><mn>2</mn><mo>,</mo><mn>724</mn></mrow></math>
+
+  <p>Idêntico ao item (d), como o livro prometia. Mas há aqui um resultado que o enunciado não pede e que é o verdadeiro prêmio do exercício. Compare a matriz <math><mi>A</mi></math> com a inversa de <math><msub><mi>S</mi><mi>n</mi></msub></math>:</p>
+
+  <math display="block">
+    <mrow>
+      <mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+        <mtr><mtd><mn>0</mn><mo>,</mo><mn>140900</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>206779</mn></mtd></mtr>
+        <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>206779</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>464572</mn></mtd></mtr>
+      </mtable><mo>]</mo></mrow>
+      <mspace width="1.4em"/>
+      <msubsup><mi>S</mi><mi>n</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo>=</mo><mrow><mo>[</mo><mtable>
+        <mtr><mtd><mn>0</mn><mo>,</mo><mn>140463</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>206438</mn></mtd></mtr>
+        <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>206438</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>465017</mn></mtd></mtr>
+      </mtable><mo>]</mo></mrow>
+    </mrow>
+  </math>
+
+  <div class="caixa definicao">
+    <span class="rotulo">O que acabou de acontecer</span>
+    <p>São a <strong>mesma matriz</strong>. A pequena diferença na terceira casa vem só de o enunciado mandar usar 0,899 e 0,438 em vez dos valores exatos de <math><mo>cos</mo><mn>26</mn><mo>°</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>898794</mn></math> e <math><mo>sen</mo><mn>26</mn><mo>°</mo><mo>=</mo><mn>0</mn><mo>,</mo><mn>438371</mn></math>. Com <math><mi>A</mi><mo>=</mo><msubsup><mi>S</mi><mi>n</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup></math> exata, <math><mi>d</mi><mo>=</mo><mn>2</mn><mo>,</mo><mn>722</mn></math>.</p>
+    <p>Ou seja: aquela nota de rodapé assustadora, com três frações de senos e cossenos que o livro diz que "não são importantes neste ponto", é simplesmente <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> escrita em coordenadas. A distância estatística geral <em>é</em> a distância de Mahalanobis:</p>
+    <math display="block"><mrow><msup><mi>d</mi><mn>2</mn></msup><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo><msup><mi mathvariant="bold">x</mi><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi mathvariant="bold">x</mi></mrow></math>
+    <p>Guarde isso: <strong>ponderar pelo inverso da variabilidade, em <math><mi>p</mi></math> dimensões, é multiplicar pela inversa da matriz de covariâncias.</strong> É a fórmula mais usada do livro inteiro.</p>
+  </div>
+
+<pre><code>x1 &lt;- c(-6, -3, -2,  1,  2,  5,  6,  8)
+x2 &lt;- c(-2, -3,  1, -1,  2,  1,  5,  3)
+n  &lt;- length(x1)
+Sn &lt;- cov(cbind(x1, x2)) * (n - 1) / n
+Sn
+<span class="out">##          x1       x2</span>
+<span class="out">## x1 20.48438  9.09375</span>
+<span class="out">## x2  9.09375  6.18750</span>
+
+<span class="cmt"># (b)-(c) rotação de 26 graus, com os cossenos que o enunciado manda usar</span>
+cs &lt;- .899; sn &lt;- .438
+t1 &lt;- cs * x1 + sn * x2
+t2 &lt;- -sn * x1 + cs * x2
+c(var(t1), var(t2)) * (n - 1) / n
+<span class="out">## [1] 24.904100  1.769017</span>
+
+<span class="cmt"># (d) e (e): as duas rotas dão o mesmo número</span>
+P &lt;- c(4, -2)
+p1 &lt;- cs * P[1] + sn * P[2]; p2 &lt;- -sn * P[1] + cs * P[2]
+sqrt(p1^2 / 24.9041 + p2^2 / 1.7690)
+<span class="out">## [1] 2.724243</span>
+sqrt(t(P) %*% solve(Sn) %*% P)          <span class="cmt"># Mahalanobis, direto</span>
+<span class="out">##          [,1]</span>
+<span class="out">## [1,] 2.722165</span>
+
+<span class="cmt"># e a rotação de 26 graus é o eixo principal:</span>
+eigen(Sn)$values
+<span class="out">## [1] 24.902977  1.768898</span>
+</code></pre>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.10 — quais funções são distâncias válidas?</h3>
+  <div class="enunciado">
+    <p>As funções a seguir são distâncias válidas a partir da origem? Explique.<br>
+    (a) <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><mn>4</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><msup><mrow><mo>(</mo><mtext>distância</mtext><mo>)</mo></mrow><mn>2</mn></msup></math><br>
+    (b) <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>−</mo><mn>2</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><msup><mrow><mo>(</mo><mtext>distância</mtext><mo>)</mo></mrow><mn>2</mn></msup></math></p>
+  </div>
+
+  <p>O critério é o da seção 8.4: a expressão precisa ser <strong>não negativa para todos</strong> os <math><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math>, anulando-se só na origem.</p>
+
+  <h4>(b) primeiro, porque é o fácil</h4>
+  <p>Basta um contraexemplo: em <math><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>)</mo></math> a expressão vale <math><mn>0</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn></math>. Distância ao quadrado negativa. <strong>Não é válida.</strong> Pior: ao longo da reta <math><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><msqrt><mn>2</mn></msqrt><msub><mi>x</mi><mn>2</mn></msub></math> a expressão é zero para pontos arbitrariamente longe da origem — violaria também o axioma 2.</p>
+
+  <h4>(a) o caso interessante</h4>
+  <p>Aqui é preciso trabalhar. Escrevendo na forma da equação (1-23), com <math><mn>2</mn><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><mn>1</mn></math>:</p>
+
+  <math display="block"><mrow><mi>A</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn><mo>,</mo><mn>5</mn></mtd></mtr><mtr><mtd><mn>0</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>
+
+  <p>Duas maneiras de decidir, e vale conhecer as duas.</p>
+
+  <p><strong>Completando o quadrado</strong> (elementar, e mostra <em>por que</em> funciona):</p>
+  <math display="block"><mrow><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mn>4</mn><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup><mo>=</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><mfrac><msub><mi>x</mi><mn>2</mn></msub><mn>2</mn></mfrac><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><mfrac><mn>15</mn><mn>4</mn></mfrac><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup></mrow></math>
+
+  <p>Soma de dois quadrados com coeficientes positivos: sempre <math><mo>≥</mo><mn>0</mn></math>, e igual a zero apenas quando <math><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>0</mn></math> e <math><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn></math>. <strong>É válida.</strong></p>
+
+  <p><strong>Pelos autovalores</strong> (o método do capítulo 2): <math><mi>A</mi></math> tem autovalores <math><mn>0</mn><mo>,</mo><mn>919</mn></math> e <math><mn>4</mn><mo>,</mo><mn>081</mn></math>, ambos positivos, logo <math><mi>A</mi></math> é definida positiva. Em (b), os autovalores são <math><mn>1</mn></math> e <math><mo>−</mo><mn>2</mn></math> — um negativo, e o autovetor correspondente aponta a direção em que a "distância" fica negativa.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">A conexão que este exercício constrói</span>
+    <p>Note que os coeficientes de <math><msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup></math> e <math><msubsup><mi>x</mi><mn>2</mn><mn>2</mn></msubsup></math> serem positivos <strong>não basta</strong>: em (a) eles são 1 e 4, mas se o termo cruzado fosse <math><mn>5</mn><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub></math> teríamos <math><msub><mi>a</mi><mn>12</mn></msub><mo>=</mo><mn>2</mn><mo>,</mo><mn>5</mn></math>, determinante <math><mn>4</mn><mo>−</mo><mn>6</mn><mo>,</mo><mn>25</mn><mo>&lt;</mo><mn>0</mn></math>, e a forma deixaria de ser válida. <strong>É o termo cruzado que precisa ser "pequeno o bastante"</strong> em relação aos da diagonal. No caso <math><mn>2</mn><mo>×</mo><mn>2</mn></math> a condição é exatamente <math><msub><mi>a</mi><mn>11</mn></msub><mo>&gt;</mo><mn>0</mn></math> e <math><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>22</mn></msub><mo>−</mo><msubsup><mi>a</mi><mn>12</mn><mn>2</mn></msubsup><mo>&gt;</mo><mn>0</mn></math> — e é a mesma condição que, aplicada a <math><mi>S</mi></math>, garante <math><mo>|</mo><msub><mi>r</mi><mn>12</mn></msub><mo>|</mo><mo>≤</mo><mn>1</mn></math>.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 1.12 — uma distância que não é elipse</h3>
+  <div class="enunciado">
+    <p>Defina a distância de <math><mi>P</mi><mo>=</mo><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo></math> à origem como <math><mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo><mo>max</mo><mo>(</mo><mo>|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>|</mo><mo>,</mo><mo>|</mo><msub><mi>x</mi><mn>2</mn></msub><mo>|</mo><mo>)</mo></math>. (a) Calcule a distância de <math><mo>(</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo></math> à origem. (b) Trace o lugar geométrico dos pontos cuja distância à origem é 1. (c) Generalize para <math><mi>p</mi></math> dimensões.</p>
+  </div>
+
+  <p><strong>(a)</strong> <math><mo>max</mo><mo>(</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo>)</mo><mo>=</mo><mn>4</mn></math>. (A euclidiana daria 5 e a "quarteirão" daria 7 — três respostas diferentes, todas legítimas como distância.)</p>
+
+  <p><strong>(b)</strong> O conjunto <math><mo>max</mo><mo>(</mo><mo>|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>|</mo><mo>,</mo><mo>|</mo><msub><mi>x</mi><mn>2</mn></msub><mo>|</mo><mo>)</mo><mo>=</mo><mn>1</mn></math> exige que o <em>maior</em> dos dois módulos seja 1 e o outro não passe de 1. São os quatro segmentos <math><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><mo>±</mo><mn>1</mn></math> com <math><mo>|</mo><msub><mi>x</mi><mn>2</mn></msub><mo>|</mo><mo>≤</mo><mn>1</mn></math> e <math><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mo>±</mo><mn>1</mn></math> com <math><mo>|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>|</mo><mo>≤</mo><mn>1</mn></math>: o <strong>quadrado de lado 2 centrado na origem</strong>, com vértices em <math><mo>(</mo><mo>±</mo><mn>1</mn><mo>,</mo><mo>±</mo><mn>1</mn><mo>)</mo></math>.</p>
+
+  <p><strong>(c)</strong> <math><mi>d</mi><mo>(</mo><mi>O</mi><mo>,</mo><mi>P</mi><mo>)</mo><mo>=</mo><mo>max</mo><mo>(</mo><mo>|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>|</mo><mo>,</mo><mo>|</mo><msub><mi>x</mi><mn>2</mn></msub><mo>|</mo><mo>,</mo><mo>…</mo><mo>,</mo><mo>|</mo><msub><mi>x</mi><mi>p</mi></msub><mo>|</mo><mo>)</mo></math>, cujos contornos são hipercubos.</p>
+
+  <div class="caixa definicao">
+    <span class="rotulo">Por que este exercício está no livro</span>
+    <p>Para desfazer a impressão, criada pelas seções anteriores, de que "distância" significa necessariamente elipse. Esta é a norma do máximo (norma <math><msub><mi>L</mi><mo>∞</mo></msub></math>), e ela satisfaz os quatro axiomas de (1-25) — inclusive a triangular, já que <math><mo>max</mo><mo>|</mo><msub><mi>x</mi><mi>i</mi></msub><mo>+</mo><msub><mi>y</mi><mi>i</mi></msub><mo>|</mo><mo>≤</mo><mo>max</mo><mo>|</mo><msub><mi>x</mi><mi>i</mi></msub><mo>|</mo><mo>+</mo><mo>max</mo><mo>|</mo><msub><mi>y</mi><mi>i</mi></msub><mo>|</mo></math>. O que ela <em>não</em> faz é levar em conta variabilidade e correlação — por isso não serve como distância estatística, embora seja uma distância perfeitamente boa. A distinção "é distância" × "é a distância certa para estes dados" é o que o capítulo 1 quer que você leve.</p>
+  </div>
+</div>
+
+
+<div class="nota">
+  <p><strong>Fonte:</strong> Johnson, R. A. &amp; Wichern, D. W. <em>Applied Multivariate Statistical Analysis</em>, 4ª ed., Prentice Hall, 1998 — capítulo 1, págs. 1–47. Figuras 1.1, 1.3, 1.6, 1.10, 1.11, 1.14, 1.15, 1.16, 1.17, 1.18 e 1.19 reproduzidas do original para fins de estudo pessoal.</p>
+</div>
+
+<nav class="nav-rodape">
+  <span><a href="../index.html">← Menu</a></span>
+  <span><a href="../cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Cap. 2 — Álgebra de Matrizes e Vetores Aleatórios →</a></span>
+</nav>
+
+</div>
+<script>
+/* Em tela larga a barra lateral fica sempre aberta (o CSS esconde o
+   alternador). Abaixo de 62rem ela vira aba: aí começa fechada e fecha
+   sozinha ao escolher um link. Nada aqui depende de rede ou biblioteca —
+   sem JavaScript a barra apenas fica sempre aberta, que é o estado bom. */
+(function () {
+  var menu = document.querySelector(".menu-lateral");
+  if (!menu) return;
+
+  /* Seções com subtópicos: clicar no título abre a lista e segue o link.
+     Só ABRE — para fechar, clique na setinha. É preciso fazer à mão porque
+     o navegador dá prioridade ao <a> e não alterna o <details> sozinho.
+     Sem JavaScript a setinha continua abrindo e fechando normalmente. */
+  menu.querySelectorAll("details.sub > summary > a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var d = a.closest("details.sub");
+      if (d) d.open = true;
+    });
+  });
+
+  if (!window.matchMedia) return;
+  var estreito = window.matchMedia("(max-width: 62rem)");
+  function ajustar() { menu.open = !estreito.matches; }
+  ajustar();
+  estreito.addEventListener("change", ajustar);
+  menu.querySelectorAll(".painel a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (estreito.matches) menu.open = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

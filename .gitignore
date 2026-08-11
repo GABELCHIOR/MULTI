@@ -1,0 +1,28 @@
+# --------------------------------------------------------------------------
+# O PDF do livro NÃO vai para o repositório: é obra protegida por direitos
+# autorais (Johnson & Wichern, Prentice Hall). Cada pessoa usa a sua própria
+# cópia, colocada na raiz da pasta; ferramentas/extrair.py a localiza sozinho.
+# --------------------------------------------------------------------------
+*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Saídas temporárias das ferramentas de extração
+saida/
+scratchpad/
+*.tmp.png
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
