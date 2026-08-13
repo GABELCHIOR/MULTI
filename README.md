@@ -16,6 +16,7 @@ de renderização.
 |---|---|---|
 | 1 | [Aspectos da Análise Multivariada](estudo/cap01/01-00-aspectos-da-analise-multivariada.html) | Os cinco objetivos; o arranjo `X`; média, variância, covariância e correlação amostrais; os arranjos `x̄`, `Sₙ` e `R`; as duas geometrias; gráficos, *brushing*, estrelas e faces de Chernoff; e a **distância estatística** — por que a euclidiana não serve e de onde vem a elipse. |
 | 2 | [Álgebra de Matrizes e Vetores Aleatórios](estudo/cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html) | Comprimento, ângulo e projeção; **decomposição espectral**; matrizes definidas positivas e a resposta à pergunta deixada no cap. 1; elipses por autovalores; a raiz quadrada `A^{1/2}`; `μ`, `Σ` e `ρ`; a regra `CΣC′`; Cauchy–Schwarz e os lemas de maximização. |
+| 3 | [Geometria da Amostra e Amostragem Aleatória](estudo/cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html) | As duas leituras de `X`; a decomposição `yᵢ = x̄ᵢ1 + dᵢ` como projeção; comprimento = desvio-padrão e **cos(θ) = r**, pagando a dívida do cap. 1; amostra aleatória, `E(X̄) = μ`, `Cov(X̄) = Σ/n` e de onde vem o divisor `n − 1`; **variância generalizada `\|S\|`** como volume, suas duas fraquezas e o diagnóstico de `\|S\| = 0`; `x̄`, `S` e `R` como operações matriciais; `b′Sc` e `ASA′`. |
 
 Cada aula traz o objetivo da seção, o conceito com a derivação completa, figuras
 recortadas do livro, os exemplos resolvidos passo a passo com código em **R**,
@@ -47,7 +48,7 @@ modo claro e escuro pelo `prefers-color-scheme`.
 
 O PDF **não** está no repositório — é obra protegida por direitos autorais. As
 ferramentas o localizam sozinhas se você colocar a sua própria cópia na raiz da
-pasta.
+pasta (preferindo o arquivo cujo nome contém "Fourth", se houver mais de um).
 
 Duas ressalvas sobre o arquivo usado, se você for reproduzir o processo:
 

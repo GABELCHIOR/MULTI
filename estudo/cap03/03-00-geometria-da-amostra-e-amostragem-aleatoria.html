@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Caderno de estudo pessoal: reproduz figuras de obra protegida
+     (Johnson & Wichern, Prentice Hall) para uso próprio. Fora dos buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Cap. 3 — Geometria da Amostra e Amostragem Aleatória</title>
+<link rel="stylesheet" href="../assets/tema.css?v=1">
+<link rel="stylesheet" href="../assets/estilo.css?v=1">
+</head>
+<body>
+
+<details class="menu-lateral" open>
+  <summary>Índice da aula</summary>
+  <nav class="painel">
+    <p class="painel-titulo">Cap. 3 — Geometria da Amostra</p>
+    <ol>
+      <li><a href="#s1">As duas geometrias de <math><mi>X</mi></math></a></li>
+      <li><details class="sub">
+        <summary><a href="#s2">A geometria da amostra</a></summary>
+        <ul class="subitens">
+          <li><a href="#s2-1">2.1 <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões</a></li>
+          <li><a href="#s2-2">2.2 <math><mi>p</mi></math> vetores em <math><mi>n</mi></math> dimensões</a></li>
+          <li><a href="#s2-3">2.3 A decomposição em média e desvio</a></li>
+          <li><a href="#s2-4">2.4 Comprimento é desvio-padrão, ângulo é correlação</a></li>
+          <li><a href="#s2-5">2.5 Exemplo 3.4, passo a passo</a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s3">Amostra aleatória e o que se espera de <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math></a></summary>
+        <ul class="subitens">
+          <li><a href="#s3-1">3.1 O que é uma amostra aleatória</a></li>
+          <li><a href="#s3-2">3.2 Quando a hipótese falha</a></li>
+          <li><a href="#s3-3">3.3 Resultado 3.1 e sua demonstração</a></li>
+          <li><a href="#s3-4">3.4 Por fim, o divisor <math><mi>n</mi><mo>−</mo><mn>1</mn></math></a></li>
+        </ul>
+      </details></li>
+      <li><details class="sub">
+        <summary><a href="#s4">Variância generalizada <math><mo>|</mo><mi>S</mi><mo>|</mo></math></a></summary>
+        <ul class="subitens">
+          <li><a href="#s4-1">4.1 Um número para toda a variação</a></li>
+          <li><a href="#s4-2">4.2 <math><mo>|</mo><mi>S</mi><mo>|</mo></math> é o quadrado de um volume</a></li>
+          <li><a href="#s4-3">4.3 A elipsoide de distância constante</a></li>
+          <li><a href="#s4-4">4.4 A fraqueza: <math><mo>|</mo><mi>S</mi><mo>|</mo></math> não vê orientação</a></li>
+          <li><a href="#s4-5">4.5 Quando <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math></a></li>
+          <li><a href="#s4-6">4.6 <math><mo>|</mo><mi>R</mi><mo>|</mo></math> e a variância total</a></li>
+        </ul>
+      </details></li>
+      <li><a href="#s5">Tudo como operação matricial</a></li>
+      <li><a href="#s6">Combinações lineares na amostra</a></li>
+      <li><a href="#recall">Cartões de recall ativo</a></li>
+      <li><a href="#exercicios">Exercícios resolvidos</a></li>
+    </ol>
+    <p class="extras">
+      <a href="#topo">↑ Topo</a>
+      <a href="../index.html">Menu</a>
+      <a href="../cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">← Cap. 2</a>
+    </p>
+  </nav>
+</details>
+
+<div class="pagina" id="topo">
+
+<header class="topo">
+  <p class="migalha"><a href="../index.html">Menu</a> · Johnson &amp; Wichern, 4ª ed. · Capítulo 3 · págs. 116–156</p>
+  <h1>Geometria da Amostra e Amostragem Aleatória</h1>
+  <p class="subtitulo">O capítulo em que os desenhos do cap. 1 e a álgebra do cap. 2 se encontram: comprimento vira desvio-padrão, ângulo vira correlação, e <math><mo>|</mo><mi>S</mi><mo>|</mo></math> vira volume.</p>
+</header>
+
+<div class="caixa objetivo">
+  <span class="rotulo">Ao final desta aula você deve saber</span>
+  <ul>
+    <li>Ler a matriz <math><mi>X</mi></math> das duas maneiras: <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões e <math><mi>p</mi></math> vetores em <math><mi>n</mi></math> dimensões.</li>
+    <li>Decompor cada coluna em média mais desvio, e reconhecer aí a projeção sobre o vetor <math><mn>1</mn></math>.</li>
+    <li>Ligar o comprimento de <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> ao desvio-padrão e o cosseno do ângulo à correlação <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>.</li>
+    <li>Enunciar o que é uma <strong>amostra aleatória</strong> e identificar as situações em que a hipótese falha.</li>
+    <li>Demonstrar <math><mi>E</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">μ</mi></math>, <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math> e <math><mi>E</mi><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi></math>.</li>
+    <li>Calcular a <strong>variância generalizada</strong> <math><mo>|</mo><mi>S</mi><mo>|</mo></math> e lê-la como o quadrado de um volume.</li>
+    <li>Reconhecer as duas fraquezas de <math><mo>|</mo><mi>S</mi><mo>|</mo></math>: ela não enxerga orientação e zera na degenerescência.</li>
+    <li>Diagnosticar <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> pelo autovetor de autovalor nulo e decidir qual variável remover.</li>
+    <li>Usar <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>|</mo><mi>R</mi><mo>|</mo></math> e separar variância generalizada de variância total.</li>
+    <li>Escrever <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math>, <math><mi>S</mi></math> e <math><mi>R</mi></math> como operações matriciais sobre <math><mi>X</mi></math>, e obter <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi></math> e <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math>.</li>
+  </ul>
+</div>
+
+
+
+<h2 id="s1">1. As duas geometrias de <math><mi>X</mi></math></h2>
+
+<p>Este é um capítulo curto e, à primeira vista, modesto: não há método estatístico novo nenhum. O que há é uma <em>mudança de olhar</em>. Até agora <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math>, <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math> eram fórmulas de somatório; a partir daqui eles passam a ser <strong>objetos geométricos</strong> — um centro de gravidade, um conjunto de comprimentos, um conjunto de ângulos. Quem faz essa passagem entende, sem decorar nada, por que a variância generalizada é um volume, por que ela às vezes dá zero, e por que a região de confiança do capítulo 5 é uma elipse com aquela forma e não outra.</p>
+
+<p>Tudo parte de uma observação simples. A matriz de dados</p>
+
+<div class="eq">
+<math display="block"><mrow><munder><mi>X</mi><mrow><mo>(</mo><mi>n</mi><mo>×</mo><mi>p</mi><mo>)</mo></mrow></munder><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><msub><mi>x</mi><mn>11</mn></msub></mtd><mtd><msub><mi>x</mi><mn>12</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+  <mtr><mtd><msub><mi>x</mi><mn>21</mn></msub></mtd><mtd><msub><mi>x</mi><mn>22</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>2</mn><mi>p</mi></mrow></msub></mtd></mtr>
+  <mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd></mtr>
+  <mtr><mtd><msub><mi>x</mi><mrow><mi>n</mi><mn>1</mn></mrow></msub></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mn>2</mn></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mi>p</mi></mrow></msub></mtd></mtr>
+</mtable><mo>]</mo></mrow></mrow></math>
+</div>
+
+<p>é um retângulo de números, e um retângulo pode ser lido por linha ou por coluna. As duas leituras dão duas geometrias <em>diferentes e complementares</em>, e o capítulo inteiro consiste em explorar as duas:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">As duas representações</span>
+  <p><strong>(A) Por linhas — <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões.</strong> Cada linha <math><msubsup><mi mathvariant="bold">x</mi><mi>j</mi><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>p</mi></mrow></msub><mo>]</mo></math> é <em>um indivíduo</em>, um ponto no espaço das variáveis. É o diagrama de dispersão de sempre. Aqui moram: o centro de gravidade <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e as elipses de distância constante.</p>
+  <p><strong>(B) Por colunas — <math><mi>p</mi></math> vetores em <math><mi>n</mi></math> dimensões.</strong> Cada coluna <math><msubsup><mi mathvariant="bold">y</mi><mi>i</mi><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>n</mi><mi>i</mi></mrow></msub><mo>]</mo></math> é <em>uma variável</em>, com uma coordenada por indivíduo. Aqui moram: os comprimentos (desvios-padrão), os ângulos (correlações) e os volumes (variância generalizada).</p>
+</div>
+
+<p>A representação (A) é a intuitiva; a (B) é a que ninguém desenha e é justamente a que dá os resultados bonitos. Em (B) o número de dimensões é <math><mi>n</mi></math>, que é grande — mas isso importa menos do que parece: <strong>três vetores, por mais dimensões que tenham, geram no máximo um espaço de três dimensões</strong>, assim como dois vetores quaisquer sempre cabem num plano. Basta escolher o "ângulo de câmera" certo — uma fatia tridimensional do espaço de <math><mi>n</mi></math> dimensões contendo os três vetores — e a figura obtida preserva comprimentos e ângulos exatamente. Por isso o livro rotula os eixos apenas <math><mn>1</mn></math>, <math><mn>2</mn></math>, <math><mn>3</mn></math>: eles não são "as três primeiras observações", são os eixos de uma perspectiva conveniente.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">O gancho do capítulo 1 que é pago aqui</span>
+  <p>Na seção 1.6 e de novo na 2.2.4 ficou prometido que <math><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> entre colunas centradas. A dívida é quitada na <a href="#s2-4">seção 2.4</a>, e a demonstração cabe em três linhas. Guarde a ideia: <strong>correlação é ângulo</strong>. É a leitura que explica por que <math><mi>r</mi></math> vive entre <math><mo>−</mo><mn>1</mn></math> e <math><mn>1</mn></math> (é um cosseno), por que <math><mi>r</mi><mo>=</mo><mn>0</mn></math> é "perpendicular", e por que a variância generalizada de variáveis padronizadas mede o quanto os vetores estão espalhados em direções diferentes.</p>
+</div>
+
+
+<h2 id="s2">2. A geometria da amostra</h2>
+
+<h3 id="s2-1">2.1 <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões</h3>
+
+<p>Comecemos pela leitura fácil. Escrevendo <math><mi>X</mi></math> empilhando linhas,</p>
+
+<div class="eq">
+<math display="block"><mrow><munder><mi>X</mi><mrow><mo>(</mo><mi>n</mi><mo>×</mo><mi>p</mi><mo>)</mo></mrow></munder><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><msubsup><mi mathvariant="bold">x</mi><mn>1</mn><mo>′</mo></msubsup></mtd></mtr>
+  <mtr><mtd><msubsup><mi mathvariant="bold">x</mi><mn>2</mn><mo>′</mo></msubsup></mtd></mtr>
+  <mtr><mtd><mo>⋮</mo></mtd></mtr>
+  <mtr><mtd><msubsup><mi mathvariant="bold">x</mi><mi>n</mi><mo>′</mo></msubsup></mtd></mtr>
+</mtable><mo>]</mo></mrow><mspace width="1.2em"/><mtext>← 1ª observação multivariada</mtext></mrow></math>
+<span class="num">(3-1)</span>
+</div>
+
+<p>cada <math><msubsup><mi mathvariant="bold">x</mi><mi>j</mi><mo>′</mo></msubsup></math> guarda as coordenadas de um ponto. Se imaginarmos os <math><mi>n</mi></math> pontos como esferas maciças de mesma massa, o <strong>vetor de médias amostrais</strong> <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> é o <em>centro de gravidade</em> da nuvem. Não é uma metáfora: a média é literalmente o ponto de equilíbrio, porque <math><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mn>0</mn></math> — os "torques" se cancelam.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.1 — o centro de gravidade</span>
+  <p>Com <math><mi>n</mi><mo>=</mo><mn>3</mn></math> e <math><mi>p</mi><mo>=</mo><mn>2</mn></math>,</p>
+  <math display="block"><mrow><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>3</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mn>5</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.6em"/><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mrow><mn>4</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn></mrow><mn>3</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mrow><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>5</mn></mrow><mn>3</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>Os três pontos são <math><msubsup><mi mathvariant="bold">x</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, <math><msubsup><mi mathvariant="bold">x</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">x</mi><mn>3</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>]</mo></math>. Estes mesmos dados vão nos acompanhar até o fim da seção 2 — vale memorizá-los.</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-01.png" alt="Diagrama de dispersão com três pontos rotulados x1, x2 e x3, e o ponto médio x-barra em (2, 3) marcado com um círculo duplo.">
+  <figcaption><b>Figura 3.1</b> — A matriz <math><mi>X</mi></math> lida como <math><mi>n</mi><mo>=</mo><mn>3</mn></math> pontos em <math><mi>p</mi><mo>=</mo><mn>2</mn></math> dimensões. O círculo duplo marca <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math>, o ponto de equilíbrio da nuvem.</figcaption>
+</figure>
+
+<p>Nessa representação, a <em>localização</em> é dada por <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e a <em>dispersão</em> por <math><msub><mi>S</mi><mi>n</mi></msub></math>, que agora tem várias direções para descrever. E um único número resumindo tudo — veremos — é o determinante de <math><mi>S</mi></math>. Para <math><mi>p</mi><mo>&gt;</mo><mn>3</mn></math> o desenho é impossível, mas os conceitos ilustrados em <math><mi>p</mi><mo>=</mo><mn>2</mn></math> ou <math><mn>3</mn></math> continuam válidos — é assim que se raciocina em alta dimensão.</p>
+
+<h3 id="s2-2">2.2 <math><mi>p</mi></math> vetores em <math><mi>n</mi></math> dimensões</h3>
+
+<p>Agora a leitura por colunas. Escrevemos</p>
+
+<div class="eq">
+<math display="block"><mrow><munder><mi>X</mi><mrow><mo>(</mo><mi>n</mi><mo>×</mo><mi>p</mi><mo>)</mo></mrow></munder><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><msub><mi mathvariant="bold">y</mi><mn>1</mn></msub></mtd><mtd><mo>⋮</mo></mtd><mtd><msub><mi mathvariant="bold">y</mi><mn>2</mn></msub></mtd><mtd><mo>⋮</mo></mtd><mtd><mo>⋯</mo></mtd><mtd><mo>⋮</mo></mtd><mtd><msub><mi mathvariant="bold">y</mi><mi>p</mi></msub></mtd></mtr>
+</mtable><mo>]</mo></mrow></mrow></math>
+<span class="num">(3-2)</span>
+</div>
+
+<p>com <math><msubsup><mi mathvariant="bold">y</mi><mi>i</mi><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mrow><mi>n</mi><mi>i</mi></mrow></msub><mo>]</mo></math>: <strong>todas as <math><mi>n</mi></math> medições da <math><mi>i</mi></math>-ésima variável</strong>. Note a inversão de papéis: aqui o índice que varia dentro do vetor é o do <em>indivíduo</em>, e cada vetor é uma <em>variável</em>. E desta vez desenhamos os <math><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub></math> como setas, não como pontos — porque o que vai importar deles é comprimento e direção.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.2 — os mesmos dados, outra figura</span>
+  <p>Da mesma matriz do Exemplo 3.1 saem <math><msubsup><mi mathvariant="bold">y</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">y</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>]</mo></math> — dois vetores num espaço de <math><mi>n</mi><mo>=</mo><mn>3</mn></math> dimensões. São <em>exatamente os mesmos seis números</em> da Figura 3.1, arrumados de outro jeito.</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-02.png" alt="Dois vetores y1 e y2 desenhados a partir da origem num sistema de três eixos rotulados 1, 2 e 3.">
+  <figcaption><b>Figura 3.2</b> — A mesma matriz <math><mi>X</mi></math> lida como <math><mi>p</mi><mo>=</mo><mn>2</mn></math> vetores em <math><mi>n</mi><mo>=</mo><mn>3</mn></math> dimensões. Compare com a Figura 3.1: mesmos dados, geometrias distintas.</figcaption>
+</figure>
+
+<h3 id="s2-3">2.3 A decomposição em média e desvio</h3>
+
+<p>Aqui entra a peça que faz a máquina girar. Defina o vetor <math><mi>n</mi><mo>×</mo><mn>1</mn></math> de uns, <math><msup><mn>1</mn><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>1</mn><mo>]</mo></math>. Ele forma ângulos iguais com todos os <math><mi>n</mi></math> eixos coordenados — é a "diagonal principal" do espaço — e <math><mo>(</mo><mn>1</mn><mo>/</mo><msqrt><mi>n</mi></msqrt><mo>)</mo><mn>1</mn></math> tem comprimento 1, porque <math><msup><mn>1</mn><mo>′</mo></msup><mn>1</mn><mo>=</mo><mi>n</mi></math>.</p>
+
+<p>Projetando <math><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub></math> sobre esse unitário — a fórmula (2-8) do capítulo anterior, a "sombra de um vetor":</p>
+
+<div class="eq">
+<math display="block"><mrow><mrow><mo>(</mo><msubsup><mi mathvariant="bold">y</mi><mi>i</mi><mo>′</mo></msubsup><mfrac><mn>1</mn><msqrt><mi>n</mi></msqrt></mfrac><mn>1</mn><mo>)</mo></mrow><mfrac><mn>1</mn><msqrt><mi>n</mi></msqrt></mfrac><mn>1</mn><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>+</mo><msub><mi>x</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>x</mi><mrow><mi>n</mi><mi>i</mi></mrow></msub></mrow><mi>n</mi></mfrac><mn>1</mn><mo>=</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></mrow></math>
+<span class="num">(3-3)</span>
+</div>
+
+<p>Leia devagar, porque é o coração da seção: <strong>a média amostral é o comprimento (com sinal) da sombra da coluna de dados sobre a diagonal <math><mn>1</mn></math></strong>. Calcular uma média é projetar. E como toda projeção vem acompanhada de um resto perpendicular, cada coluna se parte em duas:</p>
+
+<div class="eq">
+<math display="block"><mrow><munder><munder><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub><mo>⏟</mo></munder><mtext>coluna</mtext></munder><mo>=</mo><munder><munder><mrow><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></mrow><mo>⏟</mo></munder><mtext>média</mtext></munder><mo>+</mo><munder><munder><mrow><mo>(</mo><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn><mo>)</mo></mrow><mo>⏟</mo></munder><mtext>desvio</mtext></munder></mrow></math>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">Vetor de desvios</span>
+  <math display="block"><mrow><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mo>=</mo><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn><mo>=</mo><msup><mrow><mo>[</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>,</mo><mspace width="0.3em"/><msub><mi>x</mi><mrow><mn>2</mn><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>,</mo><mspace width="0.3em"/><mo>…</mo><mo>,</mo><mspace width="0.3em"/><msub><mi>x</mi><mrow><mi>n</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>]</mo></mrow><mo>′</mo></msup></mrow></math>
+  <span class="num">(3-4)</span>
+  <p>Também chamado <strong>vetor de resíduos</strong>, ou vetor centrado na média. Por construção <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></math> e <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> são <em>perpendiculares</em> — é a definição de projeção.</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-03.png" alt="Três vetores y1, y2, y3 partindo da origem; cada um decomposto na componente ao longo da diagonal 1 e na componente perpendicular d1, d2, d3, com marcas de ângulo reto.">
+  <figcaption><b>Figura 3.3</b> — A decomposição de cada <math><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub></math> na componente de média <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></math>, sobre a diagonal, e na componente de desvio <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math>, perpendicular a ela. Os pequenos quadrados marcam os ângulos retos.</figcaption>
+</figure>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.3 — a conta, e a verificação da perpendicularidade</span>
+  <p>Com <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mo>(</mo><mn>4</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>)</mo><mo>/</mo><mn>3</mn><mo>=</mo><mn>2</mn></math> e <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mo>(</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>5</mn><mo>)</mo><mo>/</mo><mn>3</mn><mo>=</mo><mn>3</mn></math>:</p>
+  <math display="block"><mrow><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>−</mo><mn>2</mn><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>3</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.6em"/><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>−</mo><mn>3</mn><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>
+  <p>Conferindo a perpendicularidade prometida:</p>
+  <math display="block"><mrow><msup><mrow><mo>(</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mn>1</mn><mo>)</mo></mrow><mo>′</mo></msup><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>=</mo><mo>[</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>]</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>3</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>=</mo><mn>4</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>0</mn><mspace width="0.6em"/><mo>✓</mo></mrow></math>
+  <p>E não é coincidência: a soma dos desvios em torno da média é sempre zero, e <math><msup><mn>1</mn><mo>′</mo></msup><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> é precisamente essa soma. <strong>Todo vetor de desvios é perpendicular a <math><mn>1</mn></math>, sempre.</strong> É por isso que os <math><mi>p</mi></math> vetores <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> vivem, todos eles, num subespaço de dimensão <math><mi>n</mi><mo>−</mo><mn>1</mn></math> — e é daí que vem o <math><mi>n</mi><mo>−</mo><mn>1</mn></math> do divisor, o dos "graus de liberdade".</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-04.png" alt="Os três vetores de desvio d1, d2 e d3 transladados para a origem, no mesmo sistema de eixos 1, 2, 3.">
+  <figcaption><b>Figura 3.4</b> — Os vetores de desvio da Figura 3.3, transladados para a origem. Transladar não muda comprimento nem orientação — e são essas duas coisas, e só elas, que carregam a informação estatística.</figcaption>
+</figure>
+
+<h3 id="s2-4">2.4 Comprimento é desvio-padrão, ângulo é correlação</h3>
+
+<p>Chegamos ao resultado central do capítulo, e ele sai de duas linhas de conta. O comprimento ao quadrado de <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math>, por (2-5), é o produto interno consigo mesmo:</p>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mn>2</mn></msubsup><mo>=</mo><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></mrow></math>
+<span class="num">(3-5)</span>
+</div>
+
+<p>ou seja, <strong>(comprimento do vetor de desvios)² = soma de quadrados dos desvios</strong>. O comprimento é proporcional ao desvio-padrão: <em>vetor longo = variável dispersa</em>. Para dois vetores diferentes, o produto interno é a soma dos produtos cruzados:</p>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo><mo>=</mo><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></math>
+<span class="num">(3-6)</span>
+</div>
+
+<p>Agora basta juntar. Chamando <math><msub><mi>θ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> o ângulo entre <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub></math>, a fórmula (2-6) do cosseno dá <math><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub><mo>=</mo><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></msub><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub></msub><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>)</mo></math>. Substituindo (3-5) e (3-6) e cancelando o <math><mi>n</mi></math>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A dívida do capítulo 1, quitada</span>
+  <math display="block"><mrow><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>)</mo><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mi>j</mi><mi>n</mi></munderover><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow><mrow><msqrt><mrow><munderover><mo>∑</mo><mi>j</mi><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt><mspace width="0.25em"/><msqrt><mrow><munderover><mo>∑</mo><mi>j</mi><mi>n</mi></munderover><msup><mrow><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mrow></mfrac><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></mrow></math>
+  <span class="num">(3-7)</span>
+  <p><strong>O cosseno do ângulo entre os vetores de desvio <em>é</em> o coeficiente de correlação amostral.</strong> Não é análogo, não é proporcional: é igual.</p>
+</div>
+
+<p>Com isso, toda afirmação sobre correlação vira uma afirmação sobre ângulo — e nenhuma delas precisa mais ser decorada:</p>
+
+<div class="rolagem">
+<table>
+  <caption>A tradução, nas duas direções.</caption>
+  <thead><tr><th class="txt">Ângulo entre <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub></math></th><th class="txt">Correlação <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math></th><th class="txt">Leitura</th></tr></thead>
+  <tbody>
+    <tr><td class="txt">próximo de 0°</td><td class="txt">próxima de <math><mo>+</mo><mn>1</mn></math></td><td class="txt">mesma orientação — as variáveis sobem juntas</td></tr>
+    <tr><td class="txt">próximo de 90°</td><td class="txt">próxima de <math><mn>0</mn></math></td><td class="txt">perpendiculares — nenhuma associação linear</td></tr>
+    <tr><td class="txt">próximo de 180°</td><td class="txt">próxima de <math><mo>−</mo><mn>1</mn></math></td><td class="txt">orientações opostas — uma sobe, a outra desce</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Três consequências que valem por si</span>
+  <p><strong>1.</strong> <math><mo>−</mo><mn>1</mn><mo>≤</mo><mi>r</mi><mo>≤</mo><mn>1</mn></math> não é um teorema a demonstrar: é um <em>cosseno</em>. E a desigualdade de Cauchy–Schwarz (seção 9.1 do cap. 2) é exatamente a afirmação <math><mo>|</mo><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>|</mo><mo>≤</mo><mn>1</mn></math>.</p>
+  <p><strong>2.</strong> Centrar na média é obrigatório. O ângulo entre as colunas <em>brutas</em> <math><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub></math> não é a correlação — é uma quantidade contaminada pelas médias. Correlação é ângulo <em>depois</em> de tirar a projeção sobre <math><mn>1</mn></math>.</p>
+  <p><strong>3.</strong> O <math><mi>n</mi></math> se cancela em (3-7): usar divisor <math><mi>n</mi></math> ou <math><mi>n</mi><mo>−</mo><mn>1</mn></math> não muda <math><mi>R</mi></math>. Só muda <math><mi>S</mi></math>.</p>
+</div>
+
+<h3 id="s2-5">2.5 Exemplo 3.4, passo a passo</h3>
+
+<p>Vamos calcular <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math> dos dados do Exemplo 3.1 <em>sem usar as fórmulas de somatório</em> — só com comprimentos e produtos internos dos vetores de desvio <math><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo>]</mo></math>.</p>
+
+<figure>
+  <img src="img/fig-03-05.png" alt="Os dois vetores de desvio d1 e d2 partindo da origem, com o ângulo teta-12 entre eles marcado por um arco.">
+  <figcaption><b>Figura 3.5</b> — Os vetores <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> do Exemplo 3.3, com o ângulo <math><msub><mi>θ</mi><mn>12</mn></msub></math> entre eles. Ele é ligeiramente obtuso — e é por isso que a correlação sairá negativa e pequena.</figcaption>
+</figure>
+
+<p><strong>Passo 1 — as variâncias, por (3-5).</strong></p>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>1</mn><mn>2</mn></msup><mo>=</mo><mn>14</mn><mo>=</mo><mn>3</mn><msub><mi>s</mi><mn>11</mn></msub><mspace width="1.2em"/><mo>⟹</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mfrac><mn>14</mn><mn>3</mn></mfrac></mrow></math>
+</div>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>8</mn><mo>=</mo><mn>3</mn><msub><mi>s</mi><mn>22</mn></msub><mspace width="1.2em"/><mo>⟹</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mfrac><mn>8</mn><mn>3</mn></mfrac></mrow></math>
+</div>
+
+<p><strong>Passo 2 — a covariância, por (3-6).</strong></p>
+
+<div class="eq">
+<math display="block"><mrow><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo><mo>(</mo><mn>0</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>2</mn><mo>=</mo><mn>3</mn><msub><mi>s</mi><mn>12</mn></msub><mspace width="1.2em"/><mo>⟹</mo><mspace width="1.2em"/><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow></math>
+</div>
+
+<p><strong>Passo 3 — montar as matrizes.</strong> Com divisor <math><mi>n</mi><mo>=</mo><mn>3</mn></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><mfrac><mn>14</mn><mn>3</mn></mfrac></mtd><mtd><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mtd></mtr>
+  <mtr><mtd><mo>−</mo><mfrac><mn>2</mn><mn>3</mn></mfrac></mtd><mtd><mfrac><mn>8</mn><mn>3</mn></mfrac></mtd></mtr>
+</mtable><mo>]</mo></mrow><mspace width="1.8em"/><mi>R</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>189</mn></mtd></mtr>
+  <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>189</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+</mtable><mo>]</mo></mrow></mrow></math>
+</div>
+
+<p><strong>Passo 4 — a leitura geométrica.</strong> Por (3-7), sem passar por <math><msub><mi>S</mi><mi>n</mi></msub></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>12</mn></msub><mo>)</mo><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mrow><msqrt><mn>14</mn></msqrt><mspace width="0.2em"/><msqrt><mn>8</mn></msqrt></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>−</mo><mn>2</mn></mrow><mrow><mn>3</mn><mo>,</mo><mn>742</mn><mo>×</mo><mn>2</mn><mo>,</mo><mn>828</mn></mrow></mfrac><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>189</mn><mspace width="1.6em"/><msub><mi>θ</mi><mn>12</mn></msub><mo>=</mo><mn>100</mn><mo>,</mo><mn>9</mn><mo>°</mo></mrow></math>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">O que o número diz</span>
+  <p><math><msub><mi>θ</mi><mn>12</mn></msub><mo>=</mo><mn>100</mn><mo>,</mo><mn>9</mn><mo>°</mo></math> — pouco mais que reto. Os dois vetores estão <em>quase</em> perpendiculares, então a associação linear é fraca e negativa. Com apenas <math><mi>n</mi><mo>=</mo><mn>3</mn></math> observações isso é o que se esperaria de dados sem relação nenhuma; a figura mostra isso de imediato, enquanto o número <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>189</mn></math> exige interpretação.</p>
+  <p>Repare também nos comprimentos: <math><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></msub><mo>=</mo><msqrt><mn>14</mn></msqrt><mo>=</mo><mn>3</mn><mo>,</mo><mn>74</mn></math> contra <math><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></msub><mo>=</mo><msqrt><mn>8</mn></msqrt><mo>=</mo><mn>2</mn><mo>,</mo><mn>83</mn></math>. A primeira variável varia mais — e isso se <em>vê</em> na Figura 3.5, sem calcular variância nenhuma.</p>
+</div>
+
+<pre><code><span class="cmt"># --- Exemplos 3.1 a 3.4 em R: tudo sai dos vetores de desvio ---</span>
+X &lt;- matrix(c( 4, 1,
+              -1, 3,
+               3, 5), nrow = 3, byrow = TRUE)
+
+xbar &lt;- colMeans(X)
+xbar
+<span class="out">## [1] 2 3</span>
+
+D &lt;- sweep(X, 2, xbar)            <span class="cmt"># matriz de desvios: colunas d1 e d2</span>
+t(D)
+<span class="out">##      [,1] [,2] [,3]</span>
+<span class="out">## [1,]    2   -3    1</span>
+<span class="out">## [2,]   -2    0    2</span>
+
+crossprod(D)                      <span class="cmt"># D'D: na diagonal (3-5), fora dela (3-6)</span>
+<span class="out">##      [,1] [,2]</span>
+<span class="out">## [1,]   14   -2</span>
+<span class="out">## [2,]   -2    8</span>
+
+sqrt(diag(crossprod(D)))          <span class="cmt"># comprimentos de d1 e d2</span>
+<span class="out">## [1] 3.741657 2.828427</span>
+
+Sn &lt;- crossprod(D) / 3            <span class="cmt"># divisor n, como no livro</span>
+Sn
+<span class="out">##            [,1]       [,2]</span>
+<span class="out">## [1,]  4.6666667 -0.6666667</span>
+<span class="out">## [2,] -0.6666667  2.6666667</span>
+
+cov2cor(Sn)                       <span class="cmt"># R: o mesmo com divisor n - 1</span>
+<span class="out">##            [,1]       [,2]</span>
+<span class="out">## [1,]  1.0000000 -0.1889822</span>
+<span class="out">## [2,] -0.1889822  1.0000000</span>
+
+<span class="cmt"># o ângulo, em graus</span>
+acos(cov2cor(Sn)[1, 2]) * 180 / pi
+<span class="out">## [1] 100.8934</span>
+</code></pre>
+
+
+<h2 id="s3">3. Amostra aleatória e o que se espera de <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math></h2>
+
+<p>Até aqui só descrevemos o conjunto de dados que temos na mão. Para <em>inferir</em> alguma coisa sobre a população, é preciso uma hipótese sobre como os dados foram gerados. Esta seção introduz essa hipótese — a de amostra aleatória — e extrai dela dois resultados que serão usados em todos os capítulos de inferência.</p>
+
+<h3 id="s3-1">3.1 O que é uma amostra aleatória</h3>
+
+<p>Antes de observar os dados, cada entrada é uma variável aleatória <math><msub><mi>X</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math>, e a matriz inteira é uma <strong>matriz aleatória</strong>:</p>
+
+<div class="eq">
+<math display="block"><mrow><munder><mi mathvariant="bold">X</mi><mrow><mo>(</mo><mi>n</mi><mo>×</mo><mi>p</mi><mo>)</mo></mrow></munder><mo>=</mo><mrow><mo>[</mo><mtable>
+  <mtr><mtd><msub><mi>X</mi><mn>11</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>X</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr>
+  <mtr><mtd><mo>⋮</mo></mtd><mtd></mtd><mtd><mo>⋮</mo></mtd></mtr>
+  <mtr><mtd><msub><mi>X</mi><mrow><mi>n</mi><mn>1</mn></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>X</mi><mrow><mi>n</mi><mi>p</mi></mrow></msub></mtd></mtr>
+</mtable><mo>]</mo></mrow></mrow></math>
+<span class="num">(3-8)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">Amostra aleatória</span>
+  <p>Os vetores-linha <math><msub><mi mathvariant="bold">X</mi><mn>1</mn></msub><mo>,</mo><msub><mi mathvariant="bold">X</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">X</mi><mi>n</mi></msub></math> formam uma <strong>amostra aleatória</strong> de <math><mi>f</mi><mo>(</mo><mi mathvariant="bold">x</mi><mo>)</mo></math> quando a densidade conjunta de todos eles se fatora:</p>
+  <math display="block"><mrow><mi>f</mi><mo>(</mo><msub><mi mathvariant="bold">x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">x</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi mathvariant="bold">x</mi><mn>1</mn></msub><mo>)</mo><mspace width="0.2em"/><mi>f</mi><mo>(</mo><msub><mi mathvariant="bold">x</mi><mn>2</mn></msub><mo>)</mo><mo>⋯</mo><mi>f</mi><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>n</mi></msub><mo>)</mo></mrow></math>
+  <p>Em palavras: <strong>(1)</strong> medições em itens diferentes são independentes entre si e <strong>(2)</strong> a distribuição conjunta das <math><mi>p</mi></math> variáveis é a mesma para todos os itens.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">A confusão que precisa ser desfeita hoje</span>
+  <p><strong>Independência é entre <em>linhas</em>, nunca entre colunas.</strong> As <math><mi>p</mi></math> medições feitas no mesmo indivíduo — <math><msub><mi>X</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>X</mi><mrow><mi>j</mi><mi>p</mi></mrow></msub></math> — são <em>quase sempre correlacionadas</em>, e é bom que sejam: se não fossem, não haveria análise multivariada, bastariam <math><mi>p</mi></math> análises univariadas. O que a hipótese exige é que <em>indivíduos diferentes</em> não se informem mutuamente.</p>
+  <p>Quem troca as duas coisas conclui, erradamente, que "os dados não são uma amostra aleatória porque altura e peso estão correlacionados". Não é isso. A pergunta certa é: <em>saber o valor do indivíduo 7 me diz alguma coisa sobre o indivíduo 8?</em></p>
+</div>
+
+<h3 id="s3-2">3.2 Quando a hipótese falha</h3>
+
+<p>O livro traz dois exemplos que valem mais que uma definição formal.</p>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.5 — o mesmo estudo, dois desenhos amostrais</span>
+  <p>Um gestor quer estudar o uso de uma área de canoagem selvagem. <strong>Desenho bom:</strong> sortear pessoas ao acaso entre todas as que entraram na área numa dada semana. Todos têm a mesma chance de entrar na amostra, e entradas mais populares aparecem em maior proporção — como deve ser.</p>
+  <p><strong>Desenho ruim:</strong> um entrevistador espera num acampamento no interior da área e entrevista só quem chega até lá. Aí as medições sucessivas <em>não</em> são independentes: quem chega àquele ponto tende a ficar muito tempo, e "duração da estadia" vem sistematicamente alta. Não é ruído — é viés estrutural.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.6 — a série temporal disfarçada de amostra</span>
+  <p>Resíduos sólidos gerados nos EUA, em milhões de toneladas, com <math><msub><mi>x</mi><mn>1</mn></msub></math> = papel/papelão e <math><msub><mi>x</mi><mn>2</mn></msub></math> = plástico:</p>
+  <div class="rolagem">
+  <table>
+    <caption>Tabela 3.1 — resíduos sólidos, <math><mi>n</mi><mo>=</mo><mn>6</mn></math> anos selecionados.</caption>
+    <thead><tr><th class="txt">Ano</th><th>1960</th><th>1965</th><th>1970</th><th>1975</th><th>1980</th><th>1985</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>1</mn></msub></math> (papel)</td><td>29,8</td><td>37,9</td><td>43,9</td><td>42,6</td><td>53,9</td><td>61,7</td></tr>
+      <tr><td class="txt"><math><msub><mi>x</mi><mn>2</mn></msub></math> (plástico)</td><td>0,4</td><td>1,4</td><td>3,0</td><td>4,4</td><td>7,6</td><td>9,8</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>São seis linhas, duas colunas — parece uma amostra de tamanho 6. <strong>Não é.</strong> As duas variáveis crescem com o tempo; a chance de seis observações independentes da <em>mesma</em> distribuição saírem em ordem crescente nas duas colunas é minúscula. Há uma <em>deriva</em> (<em class="en">drift</em>), e essa é a violação mais comum na prática: preços de ações, indicadores econômicos, medições repetidas no mesmo paciente.</p>
+  <p>Consequência prática: qualquer intervalo de confiança calculado com estes dados sob a hipótese de amostra aleatória será <em>otimista demais</em> — estreito demais, com cobertura real muito abaixo da nominal.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Por que isso aparece justamente aqui, e não no capítulo 5</span>
+  <p>Porque a hipótese de amostra aleatória é o que <em>justifica a escolha da distância</em>. Se as <math><mi>n</mi></math> coordenadas de <math><msub><mi mathvariant="bold">y</mi><mi>k</mi></msub></math> forem independentes e igualmente distribuídas, cada uma contribui igualmente para a posição do vetor e a distância euclidiana em <math><mi>n</mi></math> dimensões é apropriada. Se não forem — se houver deriva, ou se algumas observações forem mais confiáveis que outras —, seria preciso ponderar as coordenadas de forma desigual, isto é, usar uma distância estatística com pesos como as dos capítulos 1 e 2. A hipótese de amostra aleatória é o que permite tratar todas as observações do mesmo jeito.</p>
+</div>
+
+<h3 id="s3-3">3.3 Resultado 3.1 e sua demonstração</h3>
+
+<p>Sob a hipótese de amostra aleatória, e <em>sem supor nada sobre a forma da distribuição</em>, já é possível dizer como <math><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover></math> e <math><msub><mi>S</mi><mi>n</mi></msub></math> se comportam como estimadores.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Resultado 3.1</span>
+  <p>Seja <math><msub><mi mathvariant="bold">X</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">X</mi><mi>n</mi></msub></math> uma amostra aleatória de uma distribuição com média <math><mi mathvariant="bold">μ</mi></math> e covariâncias <math><mi mathvariant="bold">Σ</mi></math>. Então</p>
+  <math display="block"><mrow><mi>E</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">μ</mi><mo>,</mo><mspace width="2.2em"/><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi></mrow></math>
+  <span class="num">(3-9)</span>
+  <math display="block"><mrow><mi>E</mi><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mfrac><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi><mo>=</mo><mi mathvariant="bold">Σ</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi></mrow></math>
+  <span class="num">(3-10)</span>
+  <p>Logo <math><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover></math> é não viesado para <math><mi mathvariant="bold">μ</mi></math>, enquanto <math><msub><mi>S</mi><mi>n</mi></msub></math> é viesado, com viés <math><mo>−</mo><mo>(</mo><mn>1</mn><mo>/</mo><mi>n</mi><mo>)</mo><mi mathvariant="bold">Σ</mi></math>. Corrigindo, <math><mo>[</mo><mi>n</mi><mo>/</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>]</mo><msub><mi>S</mi><mi>n</mi></msub></math> é não viesado.</p>
+</div>
+
+<p><strong>A demonstração da média</strong> é a linearidade da esperança, aplicada às regras (2-24) do capítulo 2:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>E</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi>E</mi><mrow><mo>(</mo><mfrac><mrow><msub><mi mathvariant="bold">X</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi mathvariant="bold">X</mi><mi>n</mi></msub></mrow><mi>n</mi></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">μ</mi><mo>+</mo><mo>⋯</mo><mo>+</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">μ</mi><mo>=</mo><mi mathvariant="bold">μ</mi></mrow></math>
+</div>
+
+<p><strong>A demonstração da covariância</strong> é onde a independência entra. Escrevendo o desvio da média como média dos desvios,</p>
+
+<div class="eq">
+<math display="block"><mrow><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>n</mi><mn>2</mn></msup></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><munderover><mo>∑</mo><mrow><mi>ℓ</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>ℓ</mi></msub><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup></mrow></math>
+</div>
+
+<p>Tomando esperança, os <math><msup><mi>n</mi><mn>2</mn></msup></math> termos se dividem em dois grupos. Para <math><mi>j</mi><mo>≠</mo><mi>ℓ</mi></math>, cada entrada de <math><mi>E</mi><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo><msup><mrow><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>ℓ</mi></msub><mo>−</mo><mi mathvariant="bold">μ</mi><mo>)</mo></mrow><mo>′</mo></msup></math> é a covariância entre uma componente de <math><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub></math> e uma de <math><msub><mi mathvariant="bold">X</mi><mi>ℓ</mi></msub></math>, que são <strong>independentes</strong> — e portanto zero. Restam apenas os <math><mi>n</mi></math> termos com <math><mi>j</mi><mo>=</mo><mi>ℓ</mi></math>, cada um igual a <math><mi mathvariant="bold">Σ</mi></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><msup><mi>n</mi><mn>2</mn></msup></mfrac><mo>(</mo><mi mathvariant="bold">Σ</mi><mo>+</mo><mi mathvariant="bold">Σ</mi><mo>+</mo><mo>⋯</mo><mo>+</mo><mi mathvariant="bold">Σ</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><msup><mi>n</mi><mn>2</mn></msup></mfrac><mo>(</mo><mi>n</mi><mi mathvariant="bold">Σ</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi></mrow></math>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">É esse zero que a independência compra</span>
+  <p>Toda a economia do resultado está no cancelamento dos <math><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi></math> termos cruzados. Se houver correlação entre observações — a deriva do Exemplo 3.6 —, esses termos <em>não</em> se anulam e <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></math> deixa de ser <math><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math>. Com dependência positiva ela fica <em>maior</em> — a média amostral é menos precisa do que a fórmula sugere. É exatamente aí que os intervalos de confiança ficam estreitos demais.</p>
+  <p>Guarde também a leitura de <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math>: <strong>é a versão multivariada de <math><msup><mi>σ</mi><mn>2</mn></msup><mo>/</mo><mi>n</mi></math></strong>, e é ela que aparecerá dentro do <math><msup><mi>T</mi><mn>2</mn></msup></math> de Hotelling no capítulo 5.</p>
+</div>
+
+<p><strong>A demonstração do viés de <math><msub><mi>S</mi><mi>n</mi></msub></math></strong> usa a identidade que reescreve a matriz de somas de quadrados e produtos cruzados:</p>
+
+<div class="eq">
+<math display="block"><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><msup><mrow><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><msubsup><mi mathvariant="bold">X</mi><mi>j</mi><mo>′</mo></msubsup><mo>−</mo><mi>n</mi><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><msup><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>′</mo></msup></mrow></math>
+</div>
+
+<p>e a regra <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>)</mo><mo>=</mo><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub><mo>+</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup></math> (é o Exercício 3.16, resolvido adiante). Aplicada a cada <math><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub></math> dá <math><mi mathvariant="bold">Σ</mi><mo>+</mo><mi mathvariant="bold">μ</mi><msup><mi mathvariant="bold">μ</mi><mo>′</mo></msup></math>; aplicada a <math><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover></math>, cuja covariância acabamos de descobrir ser <math><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math>, dá <math><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi><mo>+</mo><mi mathvariant="bold">μ</mi><msup><mi mathvariant="bold">μ</mi><mo>′</mo></msup></math>. Portanto</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>E</mi><mrow><mo>(</mo><munderover><mo>∑</mo><mi>j</mi><mi>n</mi></munderover><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><msubsup><mi mathvariant="bold">X</mi><mi>j</mi><mo>′</mo></msubsup><mo>−</mo><mi>n</mi><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><msup><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo></mrow><mo>=</mo><mi>n</mi><mi mathvariant="bold">Σ</mi><mo>+</mo><mi>n</mi><mi mathvariant="bold">μ</mi><msup><mi mathvariant="bold">μ</mi><mo>′</mo></msup><mo>−</mo><mi>n</mi><mrow><mo>(</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi mathvariant="bold">Σ</mi><mo>+</mo><mi mathvariant="bold">μ</mi><msup><mi mathvariant="bold">μ</mi><mo>′</mo></msup><mo>)</mo></mrow><mo>=</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi mathvariant="bold">Σ</mi></mrow></math>
+</div>
+
+<p>e como <math><msub><mi>S</mi><mi>n</mi></msub></math> é essa soma dividida por <math><mi>n</mi></math>, segue <math><mi>E</mi><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mo>[</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>/</mo><mi>n</mi><mo>]</mo><mi mathvariant="bold">Σ</mi></math>. ∎</p>
+
+<h3 id="s3-4">3.4 Por fim, o divisor <math><mi>n</mi><mo>−</mo><mn>1</mn></math></h3>
+
+<p>O capítulo 1 apresentou os dois divisores e adiou a decisão. Ela é tomada agora, e o argumento é o Resultado 3.1: dividir por <math><mi>n</mi><mo>−</mo><mn>1</mn></math> produz um estimador não viesado de <math><mi mathvariant="bold">Σ</mi></math>.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A matriz de covariâncias amostral (não viesada)</span>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><msup><mrow><mo>(</mo><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><mo>=</mo><mfrac><mi>n</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><msub><mi>S</mi><mi>n</mi></msub></mrow></math>
+  <span class="num">(3-11)</span>
+  <p><strong>Deste ponto em diante do livro, <math><mi>S</mi></math> sem índice significa a versão com <math><mi>n</mi><mo>−</mo><mn>1</mn></math>.</strong> É essa que entra em todas as estatísticas de teste dos capítulos 5 em diante — e é a que <code>cov()</code> e <code>var()</code> do R calculam.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Duas ressalvas honestas que o livro faz e que quase todo mundo esquece</span>
+  <p><strong>1.</strong> A ausência de viés <em>não passa pela raiz quadrada</em>. <math><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math> é um estimador <em>viesado</em> de <math><msqrt><msub><mi>σ</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math> — com qualquer divisor. Esperança e raiz não comutam (desigualdade de Jensen).</p>
+  <p><strong>2.</strong> As correlações <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> também são viesadas para <math><msub><mi>ρ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>. Nos dois casos o viés é de ordem <math><mn>1</mn><mo>/</mo><mi>n</mi></math> e pode ser ignorado com <math><mi>n</mi></math> moderadamente grande — mas com <math><mi>n</mi><mo>=</mo><mn>10</mn></math> ele existe e não é desprezível.</p>
+  <p>A moral: "não viesado" é uma propriedade de <em>uma função específica</em> dos dados, não uma etiqueta que se cola no método inteiro.</p>
+</div>
+
+
+<h2 id="s4">4. Variância generalizada <math><mo>|</mo><mi>S</mi><mo>|</mo></math></h2>
+
+<h3 id="s4-1">4.1 Um número para toda a variação</h3>
+
+<p>Com uma variável, a variação é resumida por um número: <math><msup><mi>s</mi><mn>2</mn></msup></math>. Com <math><mi>p</mi></math> variáveis, <math><mi>S</mi></math> guarda <math><mi>p</mi></math> variâncias e <math><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>p</mi><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo></math> covariâncias — para <math><mi>p</mi><mo>=</mo><mn>10</mn></math> são 55 números. Às vezes queremos um só.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Variância generalizada amostral</span>
+  <math display="block"><mrow><mtext>Variância generalizada amostral</mtext><mo>=</mo><mo>|</mo><mi>S</mi><mo>|</mo></mrow></math>
+  <span class="num">(3-12)</span>
+  <p>O determinante de <math><mi>S</mi></math>. Com <math><mi>p</mi><mo>=</mo><mn>1</mn></math> ele reduz à variância de sempre, o que é a mínima exigência para uma generalização se chamar assim.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.7 — o cálculo</span>
+  <p>Para <math><msub><mi>x</mi><mn>1</mn></msub></math> = número de empregados e <math><msub><mi>x</mi><mn>2</mn></msub></math> = lucro por empregado nas 16 maiores editoras dos EUA (os dados da Figura 1.3):</p>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>252</mn><mo>,</mo><mn>04</mn></mtd><mtd><mo>−</mo><mn>68</mn><mo>,</mo><mn>43</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>68</mn><mo>,</mo><mn>43</mn></mtd><mtd><mn>123</mn><mo>,</mo><mn>67</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <math display="block"><mrow><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mo>(</mo><mn>252</mn><mo>,</mo><mn>04</mn><mo>)</mo><mo>(</mo><mn>123</mn><mo>,</mo><mn>67</mn><mo>)</mo><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>68</mn><mo>,</mo><mn>43</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>31</mn><mo>&#8239;</mo><mn>174</mn><mo>−</mo><mn>4</mn><mo>&#8239;</mo><mn>683</mn><mo>=</mo><mn>26</mn><mo>&#8239;</mo><mn>487</mn></mrow></math>
+  <p>Sozinho, esse número não diz muita coisa. Ele só ganha sentido em comparação — com outra amostra, ou com o volume que representa.</p>
+</div>
+
+<h3 id="s4-2">4.2 <math><mo>|</mo><mi>S</mi><mo>|</mo></math> é o quadrado de um volume</h3>
+
+<p>Aqui a geometria da seção 2 dá o troco. Considere <math><mi>p</mi><mo>=</mo><mn>2</mn></math> e os dois vetores de desvio <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math>. A área do paralelogramo que eles geram é base × altura, isto é <math><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></msub><mo>|</mo><mo>sen</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>|</mo><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></msub></math>. Usando <math><msup><mo>sen</mo><mn>2</mn></msup><mo>=</mo><mn>1</mn><mo>−</mo><msup><mo>cos</mo><mn>2</mn></msup></math> e substituindo (3-5) e (3-7):</p>
+
+<div class="eq">
+<math display="block"><mrow><mtext>Área</mtext><mo>=</mo><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></msub><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></msub><msqrt><mrow><mn>1</mn><mo>−</mo><msubsup><mi>r</mi><mn>12</mn><mn>2</mn></msubsup></mrow></msqrt><mo>=</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><msqrt><mrow><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>(</mo><mn>1</mn><mo>−</mo><msubsup><mi>r</mi><mn>12</mn><mn>2</mn></msubsup><mo>)</mo></mrow></msqrt></mrow></math>
+<span class="num">(3-13)</span>
+</div>
+
+<p>Por outro lado, o determinante de <math><mi>S</mi></math> é <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>−</mo><msubsup><mi>s</mi><mn>12</mn><mn>2</mn></msubsup><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>(</mo><mn>1</mn><mo>−</mo><msubsup><mi>r</mi><mn>12</mn><mn>2</mn></msubsup><mo>)</mo></math>. Comparando as duas expressões sai a identidade — e por indução ela vale para qualquer <math><mi>p</mi></math>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">A leitura geométrica de <math><mo>|</mo><mi>S</mi><mo>|</mo></math></span>
+  <math display="block"><mrow><mtext>Variância generalizada</mtext><mo>=</mo><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>−</mo><mi>p</mi></mrow></msup><msup><mrow><mo>(</mo><mtext>volume</mtext><mo>)</mo></mrow><mn>2</mn></msup></mrow></math>
+  <span class="num">(3-15)</span>
+  <p>onde "volume" é o do sólido gerado pelos <math><mi>p</mi></math> vetores de desvio <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi mathvariant="bold">d</mi><mi>p</mi></msub></math> no espaço de <math><mi>n</mi></math> dimensões.</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-06.png" alt="Duas figuras lado a lado: à esquerda, três vetores de desvio quase perpendiculares gerando um sólido volumoso; à direita, os mesmos comprimentos mas quase alinhados, gerando um sólido achatado.">
+  <figcaption><b>Figura 3.6</b> — Variância generalizada "grande" (a) e "pequena" (b) para <math><mi>p</mi><mo>=</mo><mn>3</mn></math>. Os comprimentos são semelhantes nos dois casos; o que muda é a <em>orientação relativa</em>. Em (b) <math><msub><mi mathvariant="bold">d</mi><mn>3</mn></msub></math> está quase no plano de <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> — o sólido quase não tem altura.</figcaption>
+</figure>
+
+<p>Dessa figura saem, de graça, as duas maneiras de <math><mo>|</mo><mi>S</mi><mo>|</mo></math> ser grande ou pequeno:</p>
+
+<ul>
+  <li><math><mo>|</mo><mi>S</mi><mo>|</mo></math> <strong>cresce</strong> quando algum <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> fica mais longo (variável mais dispersa) <em>ou</em> quando os vetores se aproximam da perpendicularidade mútua (variáveis menos correlacionadas).</li>
+  <li><math><mo>|</mo><mi>S</mi><mo>|</mo></math> <strong>encolhe</strong> se algum <math><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math> for pequeno <em>ou</em> se um dos vetores estiver quase no hiperplano gerado pelos outros — isto é, se houver quase-colinearidade.</li>
+</ul>
+
+<h3 id="s4-3">4.3 A elipsoide de distância constante</h3>
+
+<p>Há uma segunda leitura de <math><mo>|</mo><mi>S</mi><mo>|</mo></math>, agora na representação de <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões. Tome a distância estatística do capítulo 1 com <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> no papel do ponto fixo e <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> no papel da matriz de pesos <math><mi>A</mi></math>. Os pontos a distância constante <math><mi>c</mi></math> de <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> satisfazem</p>
+
+<div class="eq">
+<math display="block"><mrow><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow></math>
+<span class="num">(3-16)</span>
+</div>
+
+<p>que, pela seção 5.3 do capítulo 2, é uma <strong>elipsoide centrada em <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math></strong>. (Com <math><mi>p</mi><mo>=</mo><mn>1</mn></math> vira <math><msup><mrow><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><msub><mi>s</mi><mn>11</mn></msub></math>, a distância em unidades de desvio-padrão.) Cálculo integral dá o volume dessa elipsoide:</p>
+
+<div class="eq">
+<math display="block"><mrow><mtext>Volume</mtext><mo>{</mo><mi mathvariant="bold">x</mi><mo>:</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>≤</mo><msup><mi>c</mi><mn>2</mn></msup><mo>}</mo><mo>=</mo><msub><mi>k</mi><mi>p</mi></msub><msup><mrow><mo>|</mo><mi>S</mi><mo>|</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>c</mi><mi>p</mi></msup></mrow></math>
+<span class="num">(3-17)</span>
+</div>
+
+<p>com <math><msub><mi>k</mi><mi>p</mi></msub><mo>=</mo><mn>2</mn><msup><mi>π</mi><mrow><mi>p</mi><mo>/</mo><mn>2</mn></mrow></msup><mo>/</mo><mo>[</mo><mi>p</mi><mi mathvariant="normal">Γ</mi><mo>(</mo><mi>p</mi><mo>/</mo><mn>2</mn><mo>)</mo><mo>]</mo></math>. De novo: <strong>(volume)² ∝ variância generalizada</strong>. Volume grande, <math><mo>|</mo><mi>S</mi><mo>|</mo></math> grande.</p>
+
+<div class="caixa aviso">
+  <span class="rotulo">Duas elipsoides diferentes, não confundir</span>
+  <p>A elipsoide de (3-16) é feita com <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math>. Pela seção 5.3 do cap. 2, seus semi-eixos medem <math><mi>c</mi><mo>/</mo><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> com os <math><msub><mi>λ</mi><mi>i</mi></msub></math> de <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> — que são os <em>recíprocos</em> dos de <math><mi>S</mi></math>. Logo, em termos dos autovalores de <math><mi>S</mi></math>, os semi-eixos são <math><mi>c</mi><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math>, na direção dos autovetores <math><msub><mi mathvariant="bold">e</mi><mi>i</mi></msub></math> de <math><mi>S</mi></math>.</p>
+  <p>Ou seja: <strong>o eixo mais longo aponta na direção de maior variância</strong>, e seu comprimento é proporcional ao desvio-padrão naquela direção. Essa inversão é a armadilha número um do capítulo 2 e vale reconferir sempre.</p>
+</div>
+
+<h3 id="s4-4">4.4 A fraqueza: <math><mo>|</mo><mi>S</mi><mo>|</mo></math> não vê orientação</h3>
+
+<p>Agora a parte crítica. Um único número não pode conter tudo o que <math><mi>S</mi></math> contém, e o Exemplo 3.8 mostra exatamente o que se perde.</p>
+
+<figure>
+  <img src="img/fig-03-07.png" alt="Três diagramas de dispersão: (a) nuvem inclinada para cima, (b) nuvem circular, (c) nuvem inclinada para baixo.">
+  <figcaption><b>Figura 3.7</b> — Três nuvens com padrões de correlação bem diferentes: <math><mi>r</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>8</mn></math> em (a), <math><mi>r</mi><mo>=</mo><mn>0</mn></math> em (b) e <math><mi>r</mi><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>8</mn></math> em (c). Todas com <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math>.</figcaption>
+</figure>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.8 — três matrizes, um só determinante</span>
+  <div class="rolagem">
+  <table>
+    <caption>As três matrizes da Figura 3.7 e sua análise espectral.</caption>
+    <thead><tr><th class="txt">Painel</th><th class="txt"><math><mi>S</mi></math></th><th><math><mi>r</mi></math></th><th><math><msub><mi>λ</mi><mn>1</mn></msub></math></th><th><math><msub><mi>λ</mi><mn>2</mn></msub></math></th><th class="txt">Direção de <math><msub><mi mathvariant="bold">e</mi><mn>1</mn></msub></math></th><th><math><mo>|</mo><mi>S</mi><mo>|</mo></math></th></tr></thead>
+    <tbody>
+      <tr><td class="txt">(a)</td><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>0,8</td><td>9</td><td>1</td><td class="txt"><math><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math> — 45°</td><td>9</td></tr>
+      <tr><td class="txt">(b)</td><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>0</td><td>3</td><td>3</td><td class="txt">indefinida (autovalores iguais)</td><td>9</td></tr>
+      <tr><td class="txt">(c)</td><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>−0,8</td><td>9</td><td>1</td><td class="txt"><math><mo>[</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math> — −45°</td><td>9</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Para (a): <math><mo>|</mo><mi>S</mi><mo>−</mo><mi>λ</mi><mi>I</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>λ</mi><mo>−</mo><mn>5</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mn>4</mn><mn>2</mn></msup><mo>=</mo><mo>(</mo><mi>λ</mi><mo>−</mo><mn>9</mn><mo>)</mo><mo>(</mo><mi>λ</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>0</mn></math>, dando <math><msub><mi>λ</mi><mn>1</mn></msub><mo>=</mo><mn>9</mn></math> e <math><msub><mi>λ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>.</p>
+  <p>Com <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>5</mn><mo>,</mo><mn>99</mn></math> (que em <math><mi>p</mi><mo>=</mo><mn>2</mn></math> cobre cerca de 95% das observações), os semi-eixos de (a) medem <math><msqrt><mn>9</mn></msqrt><msqrt><mrow><mn>5</mn><mo>,</mo><mn>99</mn></mrow></msqrt><mo>=</mo><mn>7</mn><mo>,</mo><mn>34</mn></math> e <math><msqrt><mn>1</mn></msqrt><msqrt><mrow><mn>5</mn><mo>,</mo><mn>99</mn></mrow></msqrt><mo>=</mo><mn>2</mn><mo>,</mo><mn>45</mn></math>; os de (b) medem ambos <math><msqrt><mn>3</mn></msqrt><msqrt><mrow><mn>5</mn><mo>,</mo><mn>99</mn></mrow></msqrt><mo>=</mo><mn>4</mn><mo>,</mo><mn>24</mn></math> — um círculo.</p>
+</div>
+
+<figure>
+  <img src="img/fig-03-08.png" alt="Os mesmos três diagramas de dispersão, agora com os eixos das elipses de 95% desenhados como setas partindo do ponto médio.">
+  <figcaption><b>Figura 3.8</b> — Os eixos das elipses de 95% centradas na média, para as três nuvens da Figura 3.7. Os autovetores acham as "direções naturais" do padrão, e os autovalores dão a escala em cada direção — inclusive em dimensões altas, onde não há como olhar.</figcaption>
+</figure>
+
+<div class="caixa aviso">
+  <span class="rotulo">A conclusão do Exemplo 3.8, e o que fazer com ela</span>
+  <p>As três nuvens têm <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>9</mn></math> e, por (3-17), as três elipses têm <em>exatamente a mesma área</em>. Mas uma é alongada a 45°, outra é um círculo e a terceira é alongada a −45°. <strong><math><mo>|</mo><mi>S</mi><mo>|</mo></math> não carrega nenhuma informação sobre orientação.</strong> Comparar variâncias generalizadas só é seguro quando os padrões comparados têm orientações parecidas.</p>
+  <p><strong>O remédio:</strong> como <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><msub><mi>λ</mi><mn>2</mn></msub><mo>⋯</mo><msub><mi>λ</mi><mi>p</mi></msub></math> (Exercício 2.12), reportar o <em>produto</em> é jogar fora os fatores individuais. Relate os <math><msub><mi>λ</mi><mi>i</mi></msub></math> um a um: eles descrevem a variabilidade em cada direção. Isso é, literalmente, uma <strong>análise de componentes principais</strong> — e é o capítulo 8.</p>
+</div>
+
+<h3 id="s4-5">4.5 Quando <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math></h3>
+
+<p>A segunda fraqueza é mais grave, porque quebra o método: se <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>, então <math><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></math> não existe, e sem ela não há distância estatística, não há elipse, não há teste <math><msup><mi>T</mi><mn>2</mn></msup></math>.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Resultado 3.2</span>
+  <p>A variância generalizada é zero <strong>se e somente se</strong> pelo menos um vetor de desvio estiver no hiperplano gerado pelos demais — ou seja, quando as colunas da matriz de desvios <math><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math> são <strong>linearmente dependentes</strong>.</p>
+</div>
+
+<p>A ida da demonstração é curta e vale a pena, porque a identidade que ela usa reaparece na seção 5. Se as colunas de <math><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math> forem dependentes, existe <math><mi mathvariant="bold">a</mi><mo>≠</mo><mn>0</mn></math> com <math><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math>. Como</p>
+
+<div class="eq">
+<math display="block"><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>S</mi><mo>=</mo><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo></mrow></math>
+</div>
+
+<p>segue <math><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math>, ou seja, as colunas de <math><mi>S</mi></math> também são dependentes e <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>. A volta usa que <math><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math> implica <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo></mrow><mo>′</mo></msup><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo><mi mathvariant="bold">a</mi><mo>=</mo><msubsup><mi>L</mi><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo><mi mathvariant="bold">a</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>0</mn></math> — e um comprimento só é zero se o vetor for zero. ∎</p>
+
+<figure>
+  <img src="img/fig-03-09.png" alt="Três vetores de desvio no espaço tridimensional em que d3 está no plano gerado por d1 e d2, com linhas tracejadas mostrando a combinação.">
+  <figcaption><b>Figura 3.9</b> — Um caso em que o volume tridimensional é zero: <math><msub><mi mathvariant="bold">d</mi><mn>3</mn></msub><mo>=</mo><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>+</mo><mn>2</mn><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> está no plano dos outros dois. O sólido é achatado, e <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>.</figcaption>
+</figure>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.9 — a degenerescência exposta</span>
+  <p>Com <math><mi>n</mi><mo>=</mo><mi>p</mi><mo>=</mo><mn>3</mn></math> e <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>5</mn><mo>]</mo></math>:</p>
+  <math display="block"><mrow><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>6</mn></mtd></mtr>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>4</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.4em"/><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>As colunas são <math><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, <math><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">d</mi><mn>3</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math>, e <math><msub><mi mathvariant="bold">d</mi><mn>3</mn></msub><mo>=</mo><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>+</mo><mn>2</mn><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math>. Daí</p>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></mtd><mtd><mn>0</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></mtd><mtd><mn>1</mn></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>3</mn><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>)</mo></mrow><mo>+</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo>−</mo><mfrac><mn>9</mn><mn>4</mn></mfrac><mo>=</mo><mn>0</mn></mrow></math>
+  <p>Os autovalores de <math><mi>S</mi></math> são <math><mn>3</mn><mo>,</mo><mn>823</mn></math>, <math><mn>1</mn><mo>,</mo><mn>177</mn></math> e <math><mn>0</mn></math> — o produto é zero por causa do último.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.10 — como isso acontece na vida real</span>
+  <p>Uma matriz de dados em que a terceira coluna é a <em>soma</em> das duas primeiras — ligações telefônicas bem-sucedidas de um funcionário de meio período, de um de período integral, e o total:</p>
+  <math display="block"><mrow><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>9</mn></mtd><mtd><mn>10</mn></mtd></mtr>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>12</mn></mtd><mtd><mn>16</mn></mtd></mtr>
+    <mtr><mtd><mn>2</mn></mtd><mtd><mn>10</mn></mtd><mtd><mn>12</mn></mtd></mtr>
+    <mtr><mtd><mn>5</mn></mtd><mtd><mn>8</mn></mtd><mtd><mn>13</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mn>11</mn></mtd><mtd><mn>14</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.4em"/><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>5</mn><mo>,</mo><mn>0</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p><math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>2</mn><mo>,</mo><msup><mn>5</mn><mn>2</mn></msup><mo>×</mo><mn>5</mn><mo>−</mo><mn>2</mn><mo>,</mo><msup><mn>5</mn><mn>3</mn></msup><mo>−</mo><mn>2</mn><mo>,</mo><msup><mn>5</mn><mn>3</mn></msup><mo>=</mo><mn>31</mn><mo>,</mo><mn>25</mn><mo>−</mo><mn>15</mn><mo>,</mo><mn>625</mn><mo>−</mo><mn>15</mn><mo>,</mo><mn>625</mn><mo>=</mo><mn>0</mn></math>. Os autovalores são <math><mn>7</mn><mo>,</mo><mn>5</mn></math>, <math><mn>2</mn><mo>,</mo><mn>5</mn></math> e <math><mn>0</mn></math>, e o autovetor do zero é proporcional a <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> — que <em>lê</em> a restrição <math><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>−</mo><msub><mi>x</mi><mn>3</mn></msub><mo>=</mo><mn>0</mn></math>.</p>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">As três condições equivalentes — memorize esta caixa</span>
+  <p>Para um vetor <math><mi mathvariant="bold">a</mi><mo>≠</mo><mn>0</mn></math>, as três afirmações abaixo valem juntas ou não valem nenhuma:</p>
+  <ol>
+    <li><math><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math> — <math><mi mathvariant="bold">a</mi></math> é autovetor de <math><mi>S</mi></math> com autovalor <strong>zero</strong>.</li>
+    <li><math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mn>0</mn></math> para todo <math><mi>j</mi></math> — a combinação linear dos <em>dados centrados</em> é identicamente nula.</li>
+    <li><math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mi>c</mi></math> para todo <math><mi>j</mi></math> — a combinação linear dos <em>dados originais</em> é uma constante.</li>
+  </ol>
+  <p><strong>O diagnóstico que decorre daí:</strong> se <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> e você não sabe por quê, calcule os autovetores de <math><mi>S</mi></math> e olhe o que corresponde ao autovalor nulo. Os coeficientes dele <em>escrevem a dependência</em>. É um teste de diagnóstico gratuito, e vai reaparecer no capítulo 8 com o nome de "componente principal com variância zero".</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">A armadilha profissional que os autores contam ter caído</span>
+  <p>O livro é explícito: os autores já perderam tempo com casos assim antes de descobrir o que era. A origem é quase sempre a mesma — <strong>alguém incluiu no conjunto de dados uma variável que é soma (ou média, ou porcentagem complementar) de outras</strong>. Nota de álgebra + nota de geometria + nota total. Prova + exame final + pontos totais. Peso de cada componente químico + peso total.</p>
+  <p>É prática comum criar variáveis derivadas; o erro é <em>deixar as originais junto</em> na análise multivariada. Quando precisar escolher qual remover, o conselho do livro é preferir manter a variável (presumidamente) <em>causal</em> e descartar a característica secundária.</p>
+  <p>E há um caso em que nem existe escolha: <strong>se <math><mi>n</mi><mo>≤</mo><mi>p</mi></math>, então <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> para toda e qualquer amostra</strong> (Resultado 3.3). O motivo é geométrico: as <math><mi>n</mi></math> linhas da matriz de desvios somam zero, logo o posto de <math><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math> é no máximo <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>≤</mo><mi>p</mi><mo>−</mo><mn>1</mn></math>, e <math><mi>S</mi></math> herda esse posto deficiente. Menos indivíduos que variáveis: <math><mi>S</mi></math> singular, sempre. É o problema central dos dados genômicos e de imagem, onde <math><mi>p</mi></math> pode ser milhares e <math><mi>n</mi></math>, dezenas.</p>
+</div>
+
+<h3 id="s4-6">4.6 <math><mo>|</mo><mi>R</mi><mo>|</mo></math> e a variância total</h3>
+
+<p><math><mo>|</mo><mi>S</mi><mo>|</mo></math> tem ainda um defeito de escala: uma única variável muito dispersa domina o determinante, porque seu <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> é muito longo e o volume responde a isso. A saída é <strong>padronizar</strong> — substituir cada <math><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub></math> por <math><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>k</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>k</mi></msub><mo>)</mo><mo>/</mo><msqrt><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></msqrt></math>. A matriz de covariâncias das variáveis padronizadas é justamente <math><mi>R</mi></math>, e</p>
+
+<div class="eq">
+<math display="block"><mrow><mrow><mo>(</mo><mtable><mtr><mtd><mtext>variância generalizada</mtext></mtd></mtr><mtr><mtd><mtext>das variáveis padronizadas</mtext></mtd></mtr></mtable><mo>)</mo></mrow><mo>=</mo><mo>|</mo><mi>R</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>−</mo><mi>p</mi></mrow></msup><msup><mrow><mo>(</mo><mtext>volume</mtext><mo>)</mo></mrow><mn>2</mn></msup></mrow></math>
+<span class="num">(3-20)</span>
+</div>
+
+<p>Agora <em>todos</em> os vetores têm o mesmo comprimento, <math><msqrt><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msqrt></math>. O volume passa a depender <strong>só das orientações</strong>: <math><mo>|</mo><mi>R</mi><mo>|</mo></math> é grande quando os <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> são todos próximos de zero (vetores quase perpendiculares) e pequeno quando algum <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> se aproxima de <math><mo>±</mo><mn>1</mn></math> (dois vetores quase na mesma reta).</p>
+
+<figure>
+  <img src="img/fig-03-10.png" alt="Duas figuras lado a lado com três vetores de desvio de mesmo comprimento: à esquerda bem espalhados, à direita quase alinhados.">
+  <figcaption><b>Figura 3.10</b> — O volume gerado por vetores de desvio <em>de mesmo comprimento</em>, isto é, das variáveis padronizadas. Compare com a Figura 3.6: ali a diferença entre os dois sólidos vinha em parte dos comprimentos; aqui vem só da orientação.</figcaption>
+</figure>
+
+<p>A ponte algébrica entre as duas medidas é uma linha (é o Exercício 3.12, resolvido adiante):</p>
+
+<div class="eq">
+<math display="block"><mrow><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>|</mo><mi>R</mi><mo>|</mo></mrow></math>
+<span class="num">(3-21)</span>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.11 — conferindo (3-21) com <math><mi>p</mi><mo>=</mo><mn>3</mn></math></span>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mn>9</mn></mtd><mtd><mn>2</mn></mtd></mtr>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.6em"/><mi>R</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>1</mn></mtd><mtd><mfrac><mn>2</mn><mn>3</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>3</mn></mfrac></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>Expandindo pela primeira linha, <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>4</mn><mo>(</mo><mn>9</mn><mo>−</mo><mn>4</mn><mo>)</mo><mo>−</mo><mn>3</mn><mo>(</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mn>1</mn><mo>(</mo><mn>6</mn><mo>−</mo><mn>9</mn><mo>)</mo><mo>=</mo><mn>20</mn><mo>−</mo><mn>3</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>14</mn></math>, e do mesmo modo <math><mo>|</mo><mi>R</mi><mo>|</mo><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>12</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>12</mn></mfrac><mo>=</mo><mfrac><mn>7</mn><mn>18</mn></mfrac><mo>=</mo><mn>0</mn><mo>,</mo><mn>3889</mn></math>.</p>
+  <p>Verificação: <math><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><msub><mi>s</mi><mn>33</mn></msub><mo>|</mo><mi>R</mi><mo>|</mo><mo>=</mo><mn>4</mn><mo>×</mo><mn>9</mn><mo>×</mo><mn>1</mn><mo>×</mo><mfrac><mn>7</mn><mn>18</mn></mfrac><mo>=</mo><mn>14</mn></math> ✓</p>
+  <p><strong>Leitura:</strong> <math><mo>|</mo><mi>R</mi><mo>|</mo></math> é adimensional e insensível a mudanças de escala; <math><mo>|</mo><mi>S</mi><mo>|</mo></math> muda se você medir uma variável em metros em vez de centímetros. Multiplicar <math><msub><mi>x</mi><mn>1</mn></msub></math> por 100 multiplica <math><msub><mi>s</mi><mn>11</mn></msub></math> por <math><msup><mn>10</mn><mn>4</mn></msup></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo></math> pelo mesmo fator, sem mexer em <math><mo>|</mo><mi>R</mi><mo>|</mo></math>.</p>
+</div>
+
+<p>Por fim, uma terceira maneira — a mais simples de todas — de resumir <math><mi>S</mi></math> num número:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Variância amostral total</span>
+  <math display="block"><mrow><mtext>Variância amostral total</mtext><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><mo>+</mo><msub><mi>s</mi><mn>22</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>=</mo><mtext>tr</mtext><mo>(</mo><mi>S</mi><mo>)</mo></mrow></math>
+  <span class="num">(3-23)</span>
+  <p>Geometricamente, é a soma dos quadrados dos comprimentos dos <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math>, dividida por <math><mi>n</mi><mo>−</mo><mn>1</mn></math>. E — este é o ponto — <strong>ela ignora completamente a orientação</strong>: dá o mesmo valor para os dois sólidos da Figura 3.6.</p>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.12 — os dois resumos lado a lado</span>
+  <p>Para os dados do Exemplo 3.7: <math><mn>252</mn><mo>,</mo><mn>04</mn><mo>+</mo><mn>123</mn><mo>,</mo><mn>67</mn><mo>=</mo><mn>375</mn><mo>,</mo><mn>71</mn></math>. Para os do Exemplo 3.9: <math><mn>3</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>5</mn></math> — <em>positiva</em>, apesar de <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>.</p>
+  <p>Essa discrepância é instrutiva. Traço é <strong>soma</strong> dos autovalores, determinante é <strong>produto</strong>. Um único autovalor nulo zera o produto e mal afeta a soma. Por isso o traço não detecta degenerescência — e por isso, no capítulo 8, a "proporção da variância explicada" é medida com o <em>traço</em>: ela continua fazendo sentido mesmo quando <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>.</p>
+</div>
+
+<pre><code><span class="cmt"># --- Exemplos 3.7 a 3.12: variância generalizada em R ---</span>
+S &lt;- matrix(c(252.04, -68.43, -68.43, 123.67), 2, 2)
+det(S)
+<span class="out">## [1] 26487.12</span>
+sum(diag(S))                      <span class="cmt"># variância total (3-23)</span>
+<span class="out">## [1] 375.71</span>
+
+<span class="cmt"># Exemplo 3.8: três orientações, um só determinante</span>
+S1 &lt;- matrix(c(5,  4,  4, 5), 2)
+S2 &lt;- matrix(c(3,  0,  0, 3), 2)
+S3 &lt;- matrix(c(5, -4, -4, 5), 2)
+sapply(list(S1, S2, S3), det)
+<span class="out">## [1] 9 9 9</span>
+sapply(list(S1, S2, S3), function(S) eigen(S)$values)
+<span class="out">##      [,1] [,2] [,3]</span>
+<span class="out">## [1,]    9    3    9</span>
+<span class="out">## [2,]    1    3    1</span>
+
+<span class="cmt"># Exemplo 3.10: a dependência denunciada pelo autovetor de autovalor zero</span>
+X &lt;- matrix(c(1,  9, 10,
+              4, 12, 16,
+              2, 10, 12,
+              5,  8, 13,
+              3, 11, 14), nrow = 5, byrow = TRUE)
+S &lt;- cov(X)                       <span class="cmt"># cov() já usa o divisor n - 1</span>
+S
+<span class="out">##      [,1] [,2] [,3]</span>
+<span class="out">## [1,]  2.5  0.0  2.5</span>
+<span class="out">## [2,]  0.0  2.5  2.5</span>
+<span class="out">## [3,]  2.5  2.5  5.0</span>
+e &lt;- eigen(S)
+round(e$values, 6)
+<span class="out">## [1] 7.5 2.5 0.0</span>
+round(e$vectors[, 3], 4)          <span class="cmt"># o sinal global é arbitrário</span>
+<span class="out">## [1]  0.5774  0.5774 -0.5774</span>
+
+<span class="cmt"># Exemplo 3.11: |S| = s11 s22 s33 |R|</span>
+S &lt;- matrix(c(4, 3, 1,
+              3, 9, 2,
+              1, 2, 1), 3, 3, byrow = TRUE)
+c(det(S), det(cov2cor(S)), prod(diag(S)) * det(cov2cor(S)))
+<span class="out">## [1] 14.0000000  0.3888889 14.0000000</span>
+</code></pre>
+
+
+<h2 id="s5">5. Tudo como operação matricial</h2>
+
+<p>Esta seção não traz conceito novo: traz <em>notação</em>. Mas é uma notação que vale a pena, porque é assim que <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math> aparecem em todo o resto do livro e é assim que o computador os calcula.</p>
+
+<p>Como <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>=</mo><msubsup><mi mathvariant="bold">y</mi><mi>i</mi><mo>′</mo></msubsup><mn>1</mn><mo>/</mo><mi>n</mi></math> e empilhando os <math><mi>p</mi></math> resultados,</p>
+
+<div class="eq">
+<math display="block"><mrow><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><msup><mi>X</mi><mo>′</mo></msup><mn>1</mn></mrow></math>
+<span class="num">(3-24)</span>
+</div>
+
+<p>Transpondo e pré-multiplicando por <math><mn>1</mn></math> obtemos a matriz <math><mi>n</mi><mo>×</mo><mi>p</mi></math> em que <em>toda linha</em> é <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math>:</p>
+
+<div class="eq">
+<math display="block"><mrow><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mi>X</mi></mrow></math>
+<span class="num">(3-25)</span>
+</div>
+
+<p>e subtraindo de <math><mi>X</mi></math> sai a matriz de desvios da equação (3-18):</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mrow><mo>(</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>)</mo></mrow><mi>X</mi></mrow></math>
+<span class="num">(3-26)</span>
+</div>
+
+<div class="caixa definicao">
+  <span class="rotulo">A matriz centralizadora</span>
+  <p><math><mi>H</mi><mo>=</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup></math> é <strong>simétrica</strong> e <strong>idempotente</strong>: <math><msup><mi>H</mi><mo>′</mo></msup><mi>H</mi><mo>=</mo><mi>H</mi><mi>H</mi><mo>=</mo><mi>H</mi></math>. A verificação é direta —</p>
+  <math display="block"><mrow><mrow><mo>(</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>)</mo></mrow><mrow><mo>(</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>)</mo></mrow><mo>=</mo><mi>I</mi><mo>−</mo><mfrac><mn>2</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>+</mo><mfrac><mn>1</mn><msup><mi>n</mi><mn>2</mn></msup></mfrac><mn>1</mn><munder><munder><mrow><msup><mn>1</mn><mo>′</mo></msup><mn>1</mn></mrow><mo>⏟</mo></munder><mi>n</mi></munder><msup><mn>1</mn><mo>′</mo></msup><mo>=</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup></mrow></math>
+  <p>Ela é a <em>projeção</em> sobre o subespaço perpendicular a <math><mn>1</mn></math> — exatamente a operação da seção 2.3, agora escrita como matriz. Reaparecerá no capítulo 7 com o nome de "matriz chapéu" residual.</p>
+</div>
+
+<p>Juntando tudo, e usando a idempotência para colapsar <math><msup><mi>H</mi><mo>′</mo></msup><mi>H</mi></math> num só <math><mi>H</mi></math>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">As fórmulas matriciais</span>
+  <math display="block"><mrow><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><msup><mi>X</mi><mo>′</mo></msup><mn>1</mn><mo>,</mo><mspace width="2.4em"/><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><msup><mi>X</mi><mo>′</mo></msup><mrow><mo>(</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>)</mo></mrow><mi>X</mi></mrow></math>
+  <span class="num">(3-27)</span>
+  <p>Para <math><msub><mi>S</mi><mi>n</mi></msub></math>, troque <math><mn>1</mn><mo>/</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></math> por <math><mn>1</mn><mo>/</mo><mi>n</mi></math>. Duas linhas de álgebra substituem todos os somatórios do capítulo 1.</p>
+</div>
+
+<p>Falta ligar <math><mi>S</mi></math> a <math><mi>R</mi></math>. Definindo a <strong>matriz de desvios-padrão amostrais</strong> <math><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> como a diagonal com os <math><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math>, e <math><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> como sua inversa:</p>
+
+<div class="eq">
+<math display="block"><mrow><mi>R</mi><mo>=</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>S</mi><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>,</mo><mspace width="2.4em"/><mi>S</mi><mo>=</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>R</mi><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></math>
+<span class="num">(3-29), (3-30)</span>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">O reconhecimento a fazer</span>
+  <p>Compare com (2-36) e (2-37) do capítulo 2: <math><mi mathvariant="bold">ρ</mi><mo>=</mo><msup><mi>V</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">Σ</mi><msup><mi>V</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>. <strong>São as mesmas equações</strong>, com as quantidades amostrais no lugar das populacionais. Esse paralelismo é sistemático no livro inteiro: quase todo resultado populacional dos capítulos 2 e 4 tem um análogo amostral obtido trocando <math><mi mathvariant="bold">μ</mi><mo>→</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi mathvariant="bold">Σ</mi><mo>→</mo><mi>S</mi></math>. Vale a pena manter as duas colunas mentalmente alinhadas.</p>
+</div>
+
+
+<h2 id="s6">6. Combinações lineares na amostra</h2>
+
+<p>O capítulo 2, seção 8, mostrou que <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> tem média <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">μ</mi></math> e variância <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">c</mi></math>. Aqui está a versão amostral, com uma novidade importante: <em>não é preciso calcular as <math><mi>n</mi></math> observações derivadas.</em></p>
+
+<p>Se <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><msub><mi>c</mi><mn>1</mn></msub><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>c</mi><mi>p</mi></msub><msub><mi>X</mi><mi>p</mi></msub></math>, o valor observado na <math><mi>j</mi></math>-ésima linha é <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub></math>. A média dessas <math><mi>n</mi></math> quantidades é imediata; a variância sai de <math><msup><mrow><mo>(</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><mo>=</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><msup><mrow><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><mi mathvariant="bold">c</mi></math>, com <math><mi mathvariant="bold">c</mi></math> saindo do somatório para fora dos dois lados.</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Resultado 3.5</span>
+  <p>Para duas combinações lineares <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> e <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math>:</p>
+  <math display="block"><mrow><mtable columnalign="left">
+    <mtr><mtd><mtext>média amostral de </mtext><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></mtd></mtr>
+    <mtr><mtd><mtext>variância amostral de </mtext><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">b</mi></mtd></mtr>
+    <mtr><mtd><mtext>covariância amostral entre </mtext><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mtext> e </mtext><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi></mtd></mtr>
+  </mtable></mrow></math>
+  <span class="num">(3-36)</span>
+</div>
+
+<div class="caixa pratica">
+  <span class="rotulo">Exemplo 3.13 — a mesma resposta pelos dois caminhos</span>
+  <p>Com os dados do Exemplo 3.9, <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> e <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>]</mo></math>.</p>
+  <p><strong>Caminho longo</strong> — calcular as três observações derivadas e aplicar as fórmulas de sempre:</p>
+  <div class="rolagem">
+  <table>
+    <caption>As <math><mi>n</mi><mo>=</mo><mn>3</mn></math> observações de cada combinação linear.</caption>
+    <thead><tr><th class="txt"><math><mi>j</mi></math></th><th class="txt"><math><msubsup><mi mathvariant="bold">x</mi><mi>j</mi><mo>′</mo></msubsup></math></th><th><math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub></math></th><th><math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub></math></th></tr></thead>
+    <tbody>
+      <tr><td class="txt">1</td><td class="txt">[1, 2, 5]</td><td>1</td><td>14</td></tr>
+      <tr><td class="txt">2</td><td class="txt">[4, 1, 6]</td><td>4</td><td>21</td></tr>
+      <tr><td class="txt">3</td><td class="txt">[4, 0, 4]</td><td>4</td><td>16</td></tr>
+      <tr><td class="txt"><strong>média</strong></td><td class="txt"></td><td><strong>3</strong></td><td><strong>17</strong></td></tr>
+      <tr><td class="txt"><strong>variância</strong></td><td class="txt"></td><td><strong>3</strong></td><td><strong>13</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>e a covariância <math><mo>[</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>3</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>4</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>]</mo><mo>/</mo><mn>2</mn><mo>=</mo><mn>9</mn><mo>/</mo><mn>2</mn></math>.</p>
+  <p><strong>Caminho curto</strong> — usar (3-36) e nunca olhar para as observações derivadas. Com <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>5</mn><mo>]</mo></math> e a matriz <math><mi>S</mi></math> do Exemplo 3.9:</p>
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>3</mn><mspace width="0.5em"/><mo>✓</mo><mo>,</mo><mspace width="1.6em"/><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mn>3</mn><mo>−</mo><mn>1</mn><mo>+</mo><mn>15</mn><mo>=</mo><mn>17</mn><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">b</mi><mo>=</mo><mn>3</mn><mspace width="0.5em"/><mo>✓</mo><mo>,</mo><mspace width="1.6em"/><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi><mo>=</mo><mn>13</mn><mspace width="0.5em"/><mo>✓</mo><mo>,</mo><mspace width="1.6em"/><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi><mo>=</mo><mfrac><mn>9</mn><mn>2</mn></mfrac><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+  <p>Os dois caminhos concordam, como têm de concordar. O segundo é o que se usa: <strong>uma vez calculados <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math>, qualquer combinação linear sai sem tocar de novo nos dados.</strong></p>
+</div>
+
+<p>E o caso geral, com <math><mi>q</mi></math> combinações lineares empilhadas nas linhas de uma matriz <math><mi>A</mi></math> de dimensão <math><mi>q</mi><mo>×</mo><mi>p</mi></math>:</p>
+
+<div class="caixa definicao">
+  <span class="rotulo">Resultado 3.6</span>
+  <p>As <math><mi>q</mi></math> combinações lineares <math><mi>A</mi><mi mathvariant="bold">X</mi></math> têm vetor de médias amostrais <math><mi>A</mi><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e matriz de covariâncias amostrais <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math>.</p>
+  <p>A verificação é ler <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math> entrada a entrada: a posição <math><mo>(</mo><mi>i</mi><mo>,</mo><mi>k</mi><mo>)</mo></math> é <math><msubsup><mi mathvariant="bold">a</mi><mi>i</mi><mo>′</mo></msubsup><mi>S</mi><msub><mi mathvariant="bold">a</mi><mi>k</mi></msub></math>, que por (3-36) é a covariância entre a <math><mi>i</mi></math>-ésima e a <math><mi>k</mi></math>-ésima combinações. Nada além disso.</p>
+</div>
+
+<div class="caixa aviso">
+  <span class="rotulo">Onde <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math> vai reaparecer</span>
+  <p>Esta fórmula de duas letras é a peça mais reutilizada do livro. <strong>Cap. 5:</strong> contrastes num vetor de médias, para testar <math><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mo>⋯</mo></math>. <strong>Cap. 6:</strong> perfis e comparações repetidas. <strong>Cap. 8:</strong> os escores das componentes principais são <math><mi>A</mi><mi mathvariant="bold">X</mi></math> com as linhas de <math><mi>A</mi></math> iguais aos autovetores de <math><mi>S</mi></math> — e aí <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math> sai <em>diagonal</em>, que é justamente a graça do método. <strong>Cap. 11:</strong> a função discriminante de Fisher é um <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math> escolhido para maximizar uma razão de <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">a</mi></math>.</p>
+</div>
+
+
+<h2 id="recall">Cartões de recall ativo</h2>
+
+<p>Tente responder antes de abrir. Se hesitar, volte à seção.</p>
+
+<details class="recall">
+  <summary>Quais são as duas geometrias de <math><mi>X</mi></math>, e o que mora em cada uma?</summary>
+  <div class="resposta">
+    <p><strong>Por linhas:</strong> <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões — o diagrama de dispersão. Ali estão <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> como centro de gravidade e as elipsoides <math><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></math>.</p>
+    <p><strong>Por colunas:</strong> <math><mi>p</mi></math> vetores em <math><mi>n</mi></math> dimensões. Ali estão comprimentos (desvios-padrão), ângulos (correlações) e volumes (variância generalizada). É a geometria que ninguém desenha e que dá os resultados.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que faz sentido desenhar três vetores de <math><mi>n</mi></math> dimensões numa folha de papel?</summary>
+  <div class="resposta">
+    <p>Porque <strong>três vetores geram no máximo um subespaço de três dimensões</strong>, tenham eles quantas coordenadas tiverem — assim como dois vetores quaisquer sempre cabem num plano. Escolhendo a fatia tridimensional do espaço que os contém, obtém-se uma vista que preserva comprimentos e ângulos <em>exatamente</em>. Por isso os eixos das figuras são rotulados apenas 1, 2, 3: são eixos de uma perspectiva, não observações específicas.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>O que é <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></math>, geometricamente, e por que <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> é perpendicular a ele?</summary>
+  <div class="resposta">
+    <p><math><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mn>1</mn></math> é a <strong>projeção</strong> da coluna <math><msub><mi mathvariant="bold">y</mi><mi>i</mi></msub></math> sobre a diagonal <math><mn>1</mn><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mo>…</mo><mo>,</mo><mn>1</mn><mo>]</mo></math>. Calcular uma média é projetar sobre a diagonal do espaço.</p>
+    <p><math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> é o resto da projeção, e resto de projeção é sempre perpendicular ao que se projetou. Algebricamente, <math><msup><mn>1</mn><mo>′</mo></msup><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mo>=</mo><munder><mo>∑</mo><mi>j</mi></munder><mo>(</mo><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mi>i</mi></msub><mo>)</mo><mo>=</mo><mn>0</mn></math> — a soma dos desvios em torno da média é zero. É daí que vem a perda de um grau de liberdade: os <math><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></math> vivem num subespaço de dimensão <math><mi>n</mi><mo>−</mo><mn>1</mn></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Escreva as duas identidades que ligam os vetores de desvio a <math><msub><mi>S</mi><mi>n</mi></msub></math>.</summary>
+  <div class="resposta">
+    <p><math><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mo>=</mo><msubsup><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub><mn>2</mn></msubsup><mo>=</mo><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></math> — comprimento ao quadrado é soma de quadrados dos desvios.</p>
+    <p><math><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub><mo>=</mo><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> — produto interno é soma dos produtos cruzados.</p>
+    <p>(Com divisor <math><mi>n</mi><mo>−</mo><mn>1</mn></math>, troque <math><mi>n</mi></math> por <math><mi>n</mi><mo>−</mo><mn>1</mn></math> nos dois lados direitos.) <strong>Vetor longo = variável dispersa.</strong></p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Por que <math><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>)</mo><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>, e o que isso explica de graça?</summary>
+  <div class="resposta">
+    <p>Porque <math><msubsup><mi mathvariant="bold">d</mi><mi>i</mi><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub><mo>=</mo><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>i</mi></msub></msub><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mi>k</mi></msub></msub><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>)</mo></math>; substituindo os dois lados por <math><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> e <math><msqrt><mrow><mi>n</mi><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></mrow></msqrt><msqrt><mrow><mi>n</mi><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></mrow></msqrt></math>, o <math><mi>n</mi></math> cancela e sobra <math><msub><mi>s</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>/</mo><msqrt><mrow><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></mrow></msqrt><mo>=</mo><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>.</p>
+    <p>De graça: <math><mo>−</mo><mn>1</mn><mo>≤</mo><mi>r</mi><mo>≤</mo><mn>1</mn></math> (é um cosseno); <math><mi>r</mi><mo>=</mo><mn>0</mn></math> significa vetores perpendiculares; Cauchy–Schwarz é <math><mo>|</mo><mo>cos</mo><mi>θ</mi><mo>|</mo><mo>≤</mo><mn>1</mn></math>. <strong>Cuidado:</strong> é o ângulo entre os vetores <em>centrados</em>; o das colunas brutas não é a correlação.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Amostra aleatória: a independência é entre o quê?</summary>
+  <div class="resposta">
+    <p>Entre <strong>linhas</strong> — indivíduos, itens, ensaios. As <math><mi>p</mi></math> medições do <em>mesmo</em> indivíduo são quase sempre correlacionadas, e é justamente por isso que existe análise multivariada. A hipótese exige (1) medições em itens diferentes não relacionadas e (2) mesma distribuição conjunta para todos os itens.</p>
+    <p>Violação mais comum: <strong>deriva ao longo do tempo</strong> (Exemplo 3.6 — resíduos sólidos ano a ano; preços de ações; indicadores econômicos). O sintoma é a série crescer ou decrescer sistematicamente.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Enuncie o Resultado 3.1 e diga onde exatamente a independência é usada.</summary>
+  <div class="resposta">
+    <p><math><mi>E</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">μ</mi></math>, <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math> e <math><mi>E</mi><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><mo>[</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>/</mo><mi>n</mi><mo>]</mo><mi mathvariant="bold">Σ</mi></math>.</p>
+    <p>A independência é usada em um único ponto: na expansão de <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></math>, os <math><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi></math> termos com <math><mi>j</mi><mo>≠</mo><mi>ℓ</mi></math> têm esperança <strong>zero</strong>. Sobram <math><mi>n</mi></math> cópias de <math><mi mathvariant="bold">Σ</mi></math> sobre <math><msup><mi>n</mi><mn>2</mn></msup></math>. Se as observações forem positivamente correlacionadas, esses termos não somem, <math><mi>Cov</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></math> fica maior que <math><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math> e todo intervalo de confiança sai estreito demais.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary><math><mi>S</mi></math> com divisor <math><mi>n</mi><mo>−</mo><mn>1</mn></math> é não viesado. E <math><msqrt><msub><mi>s</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></msqrt></math>? E <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math>?</summary>
+  <div class="resposta">
+    <p><strong>Nenhum dos dois.</strong> Nem o desvio-padrão amostral (com divisor nenhum) nem a correlação amostral são não viesados. A ausência de viés é propriedade de <em>uma função específica</em> dos dados e não sobrevive a transformações não lineares — esperança e raiz quadrada não comutam.</p>
+    <p>Na prática o viés é de ordem <math><mn>1</mn><mo>/</mo><mi>n</mi></math> e se ignora com <math><mi>n</mi></math> moderadamente grande. Com <math><mi>n</mi><mo>=</mo><mn>10</mn></math>, não.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>O que é <math><mo>|</mo><mi>S</mi><mo>|</mo></math> geometricamente, nas <em>duas</em> representações?</summary>
+  <div class="resposta">
+    <p><strong>Em <math><mi>n</mi></math> dimensões (colunas):</strong> <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mo>−</mo><mi>p</mi></mrow></msup><msup><mrow><mo>(</mo><mtext>volume</mtext><mo>)</mo></mrow><mn>2</mn></msup></math>, com o volume do sólido gerado pelos <math><mi>p</mi></math> vetores de desvio.</p>
+    <p><strong>Em <math><mi>p</mi></math> dimensões (linhas):</strong> o volume da elipsoide <math><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>≤</mo><msup><mi>c</mi><mn>2</mn></msup></math> é <math><msub><mi>k</mi><mi>p</mi></msub><msup><mrow><mo>|</mo><mi>S</mi><mo>|</mo></mrow><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>c</mi><mi>p</mi></msup></math>. Nos dois casos: <em>(volume)² ∝ variância generalizada</em>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual é a fraqueza descritiva de <math><mo>|</mo><mi>S</mi><mo>|</mo></math>, e qual é o remédio?</summary>
+  <div class="resposta">
+    <p><math><mo>|</mo><mi>S</mi><mo>|</mo></math> <strong>não enxerga orientação</strong>. No Exemplo 3.8, <math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>, <math><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> e <math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> têm todas <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>9</mn></math> e elipses de mesma área, mas correlações <math><mn>0</mn><mo>,</mo><mn>8</mn></math>, <math><mn>0</mn></math> e <math><mo>−</mo><mn>0</mn><mo>,</mo><mn>8</mn></math>.</p>
+    <p><strong>Remédio:</strong> <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>⋯</mo><msub><mi>λ</mi><mi>p</mi></msub></math> — reporte os autovalores individualmente, não só o produto. Cada <math><msub><mi>λ</mi><mi>i</mi></msub></math> descreve a variabilidade numa direção. Isso é análise de componentes principais (cap. 8).</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Deu <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math>. O que aconteceu e como descobrir a causa?</summary>
+  <div class="resposta">
+    <p>Alguma coluna da matriz de desvios é combinação linear das outras — quase sempre porque <strong>alguém incluiu uma variável que é soma (ou média, ou complemento) de outras</strong>: nota total junto com as notas parciais, peso total junto com os componentes.</p>
+    <p><strong>Diagnóstico:</strong> calcule os autovetores de <math><mi>S</mi></math> e olhe o do autovalor <em>nulo</em>. Seus coeficientes escrevem a dependência: <math><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math> ⟺ <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>(</mo><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>=</mo><mn>0</mn></math> ∀<math><mi>j</mi></math> ⟺ <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mi>c</mi></math> ∀<math><mi>j</mi></math>. No Exemplo 3.10 sai <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>∝</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math>, que <em>é</em> a restrição <math><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><msub><mi>x</mi><mn>3</mn></msub></math>.</p>
+    <p>Caso sem saída: <math><mi>n</mi><mo>≤</mo><mi>p</mi></math> força <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> em <em>toda</em> amostra (Resultado 3.3).</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Qual a diferença entre <math><mo>|</mo><mi>S</mi><mo>|</mo></math>, <math><mo>|</mo><mi>R</mi><mo>|</mo></math> e <math><mtext>tr</mtext><mo>(</mo><mi>S</mi><mo>)</mo></math>?</summary>
+  <div class="resposta">
+    <p><math><mo>|</mo><mi>S</mi><mo>|</mo></math> = produto dos autovalores; mistura dispersão e orientação; muda com a escala das variáveis.</p>
+    <p><math><mo>|</mo><mi>R</mi><mo>|</mo></math> = o mesmo depois de padronizar. Todos os vetores ficam com comprimento <math><msqrt><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msqrt></math>, então ele mede <strong>só orientação</strong>: grande quando os <math><msub><mi>r</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub></math> são próximos de zero, pequeno quando algum se aproxima de <math><mo>±</mo><mn>1</mn></math>. Adimensional. Ponte: <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>|</mo><mi>R</mi><mo>|</mo></math>.</p>
+    <p><math><mtext>tr</mtext><mo>(</mo><mi>S</mi><mo>)</mo></math> = soma dos autovalores; mede <strong>só dispersão</strong>, ignora orientação por completo. Um autovalor nulo zera <math><mo>|</mo><mi>S</mi><mo>|</mo></math> e quase não mexe no traço — por isso o traço é o que se usa em "proporção de variância explicada".</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Escreva <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math> como operações sobre <math><mi>X</mi></math>. Por que só aparece um <math><mi>H</mi></math> em <math><mi>S</mi></math>?</summary>
+  <div class="resposta">
+    <p><math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><msup><mi>X</mi><mo>′</mo></msup><mn>1</mn></math> e <math><mi>S</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><msup><mi>X</mi><mo>′</mo></msup><mrow><mo>(</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup><mo>)</mo></mrow><mi>X</mi></math>.</p>
+    <p>Porque <math><mi>H</mi><mo>=</mo><mi>I</mi><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mn>1</mn><msup><mn>1</mn><mo>′</mo></msup></math> é simétrica e <strong>idempotente</strong>: <math><msup><mi>H</mi><mo>′</mo></msup><mi>H</mi><mo>=</mo><mi>H</mi></math>. Ela é a projeção sobre o complemento ortogonal de <math><mn>1</mn></math> — projetar duas vezes é o mesmo que projetar uma. E <math><mi>R</mi><mo>=</mo><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>S</mi><msup><mi>D</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>, gêmea amostral de <math><mi mathvariant="bold">ρ</mi><mo>=</mo><msup><mi>V</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi mathvariant="bold">Σ</mi><msup><mi>V</mi><mrow><mo>−</mo><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Quero a variância amostral de <math><mn>2</mn><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mn>3</mn><msub><mi>X</mi><mn>2</mn></msub></math>. Preciso calcular as <math><mi>n</mi></math> observações derivadas?</summary>
+  <div class="resposta">
+    <p><strong>Não.</strong> Pelo Resultado 3.5, basta <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">b</mi></math> com <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>]</mo></math>. Média: <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math>. Covariância com outra combinação <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math>: <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi></math>.</p>
+    <p>Uma vez calculados <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math>, <em>qualquer</em> combinação linear sai sem tocar nos dados de novo. Em bloco: <math><mi>q</mi></math> combinações nas linhas de <math><mi>A</mi></math> dão médias <math><mi>A</mi><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e covariâncias <math><mi>A</mi><mi>S</mi><msup><mi>A</mi><mo>′</mo></msup></math>.</p>
+  </div>
+</details>
+
+
+<h2 id="exercicios">Exercícios resolvidos</h2>
+
+<p>Selecionei os que exercitam cada ideia central uma vez: a tradução comprimento↔desvio e ângulo↔correlação (3.1 e 3.2), o volume (3.5 e 3.6), a orientação que <math><mo>|</mo><mi>S</mi><mo>|</mo></math> não vê (3.7 e 3.8), a degenerescência (3.9), a ponte <math><mo>|</mo><mi>S</mi><mo>|</mo></math>–<math><mo>|</mo><mi>R</mi><mo>|</mo></math> (3.12) e as combinações lineares (3.14). O 3.16 fecha a lacuna deixada na demonstração do Resultado 3.1.</p>
+
+<div class="exercicio">
+  <h3>Exercícios 3.1 e 3.5(a) — a tradução completa, num caso só</h3>
+  <div class="enunciado">
+    <p>Dada <math><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>9</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>5</mn></mtd><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>: <strong>(a)</strong> faça o diagrama de dispersão em <math><mi>p</mi><mo>=</mo><mn>2</mn></math> e marque <math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math>; <strong>(b)</strong> esboce a representação em <math><mi>n</mi><mo>=</mo><mn>3</mn></math> dimensões e trace <math><msub><mi mathvariant="bold">y</mi><mn>1</mn></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mn>1</mn></math> e <math><msub><mi mathvariant="bold">y</mi><mn>2</mn></msub><mo>−</mo><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mn>1</mn></math>; <strong>(c)</strong> calcule os comprimentos desses vetores e o cosseno do ângulo entre eles, relacionando com <math><msub><mi>S</mi><mi>n</mi></msub></math> e <math><mi>R</mi></math>. Em seguida (3.5a) calcule <math><mo>|</mo><mi>S</mi><mo>|</mo></math>.</p>
+  </div>
+
+  <p><strong>(a)</strong> As médias são <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>1</mn></msub><mo>=</mo><mo>(</mo><mn>9</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>1</mn><mo>)</mo><mo>/</mo><mn>3</mn><mo>=</mo><mn>5</mn></math> e <math><msub><mover><mi>x</mi><mo>¯</mo></mover><mn>2</mn></msub><mo>=</mo><mo>(</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>)</mo><mo>/</mo><mn>3</mn><mo>=</mo><mn>2</mn></math>. Os três pontos <math><mo>(</mo><mn>9</mn><mo>,</mo><mn>1</mn><mo>)</mo></math>, <math><mo>(</mo><mn>5</mn><mo>,</mo><mn>3</mn><mo>)</mo></math> e <math><mo>(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>)</mo></math> ficam em torno de <math><mo>(</mo><mn>5</mn><mo>,</mo><mn>2</mn><mo>)</mo></math> — o do meio quase em cima da média, os outros dois em lados opostos no eixo horizontal.</p>
+
+  <p><strong>(b) e (c)</strong> Os vetores de desvio:</p>
+  <math display="block"><mrow><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>=</mo><msup><mrow><mo>[</mo><mn>9</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>1</mn><mo>]</mo></mrow><mo>′</mo></msup><mo>−</mo><mn>5</mn><mn>1</mn><mo>=</mo><msup><mrow><mo>[</mo><mn>4</mn><mo>,</mo><mn>0</mn><mo>,</mo><mo>−</mo><mn>4</mn><mo>]</mo></mrow><mo>′</mo></msup><mo>,</mo><mspace width="1.6em"/><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><msup><mrow><mo>[</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>2</mn><mo>]</mo></mrow><mo>′</mo></msup><mo>−</mo><mn>2</mn><mn>1</mn><mo>=</mo><msup><mrow><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>]</mo></mrow><mo>′</mo></msup></mrow></math>
+
+  <div class="rolagem">
+  <table>
+    <caption>Da geometria para a estatística, quantidade a quantidade.</caption>
+    <thead><tr><th class="txt">Quantidade geométrica</th><th class="txt">Valor</th><th class="txt">Quantidade estatística</th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math></td><td class="txt">32</td><td class="txt"><math><mn>3</mn><msub><mi>s</mi><mn>11</mn></msub><mo>⟹</mo><msub><mi>s</mi><mn>11</mn></msub><mo>=</mo><mn>32</mn><mo>/</mo><mn>3</mn><mo>=</mo><mn>10</mn><mo>,</mo><mn>67</mn></math></td></tr>
+      <tr><td class="txt"><math><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math></td><td class="txt">2</td><td class="txt"><math><mn>3</mn><msub><mi>s</mi><mn>22</mn></msub><mo>⟹</mo><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>2</mn><mo>/</mo><mn>3</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>67</mn></math></td></tr>
+      <tr><td class="txt"><math><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math></td><td class="txt">−4</td><td class="txt"><math><mn>3</mn><msub><mi>s</mi><mn>12</mn></msub><mo>⟹</mo><msub><mi>s</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>4</mn><mo>/</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>33</mn></math></td></tr>
+      <tr><td class="txt"><math><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></msub></math></td><td class="txt"><math><msqrt><mn>32</mn></msqrt><mo>=</mo><mn>5</mn><mo>,</mo><mn>657</mn></math></td><td class="txt">variável 1 é a mais dispersa</td></tr>
+      <tr><td class="txt"><math><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></msub></math></td><td class="txt"><math><msqrt><mn>2</mn></msqrt><mo>=</mo><mn>1</mn><mo>,</mo><mn>414</mn></math></td><td class="txt">variável 2 varia pouco</td></tr>
+      <tr><td class="txt"><math><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>12</mn></msub><mo>)</mo></math></td><td class="txt"><math><mo>−</mo><mn>4</mn><mo>/</mo><mo>(</mo><mn>5</mn><mo>,</mo><mn>657</mn><mo>×</mo><mn>1</mn><mo>,</mo><mn>414</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></math></td><td class="txt"><math><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></math>, isto é <math><msub><mi>θ</mi><mn>12</mn></msub><mo>=</mo><mn>120</mn><mo>°</mo></math></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <math display="block"><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mfrac><mn>32</mn><mn>3</mn></mfrac></mtd><mtd><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mfrac><mn>4</mn><mn>3</mn></mfrac></mtd><mtd><mfrac><mn>2</mn><mn>3</mn></mfrac></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.6em"/><mi>R</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+
+  <p><strong>3.5(a)</strong> — com o divisor <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn></math>, <math><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>16</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>16</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>12</mn></math>. (Com <math><msub><mi>S</mi><mi>n</mi></msub></math> daria <math><mn>48</mn><mo>/</mo><mn>9</mn><mo>=</mo><mn>5</mn><mo>,</mo><mn>33</mn></math> — a variância generalizada depende do divisor, e por um fator <math><msup><mrow><mo>[</mo><mi>n</mi><mo>/</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>]</mo></mrow><mi>p</mi></msup></math>, não <math><mi>n</mi><mo>/</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>.)</p>
+
+  <p>Conferindo pela via geométrica: a área do paralelogramo gerado por <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> é <math><msqrt><mn>32</mn></msqrt><mo>·</mo><msqrt><mn>2</mn></msqrt><mo>·</mo><msqrt><mrow><mn>1</mn><mo>−</mo><mn>0</mn><mo>,</mo><msup><mn>5</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><mn>8</mn><mo>×</mo><mn>0</mn><mo>,</mo><mn>866</mn><mo>=</mo><mn>6</mn><mo>,</mo><mn>93</mn></math>, e por (3-15) com <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn></math> e <math><mi>p</mi><mo>=</mo><mn>2</mn></math>: <math><msup><mrow><mo>(</mo><mn>6</mn><mo>,</mo><mn>93</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>48</mn><mo>/</mo><mn>4</mn><mo>=</mo><mn>12</mn></math> ✓</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">O que treinar aqui</span>
+    <p>Este exercício é o capítulo inteiro em miniatura. Faça-o <em>sem</em> usar as fórmulas de somatório do capítulo 1: monte <math><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></math> e <math><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math>, tire três produtos internos, e leia <math><msub><mi>S</mi><mi>n</mi></msub></math>, <math><mi>R</mi></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo></math> deles. Se conseguir fazer isso de cabeça, o capítulo está entendido.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercícios 3.2 e 3.5(b) — o mesmo roteiro, com correlação forte</h3>
+  <div class="enunciado">
+    <p>Repita o exercício anterior para <math><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>6</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>.</p>
+  </div>
+
+  <p><math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, e portanto <math><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> e <math><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><mo>=</mo><mo>[</mo><mn>3</mn><mo>,</mo><mo>−</mo><mn>3</mn><mo>,</mo><mn>0</mn><mo>]</mo></math>.</p>
+
+  <math display="block"><mrow><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>=</mo><mn>6</mn><mo>,</mo><mspace width="1.2em"/><msubsup><mi mathvariant="bold">d</mi><mn>2</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><mn>18</mn><mo>,</mo><mspace width="1.2em"/><msubsup><mi mathvariant="bold">d</mi><mn>1</mn><mo>′</mo></msubsup><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>3</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>0</mn><mo>=</mo><mo>−</mo><mn>9</mn></mrow></math>
+
+  <math display="block"><mrow><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub></msub><mo>=</mo><msqrt><mn>6</mn></msqrt><mo>=</mo><mn>2</mn><mo>,</mo><mn>449</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>L</mi><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></msub><mo>=</mo><msqrt><mn>18</mn></msqrt><mo>=</mo><mn>4</mn><mo>,</mo><mn>243</mn><mo>,</mo><mspace width="1.2em"/><mo>cos</mo><mo>(</mo><msub><mi>θ</mi><mn>12</mn></msub><mo>)</mo><mo>=</mo><mfrac><mrow><mo>−</mo><mn>9</mn></mrow><msqrt><mn>108</mn></msqrt></mfrac><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>866</mn></mrow></math>
+
+  <p>Isto é <math><msub><mi>θ</mi><mn>12</mn></msub><mo>=</mo><mn>150</mn><mo>°</mo></math> — os vetores apontam quase em sentidos opostos, e a correlação é fortemente negativa: <math><msub><mi>r</mi><mn>12</mn></msub><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>866</mn></math>.</p>
+
+  <math display="block"><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>2</mn></mtd><mtd><mo>−</mo><mn>3</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>3</mn></mtd><mtd><mn>6</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mo>−</mo><mn>4</mn><mo>,</mo><mn>5</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>4</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>9</mn></mtd></mtr></mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>27</mn><mo>−</mo><mn>20</mn><mo>,</mo><mn>25</mn><mo>=</mo><mn>6</mn><mo>,</mo><mn>75</mn></mrow></math>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Compare com o 3.1</span>
+    <p>Ali <math><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>16</mn></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>12</mn></math>; aqui <math><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>=</mo><mn>27</mn></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>6</mn><mo>,</mo><mn>75</mn></math>. Pela relação <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>(</mo><mn>1</mn><mo>−</mo><msubsup><mi>r</mi><mn>12</mn><mn>2</mn></msubsup><mo>)</mo></math>: no 3.1, <math><mn>16</mn><mo>×</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>0</mn><mo>,</mo><mn>25</mn><mo>)</mo><mo>=</mo><mn>12</mn></math>; aqui, <math><mn>27</mn><mo>×</mo><mo>(</mo><mn>1</mn><mo>−</mo><mn>0</mn><mo>,</mo><mn>75</mn><mo>)</mo><mo>=</mo><mn>6</mn><mo>,</mo><mn>75</mn></math>. <strong>O segundo conjunto tem variâncias maiores e mesmo assim variância generalizada menor</strong> — porque a correlação forte "achata" o paralelogramo. É a Figura 3.6 em duas dimensões.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.6 — posto deficiente, com <math><mi>p</mi><mo>=</mo><mn>3</mn></math></h3>
+  <div class="enunciado">
+    <p>Para <math><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>3</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><mn>4</mn></mtd><mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>5</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>: <strong>(a)</strong> calcule <math><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math> e diga se tem posto completo; <strong>(b)</strong> determine <math><mi>S</mi></math> e <math><mo>|</mo><mi>S</mi><mo>|</mo></math>, interpretando geometricamente; <strong>(c)</strong> calcule a variância total.</p>
+  </div>
+
+  <p><strong>(a)</strong> <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, logo</p>
+  <math display="block"><mrow><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mo>−</mo><mn>3</mn></mtd><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mn>3</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p><strong>Não</strong> tem posto completo: <math><msub><mi mathvariant="bold">d</mi><mn>3</mn></msub><mo>=</mo><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> — some as duas primeiras colunas e sai a terceira. O posto é 2. Vale observar que há também dependência entre as <em>linhas</em>: elas somam o vetor nulo, o que acontece sempre numa matriz de desvios.</p>
+
+  <p><strong>(b)</strong> Com <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn></math>:</p>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>9</mn></mtd><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>7</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>1</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>7</mn><mo>,</mo><mn>5</mn></mtd><mtd><mo>−</mo><mn>0</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>7</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>,</mo><mspace width="1.4em"/><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></mrow></math>
+  <p><strong>Interpretação geométrica:</strong> os três vetores de desvio são coplanares, então o sólido que eles geram no espaço de <math><mi>n</mi><mo>=</mo><mn>3</mn></math> dimensões é achatado — volume zero, e por (3-15) variância generalizada zero. É exatamente a situação da Figura 3.9. Os autovalores confirmam: <math><mn>15</mn><mo>,</mo><mn>711</mn></math>, <math><mn>1</mn><mo>,</mo><mn>289</mn></math> e <math><mn>0</mn></math>.</p>
+
+  <p><strong>(c)</strong> <math><mtext>tr</mtext><mo>(</mo><mi>S</mi><mo>)</mo><mo>=</mo><mn>9</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>17</mn></math> — e note que <math><mn>15</mn><mo>,</mo><mn>711</mn><mo>+</mo><mn>1</mn><mo>,</mo><mn>289</mn><mo>+</mo><mn>0</mn><mo>=</mo><mn>17</mn></math> ✓. Variância total <em>positiva</em>, variância generalizada <em>nula</em>: a mesma lição do Exemplo 3.12.</p>
+
+  <div class="caixa aviso">
+    <span class="rotulo">Um detalhe fácil de deixar passar</span>
+    <p>Aqui <math><mi>n</mi><mo>=</mo><mi>p</mi><mo>=</mo><mn>3</mn></math>. Pelo Resultado 3.3, <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> <em>estava garantido de antemão</em>, quaisquer que fossem os nove números — não é preciso nem calcular. A dependência <math><msub><mi mathvariant="bold">d</mi><mn>3</mn></msub><mo>=</mo><msub><mi mathvariant="bold">d</mi><mn>1</mn></msub><mo>+</mo><msub><mi mathvariant="bold">d</mi><mn>2</mn></msub></math> é a forma que a inevitabilidade tomou neste caso.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.7 — desenhando as três elipses</h3>
+  <div class="enunciado">
+    <p>Esboce os elipsoides sólidos <math><msup><mrow><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mo>′</mo></msup><msup><mi>S</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi mathvariant="bold">x</mi><mo>−</mo><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>)</mo><mo>≤</mo><mn>1</mn></math> para <math><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>, <math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math> e <math><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>. (As três têm a mesma variância generalizada.)</p>
+  </div>
+
+  <p>A receita, montada na seção 4.3: os eixos ficam nas direções dos <strong>autovetores de <math><mi>S</mi></math></strong> e os semi-eixos medem <math><mi>c</mi><msqrt><msub><mi>λ</mi><mi>i</mi></msub></msqrt></math> com os <math><msub><mi>λ</mi><mi>i</mi></msub></math> de <math><mi>S</mi></math>. Aqui <math><mi>c</mi><mo>=</mo><mn>1</mn></math>.</p>
+
+  <div class="rolagem">
+  <table>
+    <caption>As três elipses do Exercício 3.7, com <math><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><mn>1</mn></math>.</caption>
+    <thead><tr><th class="txt"><math><mi>S</mi></math></th><th><math><msub><mi>λ</mi><mn>1</mn></msub></math></th><th><math><msub><mi>λ</mi><mn>2</mn></msub></math></th><th class="txt">Eixo maior</th><th class="txt">Semi-eixos</th><th><math><mo>|</mo><mi>S</mi><mo>|</mo></math></th></tr></thead>
+    <tbody>
+      <tr><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mn>4</mn></mtd></mtr><mtr><mtd><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>9</td><td>1</td><td class="txt">a 45°, na direção <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math></td><td class="txt">3 e 1</td><td>9</td></tr>
+      <tr><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>5</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mn>5</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>9</td><td>1</td><td class="txt">a −45°, na direção <math><mo>[</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo><mo>/</mo><msqrt><mn>2</mn></msqrt></math></td><td class="txt">3 e 1</td><td>9</td></tr>
+      <tr><td class="txt"><math><mrow><mo>[</mo><mtable><mtr><mtd><mn>3</mn></mtd><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>3</mn></mtd></mtr></mtable><mo>]</mo></mrow></math></td><td>3</td><td>3</td><td class="txt">não há — é um círculo</td><td class="txt"><math><msqrt><mn>3</mn></msqrt><mo>=</mo><mn>1</mn><mo>,</mo><mn>732</mn></math> nos dois</td><td>9</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Os desenhos: uma elipse esticada ao longo da diagonal ascendente; a mesma elipse refletida, esticada ao longo da diagonal descendente; e um círculo de raio <math><mn>1</mn><mo>,</mo><mn>73</mn></math>. <strong>As três têm a mesma área</strong>, <math><mi>π</mi><msqrt><mrow><mo>|</mo><mi>S</mi><mo>|</mo></mrow></msqrt><mo>=</mo><mn>3</mn><mi>π</mi></math> — o que se confere na primeira por <math><mi>π</mi><mo>×</mo><mn>3</mn><mo>×</mo><mn>1</mn></math> e na terceira por <math><mi>π</mi><mo>×</mo><mn>1</mn><mo>,</mo><mn>732</mn><mo>×</mo><mn>1</mn><mo>,</mo><mn>732</mn></math>.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">A moral, em uma frase</span>
+    <p>Área igual, formas completamente diferentes. É o Exemplo 3.8 outra vez, agora feito à mão — e é a razão pela qual o capítulo 8 existe: são os <em>autovalores separados</em>, não o produto deles, que descrevem o padrão.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.8 — quando os dois resumos discordam</h3>
+  <div class="enunciado">
+    <p>Dadas <math><msub><mi>S</mi><mi>a</mi></msub><mo>=</mo><mi>I</mi></math> (identidade <math><mn>3</mn><mo>×</mo><mn>3</mn></math>) e <math><msub><mi>S</mi><mi>b</mi></msub><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd></mtr><mtr><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>1</mn></mtd><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd></mtr><mtr><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>: <strong>(a)</strong> calcule a variância total de cada uma; <strong>(b)</strong> calcule a variância generalizada de cada uma e comente a discrepância.</p>
+  </div>
+
+  <p><strong>(a)</strong> <math><mtext>tr</mtext><mo>(</mo><msub><mi>S</mi><mi>a</mi></msub><mo>)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>3</mn></math> e <math><mtext>tr</mtext><mo>(</mo><msub><mi>S</mi><mi>b</mi></msub><mo>)</mo><mo>=</mo><mn>3</mn></math>. <strong>Idênticas.</strong></p>
+
+  <p><strong>(b)</strong> <math><mo>|</mo><msub><mi>S</mi><mi>a</mi></msub><mo>|</mo><mo>=</mo><mn>1</mn></math>. Para a segunda, expandindo pela primeira linha:</p>
+  <math display="block"><mrow><mo>|</mo><msub><mi>S</mi><mi>b</mi></msub><mo>|</mo><mo>=</mo><mn>1</mn><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>)</mo></mrow><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>)</mo></mrow><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>−</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>−</mo><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>=</mo><mn>0</mn></mrow></math>
+
+  <p><strong>Comentário.</strong> Mesma variância total, variâncias generalizadas <math><mn>1</mn></math> e <math><mn>0</mn></math>. Os autovalores explicam tudo: <math><msub><mi>S</mi><mi>a</mi></msub></math> tem <math><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn></math> (soma 3, produto 1); <math><msub><mi>S</mi><mi>b</mi></msub></math> tem <math><mn>1</mn><mo>,</mo><mn>5</mn></math>, <math><mn>1</mn><mo>,</mo><mn>5</mn></math> e <math><mn>0</mn></math> (soma 3, produto 0). O <strong>traço só vê a soma; o determinante, o produto</strong> — e um único fator nulo aniquila o produto sem afetar quase nada a soma.</p>
+
+  <div class="caixa aviso">
+    <span class="rotulo">De onde vem esse zero</span>
+    <p>Todas as correlações de <math><msub><mi>S</mi><mi>b</mi></msub></math> valem <math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math>, e <math><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> é <em>exatamente</em> a correlação mínima possível entre três variáveis mutuamente igualmente correlacionadas (o limite é <math><mo>−</mo><mn>1</mn><mo>/</mo><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo></math>). Nesse limite a matriz fica exatamente na fronteira da positividade — semidefinida, com autovalor zero. O autovetor correspondente é <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>]</mo><mo>/</mo><msqrt><mn>3</mn></msqrt></math>: a <em>soma</em> das três variáveis tem variância zero, isto é, é constante.</p>
+    <p>Estrutura assim aparece de verdade em <strong>dados composicionais</strong> — proporções que somam 1, porcentagens de tempo gastas em <math><mi>p</mi></math> atividades, participações de mercado. Se as colunas somam uma constante, <math><mi>S</mi></math> é singular por construção. É uma armadilha comum, e a única saída é analisar <math><mi>p</mi><mo>−</mo><mn>1</mn></math> componentes (ou trabalhar com razões logarítmicas).</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.9 — o caso clássico: nota total junto com as parciais</h3>
+  <div class="enunciado">
+    <p>Com <math><msub><mi>x</mi><mn>1</mn></msub></math> = nota da primeira prova, <math><msub><mi>x</mi><mn>2</mn></msub></math> = nota da segunda e <math><msub><mi>x</mi><mn>3</mn></msub></math> = total: <strong>(a)</strong> obtenha a matriz de desvios e verifique que as colunas são dependentes, exibindo um <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup></math>; <strong>(b)</strong> obtenha <math><mi>S</mi></math>, verifique <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> e mostre que <math><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math>; <strong>(c)</strong> confirme que a terceira coluna é a soma das duas primeiras.</p>
+    <math display="block"><mrow><mi>X</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+      <mtr><mtd><mn>12</mn></mtd><mtd><mn>17</mn></mtd><mtd><mn>29</mn></mtd></mtr>
+      <mtr><mtd><mn>18</mn></mtd><mtd><mn>20</mn></mtd><mtd><mn>38</mn></mtd></mtr>
+      <mtr><mtd><mn>14</mn></mtd><mtd><mn>16</mn></mtd><mtd><mn>30</mn></mtd></mtr>
+      <mtr><mtd><mn>20</mn></mtd><mtd><mn>18</mn></mtd><mtd><mn>38</mn></mtd></mtr>
+      <mtr><mtd><mn>16</mn></mtd><mtd><mn>19</mn></mtd><mtd><mn>35</mn></mtd></mtr>
+    </mtable><mo>]</mo></mrow></mrow></math>
+  </div>
+
+  <p><strong>(a)</strong> <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>16</mn><mo>,</mo><mn>18</mn><mo>,</mo><mn>34</mn><mo>]</mo></math>, e</p>
+  <math display="block"><mrow><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mo>−</mo><mn>4</mn></mtd><mtd><mo>−</mo><mn>1</mn></mtd><mtd><mo>−</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>2</mn></mtd><mtd><mn>2</mn></mtd><mtd><mn>4</mn></mtd></mtr>
+    <mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mo>−</mo><mn>4</mn></mtd></mtr>
+    <mtr><mtd><mn>4</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>4</mn></mtd></mtr>
+    <mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow></mrow></math>
+  <p>A terceira coluna é, linha a linha, a soma das duas primeiras. Logo <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>]</mo></math> estabelece a dependência: <math><mo>(</mo><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn></math>.</p>
+
+  <p><strong>(b)</strong> Com <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>4</mn></math>:</p>
+  <math display="block"><mrow><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>10</mn></mtd><mtd><mn>3</mn></mtd><mtd><mn>13</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn></mtd><mtd><mn>2</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>5</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>13</mn></mtd><mtd><mn>5</mn><mo>,</mo><mn>5</mn></mtd><mtd><mn>18</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mspace width="1.4em"/><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mrow><mo>[</mo><mtable>
+    <mtr><mtd><mn>10</mn><mo>+</mo><mn>3</mn><mo>−</mo><mn>13</mn></mtd></mtr>
+    <mtr><mtd><mn>3</mn><mo>+</mo><mn>2</mn><mo>,</mo><mn>5</mn><mo>−</mo><mn>5</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+    <mtr><mtd><mn>13</mn><mo>+</mo><mn>5</mn><mo>,</mo><mn>5</mn><mo>−</mo><mn>18</mn><mo>,</mo><mn>5</mn></mtd></mtr>
+  </mtable><mo>]</mo></mrow><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>
+  <p>Como <math><mi>S</mi><mi mathvariant="bold">a</mi><mo>=</mo><mn>0</mn><mo>=</mo><mn>0</mn><mo>·</mo><mi mathvariant="bold">a</mi></math>, o vetor <math><mi mathvariant="bold">a</mi></math> é autovetor de <math><mi>S</mi></math> com autovalor <strong>zero</strong>; normalizado, <math><mi mathvariant="bold">a</mi><mo>/</mo><msqrt><mn>3</mn></msqrt><mo>=</mo><mo>[</mo><mn>0</mn><mo>,</mo><mn>577</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>577</mn><mo>,</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>577</mn><mo>]</mo></math>. Os três autovalores são <math><mn>29</mn><mo>,</mo><mn>365</mn></math>, <math><mn>1</mn><mo>,</mo><mn>635</mn></math> e <math><mn>0</mn></math>, cujo produto — e portanto <math><mo>|</mo><mi>S</mi><mo>|</mo></math> — é zero.</p>
+
+  <p><strong>(c)</strong> Direto da tabela: <math><mn>12</mn><mo>+</mo><mn>17</mn><mo>=</mo><mn>29</mn></math>, <math><mn>18</mn><mo>+</mo><mn>20</mn><mo>=</mo><mn>38</mn></math>, <math><mn>14</mn><mo>+</mo><mn>16</mn><mo>=</mo><mn>30</mn></math>, <math><mn>20</mn><mo>+</mo><mn>18</mn><mo>=</mo><mn>38</mn></math>, <math><mn>16</mn><mo>+</mo><mn>19</mn><mo>=</mo><mn>35</mn></math> ✓. Ou seja <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></math> para todo <math><mi>j</mi></math> — a condição (3) da caixa das três equivalências, com a constante <math><mi>c</mi><mo>=</mo><mn>0</mn></math>.</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">O contraste com o Exercício 3.10</span>
+    <p>O livro traz logo em seguida um exercício em que <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mn>0</mn></math> mas as colunas de <math><mi>X</mi></math> <em>são</em> linearmente independentes. Isso acontece quando <math><mi>c</mi><mo>≠</mo><mn>0</mn></math>: a restrição é <math><msup><mi mathvariant="bold">a</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mi>c</mi></math> com <math><mi>c</mi></math> constante não nula. A degenerescência é sempre das colunas <em>centradas</em>, nunca necessariamente das colunas brutas. Verifique sempre <math><mi>X</mi><mo>−</mo><mn>1</mn><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup></math>, não <math><mi>X</mi></math>.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.12 — a demonstração de <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mn>11</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>)</mo><mo>|</mo><mi>R</mi><mo>|</mo></math></h3>
+  <div class="enunciado">
+    <p>Mostre que <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>)</mo><mo>|</mo><mi>R</mi><mo>|</mo></math>. <em>Sugestão:</em> de (3-30), <math><mi>S</mi><mo>=</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>R</mi><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math>. Tome determinantes e examine <math><mo>|</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>|</mo></math>.</p>
+  </div>
+
+  <p>Tomando determinantes dos dois lados e usando que o determinante de um produto é o produto dos determinantes (Resultado 2A.11):</p>
+
+  <math display="block"><mrow><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><mo>|</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mi>R</mi><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>|</mo><mo>=</mo><mo>|</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>|</mo><mspace width="0.2em"/><mo>|</mo><mi>R</mi><mo>|</mo><mspace width="0.2em"/><mo>|</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>|</mo></mrow></math>
+
+  <p>Como <math><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></math> é <strong>diagonal</strong>, seu determinante é o produto da diagonal:</p>
+
+  <math display="block"><mrow><mo>|</mo><msup><mi>D</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><mo>|</mo><mo>=</mo><msqrt><msub><mi>s</mi><mn>11</mn></msub></msqrt><msqrt><msub><mi>s</mi><mn>22</mn></msub></msqrt><mo>⋯</mo><msqrt><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></msqrt><mo>=</mo><msqrt><mrow><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></mrow></msqrt></mrow></math>
+
+  <p>e como esse fator aparece <em>duas vezes</em>, a raiz desaparece:</p>
+
+  <math display="block"><mrow><mo>|</mo><mi>S</mi><mo>|</mo><mo>=</mo><msup><mrow><mo>(</mo><msqrt><mrow><msub><mi>s</mi><mn>11</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></mrow></msqrt><mo>)</mo></mrow><mn>2</mn></msup><mo>|</mo><mi>R</mi><mo>|</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mn>11</mn></msub><msub><mi>s</mi><mn>22</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub><mo>)</mo><mo>|</mo><mi>R</mi><mo>|</mo><mspace width="0.8em"/><mo>∎</mo></mrow></math>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Duas leituras que vale extrair</span>
+    <p><strong>Escala.</strong> Multiplicar a variável <math><mi>k</mi></math> por uma constante <math><mi>a</mi></math> multiplica <math><msub><mi>s</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub></math> por <math><msup><mi>a</mi><mn>2</mn></msup></math> e portanto <math><mo>|</mo><mi>S</mi><mo>|</mo></math> por <math><msup><mi>a</mi><mn>2</mn></msup></math>, sem tocar em <math><mo>|</mo><mi>R</mi><mo>|</mo></math>. Comparar <math><mo>|</mo><mi>S</mi><mo>|</mo></math> entre conjuntos medidos em unidades diferentes é sem sentido; comparar <math><mo>|</mo><mi>R</mi><mo>|</mo></math>, não.</p>
+    <p><strong>Limites.</strong> Como <math><mn>0</mn><mo>≤</mo><mo>|</mo><mi>R</mi><mo>|</mo><mo>≤</mo><mn>1</mn></math> (é 1 exatamente quando <math><mi>R</mi><mo>=</mo><mi>I</mi></math>, ou seja, quando não há correlação nenhuma), segue <math><mo>|</mo><mi>S</mi><mo>|</mo><mo>≤</mo><msub><mi>s</mi><mn>11</mn></msub><mo>⋯</mo><msub><mi>s</mi><mrow><mi>p</mi><mi>p</mi></mrow></msub></math>: <strong>o produto das variâncias é um teto para a variância generalizada</strong>, atingido só quando as variáveis são descorrelacionadas. Toda correlação presente <em>reduz</em> <math><mo>|</mo><mi>S</mi><mo>|</mo></math> — é a versão algébrica do paralelogramo achatado.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.14 — combinações lineares pelos dois caminhos</h3>
+  <div class="enunciado">
+    <p>Com a matriz do Exercício 3.1 (<math><mi>n</mi><mo>=</mo><mn>3</mn></math>, <math><mi>p</mi><mo>=</mo><mn>2</mn></math>) e as combinações <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><mn>2</mn><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mn>3</mn><msub><mi>X</mi><mn>2</mn></msub></math> e <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>=</mo><mo>−</mo><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mn>2</mn><msub><mi>X</mi><mn>2</mn></msub></math>: <strong>(a)</strong> obtenha médias, variâncias e covariância a partir dos primeiros princípios; <strong>(b)</strong> refaça por (3-36) e compare.</p>
+  </div>
+
+  <p><strong>(a) Pelos primeiros princípios.</strong> As linhas de <math><mi>X</mi></math> são <math><mo>[</mo><mn>9</mn><mo>,</mo><mn>1</mn><mo>]</mo></math>, <math><mo>[</mo><mn>5</mn><mo>,</mo><mn>3</mn><mo>]</mo></math> e <math><mo>[</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>]</mo></math>:</p>
+
+  <div class="rolagem">
+  <table>
+    <caption>As observações derivadas e seus resumos (divisor <math><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn></math>).</caption>
+    <thead><tr><th class="txt"><math><msubsup><mi mathvariant="bold">x</mi><mi>j</mi><mo>′</mo></msubsup></math></th><th><math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mn>2</mn><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>+</mo><mn>3</mn><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub></math></th><th><math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><msub><mi mathvariant="bold">x</mi><mi>j</mi></msub><mo>=</mo><mo>−</mo><msub><mi>x</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo>+</mo><mn>2</mn><msub><mi>x</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub></math></th></tr></thead>
+    <tbody>
+      <tr><td class="txt">[9, 1]</td><td>21</td><td>−7</td></tr>
+      <tr><td class="txt">[5, 3]</td><td>19</td><td>1</td></tr>
+      <tr><td class="txt">[1, 2]</td><td>8</td><td>3</td></tr>
+      <tr><td class="txt"><strong>média</strong></td><td><strong>16</strong></td><td><strong>−1</strong></td></tr>
+      <tr><td class="txt"><strong>variância</strong></td><td><strong>49</strong></td><td><strong>28</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Variância de <math><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math>: <math><mo>[</mo><msup><mn>5</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>8</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo><mo>/</mo><mn>2</mn><mo>=</mo><mn>98</mn><mo>/</mo><mn>2</mn><mo>=</mo><mn>49</mn></math>. De <math><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></math>: <math><mo>[</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>6</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup><mo>]</mo><mo>/</mo><mn>2</mn><mo>=</mo><mn>56</mn><mo>/</mo><mn>2</mn><mo>=</mo><mn>28</mn></math>. Covariância: <math><mo>[</mo><mn>5</mn><mo>(</mo><mo>−</mo><mn>6</mn><mo>)</mo><mo>+</mo><mn>3</mn><mo>(</mo><mn>2</mn><mo>)</mo><mo>+</mo><mo>(</mo><mo>−</mo><mn>8</mn><mo>)</mo><mo>(</mo><mn>4</mn><mo>)</mo><mo>]</mo><mo>/</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>56</mn><mo>/</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>28</mn></math>.</p>
+
+  <p><strong>(b) Por (3-36).</strong> Do Exercício 3.1, <math><msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>=</mo><mo>[</mo><mn>5</mn><mo>,</mo><mn>2</mn><mo>]</mo></math> e <math><mi>S</mi><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mn>16</mn></mtd><mtd><mo>−</mo><mn>2</mn></mtd></mtr><mtr><mtd><mo>−</mo><mn>2</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow></math>:</p>
+
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mn>2</mn><mo>(</mo><mn>5</mn><mo>)</mo><mo>+</mo><mn>3</mn><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mn>16</mn><mspace width="0.5em"/><mo>✓</mo><mo>,</mo><mspace width="1.6em"/><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover><mo>=</mo><mo>−</mo><mn>5</mn><mo>+</mo><mn>2</mn><mo>(</mo><mn>2</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>1</mn><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">b</mi><mo>=</mo><msup><mn>2</mn><mn>2</mn></msup><mo>(</mo><mn>16</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>64</mn><mo>−</mo><mn>24</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>49</mn><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+
+  <math display="block"><mrow><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi><mo>=</mo><msup><mrow><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mn>2</mn></msup><mo>(</mo><mn>16</mn><mo>)</mo><mo>+</mo><mn>2</mn><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>16</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>28</mn><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+
+  <math display="block"><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi>S</mi><mi mathvariant="bold">c</mi><mo>=</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mn>16</mn><mo>)</mo><mo>+</mo><mo>[</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>(</mo><mo>−</mo><mn>1</mn><mo>)</mo><mo>]</mo><mo>(</mo><mo>−</mo><mn>2</mn><mo>)</mo><mo>+</mo><mo>(</mo><mn>3</mn><mo>)</mo><mo>(</mo><mn>2</mn><mo>)</mo><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mo>−</mo><mn>32</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>6</mn><mo>=</mo><mo>−</mo><mn>28</mn><mspace width="0.5em"/><mo>✓</mo></mrow></math>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Por que (b) é o caminho de verdade</span>
+    <p>Com <math><mi>n</mi><mo>=</mo><mn>3</mn></math> os dois trabalhos são parecidos. Com <math><mi>n</mi><mo>=</mo><mn>3000</mn></math>, o caminho (a) exige 3000 multiplicações <em>por combinação linear</em>, enquanto o (b) usa uma matriz <math><mn>2</mn><mo>×</mo><mn>2</mn></math> que já estava calculada. <strong><math><mover><mi mathvariant="bold">x</mi><mo>¯</mo></mover></math> e <math><mi>S</mi></math> são estatísticas suficientes para toda a família de combinações lineares</strong> — é por isso que os métodos dos capítulos seguintes praticamente nunca voltam à matriz de dados.</p>
+    <p>Repare ainda que <math><msub><mi>r</mi><mrow><msup><mi mathvariant="bold">b</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi><mo>,</mo><msup><mi mathvariant="bold">c</mi><mo>′</mo></msup><mi mathvariant="bold">X</mi></mrow></msub><mo>=</mo><mo>−</mo><mn>28</mn><mo>/</mo><msqrt><mrow><mn>49</mn><mo>×</mo><mn>28</mn></mrow></msqrt><mo>=</mo><mo>−</mo><mn>0</mn><mo>,</mo><mn>756</mn></math>: duas combinações da <em>mesma</em> dupla de variáveis são, em geral, correlacionadas. Achar combinações <em>descorrelacionadas</em> é o problema do capítulo 8.</p>
+  </div>
+</div>
+
+<div class="exercicio">
+  <h3>Exercício 3.16 — a identidade que faltava na demonstração</h3>
+  <div class="enunciado">
+    <p>Seja <math><mi mathvariant="bold">V</mi></math> um vetor aleatório com <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><mo>)</mo><mo>=</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub></math> e <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">V</mi><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><mo>)</mo></mrow><mo>′</mo></msup><mo>=</mo><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub></math>. Mostre que <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>)</mo><mo>=</mo><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub><mo>+</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup></math>.</p>
+  </div>
+
+  <p>Expanda o produto dentro da esperança que define <math><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub></math>:</p>
+
+  <math display="block"><mrow><mo>(</mo><mi mathvariant="bold">V</mi><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><mo>)</mo><msup><mrow><mo>(</mo><mi mathvariant="bold">V</mi><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><mo>)</mo></mrow><mo>′</mo></msup><mo>=</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>−</mo><mi mathvariant="bold">V</mi><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>+</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup></mrow></math>
+
+  <p>Tomando esperança termo a termo — <math><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub></math> é constante e sai para fora, e <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><mo>)</mo><mo>=</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub></math>:</p>
+
+  <math display="block"><mrow><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>)</mo><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup><mo>+</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup><mo>=</mo><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>)</mo><mo>−</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup></mrow></math>
+
+  <p>Isolando, <math><mi>E</mi><mo>(</mo><mi mathvariant="bold">V</mi><msup><mi mathvariant="bold">V</mi><mo>′</mo></msup><mo>)</mo><mo>=</mo><msub><mi mathvariant="bold">Σ</mi><mi mathvariant="bold">V</mi></msub><mo>+</mo><msub><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi></msub><msubsup><mi mathvariant="bold">μ</mi><mi mathvariant="bold">V</mi><mo>′</mo></msubsup></math>. ∎</p>
+
+  <div class="caixa pratica">
+    <span class="rotulo">Onde ela é usada</span>
+    <p>É a versão matricial de <math><mi>E</mi><mo>(</mo><msup><mi>X</mi><mn>2</mn></msup><mo>)</mo><mo>=</mo><mi>Var</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>+</mo><msup><mrow><mo>[</mo><mi>E</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>]</mo></mrow><mn>2</mn></msup></math>, e é justamente o passo que permite calcular <math><mi>E</mi><mo>(</mo><munder><mo>∑</mo><mi>j</mi></munder><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub><msubsup><mi mathvariant="bold">X</mi><mi>j</mi><mo>′</mo></msubsup><mo>−</mo><mi>n</mi><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><msup><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>′</mo></msup><mo>)</mo></math> na demonstração do Resultado 3.1 — aplicada a cada <math><msub><mi mathvariant="bold">X</mi><mi>j</mi></msub></math> e depois a <math><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover></math>, cujas covariâncias são <math><mi mathvariant="bold">Σ</mi></math> e <math><mi mathvariant="bold">Σ</mi><mo>/</mo><mi>n</mi></math>. É desse contraste — <math><mi>n</mi><mi mathvariant="bold">Σ</mi></math> contra <math><mi mathvariant="bold">Σ</mi></math> — que nasce o <math><mi>n</mi><mo>−</mo><mn>1</mn></math>.</p>
+  </div>
+</div>
+
+<pre><code><span class="cmt"># --- Os exercícios do capítulo 3, todos em poucas linhas ---</span>
+
+<span class="cmt"># Ex. 3.1 e 3.5(a)</span>
+X1 &lt;- matrix(c(9, 1, 5, 3, 1, 2), 3, 2, byrow = TRUE)
+D &lt;- sweep(X1, 2, colMeans(X1))
+crossprod(D)                      <span class="cmt"># 32, -4, 2</span>
+<span class="out">##      [,1] [,2]</span>
+<span class="out">## [1,]   32   -4</span>
+<span class="out">## [2,]   -4    2</span>
+cov2cor(cov(X1))[1, 2]            <span class="cmt"># r12 = cos(theta12)</span>
+<span class="out">## [1] -0.5</span>
+c(det(cov(X1)), det(crossprod(D) / 3))    <span class="cmt"># |S| e |Sn|</span>
+<span class="out">## [1] 12.000000  5.333333</span>
+
+<span class="cmt"># Ex. 3.2 e 3.5(b)</span>
+X2 &lt;- matrix(c(3, 4, 6, -2, 3, 1), 3, 2, byrow = TRUE)
+c(cov2cor(cov(X2))[1, 2], det(cov(X2)))
+<span class="out">## [1] -0.8660254  6.7500000</span>
+
+<span class="cmt"># Ex. 3.6: posto deficiente</span>
+X6 &lt;- matrix(c(-1, 3, -2,
+                2, 4,  2,
+                5, 2,  3), 3, 3, byrow = TRUE)
+qr(sweep(X6, 2, colMeans(X6)))$rank        <span class="cmt"># 2, não 3</span>
+<span class="out">## [1] 2</span>
+S6 &lt;- cov(X6)
+c(sum(diag(S6)), round(det(S6), 10))       <span class="cmt"># variância total e |S|</span>
+<span class="out">## [1] 17  0</span>
+round(eigen(S6)$values, 6)
+<span class="out">## [1] 15.711103  1.288897  0.000000</span>
+
+<span class="cmt"># Ex. 3.7: mesma área, formas diferentes</span>
+for (S in list(matrix(c(5, 4, 4, 5), 2),
+               matrix(c(5, -4, -4, 5), 2),
+               matrix(c(3, 0, 0, 3), 2))) {
+  e &lt;- eigen(S)
+  cat("lambda:", e$values, " semi-eixos:", sqrt(e$values), "\n")
+}
+<span class="out">## lambda: 9 1  semi-eixos: 3 1 </span>
+<span class="out">## lambda: 9 1  semi-eixos: 3 1 </span>
+<span class="out">## lambda: 3 3  semi-eixos: 1.732051 1.732051 </span>
+
+<span class="cmt"># Ex. 3.8: traço igual, determinante diferente</span>
+Sa &lt;- diag(3)
+Sb &lt;- matrix(c( 1, -.5, -.5,
+              -.5,   1, -.5,
+              -.5, -.5,   1), 3, 3)
+c(sum(diag(Sa)), sum(diag(Sb)))
+<span class="out">## [1] 3 3</span>
+c(det(Sa), round(det(Sb), 10))
+<span class="out">## [1] 1 0</span>
+round(eigen(Sb)$values, 6)
+<span class="out">## [1] 1.5 1.5 0.0</span>
+
+<span class="cmt"># Ex. 3.9: a nota total denunciada pelo autovetor nulo</span>
+X9 &lt;- matrix(c(12, 17, 29,
+               18, 20, 38,
+               14, 16, 30,
+               20, 18, 38,
+               16, 19, 35), 5, 3, byrow = TRUE)
+S9 &lt;- cov(X9)
+S9 %*% c(1, 1, -1)                <span class="cmt"># Sa = 0</span>
+<span class="out">##      [,1]</span>
+<span class="out">## [1,]    0</span>
+<span class="out">## [2,]    0</span>
+<span class="out">## [3,]    0</span>
+round(eigen(S9)$values, 6)
+<span class="out">## [1] 29.365425  1.634575  0.000000</span>
+
+<span class="cmt"># Ex. 3.14: combinações lineares, os dois caminhos</span>
+b &lt;- c(2, 3); cc &lt;- c(-1, 2)
+bx &lt;- X1 %*% b; cx &lt;- X1 %*% cc
+c(mean(bx), var(bx), mean(cx), var(cx), cov(bx, cx))    <span class="cmt"># caminho longo</span>
+<span class="out">## [1]  16  49  -1  28 -28</span>
+S1 &lt;- cov(X1)
+c(b %*% colMeans(X1), b %*% S1 %*% b, cc %*% colMeans(X1),
+  cc %*% S1 %*% cc, b %*% S1 %*% cc)                    <span class="cmt"># caminho curto</span>
+<span class="out">## [1]  16  49  -1  28 -28</span>
+</code></pre>
+
+
+<div class="nota">
+  <p><strong>Fonte:</strong> Johnson, R. A. &amp; Wichern, D. W. <em>Applied Multivariate Statistical Analysis</em>, 4ª ed., Prentice Hall, 1998 — capítulo 3, págs. 116–156. Figuras 3.1 a 3.10 e a Tabela 3.1 reproduzidas do original para fins de estudo pessoal.</p>
+</div>
+
+<nav class="nav-rodape">
+  <span><a href="../cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">← Cap. 2 — Álgebra de Matrizes e Vetores Aleatórios</a></span>
+  <span><a href="../index.html">Menu →</a></span>
+</nav>
+
+
+</div>
+<script>
+/* Em tela larga a barra lateral fica sempre aberta (o CSS esconde o
+   alternador). Abaixo de 62rem ela vira aba: aí começa fechada e fecha
+   sozinha ao escolher um link. Nada aqui depende de rede ou biblioteca —
+   sem JavaScript a barra apenas fica sempre aberta, que é o estado bom. */
+(function () {
+  var menu = document.querySelector(".menu-lateral");
+  if (!menu) return;
+
+  /* Seções com subtópicos: clicar no título abre a lista e segue o link.
+     Só ABRE — para fechar, clique na setinha. É preciso fazer à mão porque
+     o navegador dá prioridade ao <a> e não alterna o <details> sozinho.
+     Sem JavaScript a setinha continua abrindo e fechando normalmente. */
+  menu.querySelectorAll("details.sub > summary > a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var d = a.closest("details.sub");
+      if (d) d.open = true;
+    });
+  });
+
+  if (!window.matchMedia) return;
+  var estreito = window.matchMedia("(max-width: 62rem)");
+  function ajustar() { menu.open = !estreito.matches; }
+  ajustar();
+  estreito.addEventListener("change", ajustar);
+  menu.querySelectorAll(".painel a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      if (estreito.matches) menu.open = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

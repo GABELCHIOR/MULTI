@@ -13,6 +13,13 @@ CSS, mesmo formato de aula. A única diferença de aparência é o tema, que aqu
 - Johnson, R. A. & Wichern, D. W. — 4ª edição, Prentice Hall, 1998
 - 12 capítulos + Apêndice (tabelas) + Data Bank + índices
 
+**Há um segundo PDF na pasta** (6ª edição, 24 MB, 794 páginas). Ele **não serve
+para nada aqui**: é um escaneamento puro de TIFF, *sem camada de texto nenhuma*
+(`tiff2pdf`), e a paginação é outra. A edição de referência deste caderno
+continua sendo a **4ª**, e `extrair.py` prefere explicitamente o arquivo cujo
+nome contém "Fourth" — antes ele escolhia o maior arquivo, o que passou a
+apontar para a 6ª edição e invalidava todos os offsets.
+
 **É um escaneamento com OCR** (ScanSnap + ClearScan do Acrobat), não um PDF
 nativo. Consequências práticas, e as duas importam:
 
@@ -82,7 +89,7 @@ responde "quando é que x'Ax > 0?", e o capítulo 2 paga essa dívida
 explicitamente. Vários outros ganchos apontam para frente e devem ser retomados
 quando o capítulo chegar:
 
-- cos(θ) = r entre colunas centradas → **cap. 3**
+- ~~cos(θ) = r entre colunas centradas → **cap. 3**~~ (pago na seção 2.4 do cap. 3)
 - distância de Mahalanobis, (x−μ)'Σ⁻¹(x−μ) como expoente da densidade → **cap. 4**
 - Σ⁻¹/² como padronização multivariada; elipses de confiança → **cap. 4 e 5**
 - decomposição espectral de S = componentes principais; λ₁ como máximo de x'Sx
@@ -92,10 +99,25 @@ quando o capítulo chegar:
 - os quatro axiomas de distância, para julgar medidas de similaridade → **cap. 12**
 - Σ₁₂ e o complemento de Schur → **cap. 10**
 
+Ganchos novos, plantados pelo capítulo 3:
+
+- Cov(X̄) = Σ/n é o σ²/n multivariado, e entra no T² de Hotelling → **cap. 5**
+- a elipsoide (x−x̄)'S⁻¹(x−x̄) ≤ c², com semi-eixos c√λᵢ nas direções eᵢ de S,
+  e c² = χ²ₚ(α) → **cap. 4 e 5**
+- |S| = λ₁⋯λₚ; reportar os autovalores separados em vez do produto → **cap. 8**
+- autovetor de autovalor nulo denuncia a dependência linear → **cap. 8**
+- n ≤ p ⇒ |S| = 0 sempre (Resultado 3.3): o problema de alta dimensão
+- traço, e não determinante, na "proporção de variância explicada" → **cap. 8**
+- H = I − (1/n)11′, simétrica e idempotente, é a projeção residual → **cap. 7**
+- ASA′ para q combinações lineares → **cap. 5, 6, 8 e 11**
+- dados composicionais (colunas que somam constante) ⇒ S singular (Exerc. 3.8)
+
 ## Ferramentas
 
-`ferramentas/extrair.py` — localiza o PDF sozinho (por tamanho, na raiz da pasta)
-e converte a numeração com `livro2pdf`/`pdf2livro`.
+`ferramentas/extrair.py` — localiza o PDF sozinho na raiz da pasta (dando
+prioridade ao nome que contém "Fourth", e só então ao maior arquivo) e converte
+a numeração com `livro2pdf`/`pdf2livro`. Redirecionar a saída de `texto` para
+arquivo quebra no Windows (`cp1252`): use `PYTHONIOENCODING=utf-8`.
 `ferramentas/figuras.py` — detecta e recorta figuras (aglomera os retalhos de
 bitmap, descartando o cisco do OCR com o filtro `minimo`).
 
@@ -277,32 +299,40 @@ MULTI/
 O PDF está no `.gitignore`: é material com direitos autorais. Ao mudar a
 estrutura, atualizar `README.md` **e** este arquivo.
 
-**Ainda não é um repositório git** e ainda **não foi para o GitHub** — o usuário
-pediu para segurar. Quando for a hora: `git init`, conferir o `.gitignore`, e só
-então publicar.
+O repositório já existe e está publicado em
+<https://github.com/GABELCHIOR/MULTI> (remoto `origin`, branch `main`). O PDF
+fica de fora pelo `.gitignore`.
 
 ## Progresso
 
-**Capítulos 1 e 2 prontos** (gerados em 2026-08-10). Próximo: capítulo 3
-(Geometria da Amostra e Amostragem Aleatória, livro 116–148, PDF 132–164).
+**Capítulos 1, 2 e 3 prontos** (1 e 2 em 2026-08-10; 3 em 2026-08-13).
+Próximo: capítulo 4 (The Multivariate Normal Distribution, livro 157–223,
+PDF 173–239) — e é o primeiro a cair numa lacuna do escaneamento
+(faltam as págs. 175–176 do livro).
 
-Ao gerar o cap. 3, retomar os ganchos: `cos(θ) = r` entre colunas centradas
-(prometido em 1.6 e em 2.2.4), a decomposição de cada coluna em média + desvio,
-a variância generalizada `|S|` como produto dos autovalores (prometido em 4.1 do
-cap. 2), e a distinção entre as duas geometrias — `n` pontos em `p` dimensões e
-`p` pontos em `n` dimensões.
+Ao gerar o cap. 4, retomar os ganchos que o cap. 3 deixou: a elipsoide
+`(x−x̄)'S⁻¹(x−x̄) ≤ c²` com semi-eixos `c√λᵢ` (seção 4.3 do cap. 3) vira contorno
+de densidade constante com `c² = χ²ₚ(α)`; `Cov(X̄) = Σ/n` vira a base do `T²`;
+e a distância de Mahalanobis, prometida desde o cap. 1, aparece como expoente
+da densidade.
+
+**Numeração do livro corrigida em 2026-08-13.** As páginas de livro dos
+capítulos 4 a 12 na tabela abaixo estavam erradas — tinham sido obtidas
+aplicando o offset constante `+16`, que só vale até a p. 174. Foram conferidas
+uma a uma na página de abertura de cada capítulo. As páginas do **PDF** sempre
+estiveram certas.
 
 | Cap. | Título | Livro p. | PDF p. | Status |
 |---|---|---|---|---|
 | 1 | Aspects of Multivariate Analysis | 1 | 17 | ✅ `estudo/cap01/01-00-aspectos-da-analise-multivariada.html` |
 | 2 | Matrix Algebra and Random Vectors | 49 | 65 | ✅ `estudo/cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html` |
-| 3 | Sample Geometry and Random Sampling | 116 | 132 | — |
-| 4 | The Multivariate Normal Distribution | 149 | 165 | — |
-| 5 | Inferences about a Mean Vector | 222 | 238 | — |
-| 6 | Comparisons of Several Multivariate Means | 288 | 304 | — |
-| 7 | Multivariate Linear Regression Models | 373 | 389 | — |
-| 8 | Principal Components | 454 | 470 | — |
-| 9 | Factor Analysis | 510 | 526 | — |
-| 10 | Canonical Correlation Analysis | 583 | 599 | — |
-| 11 | Discrimination and Classification | 625 | 641 | — |
-| 12 | Clustering, Distance Methods, and Ordination | 722 | 738 | — |
+| 3 | Sample Geometry and Random Sampling | 116 | 132 | ✅ `estudo/cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html` |
+| 4 | The Multivariate Normal Distribution | 157 | 173 | — |
+| 5 | Inferences about a Mean Vector | 224 | 238 | — |
+| 6 | Comparisons of Several Multivariate Means | 290 | 304 | — |
+| 7 | Multivariate Linear Regression Models | 377 | 389 | — |
+| 8 | Principal Components | 458 | 470 | — |
+| 9 | Factor Analysis | 514 | 526 | — |
+| 10 | Canonical Correlation Analysis | 587 | 599 | — |
+| 11 | Discrimination and Classification | 629 | 641 | — |
+| 12 | Clustering, Distance Methods, and Ordination | 726 | 738 | — |

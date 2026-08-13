@@ -36,10 +36,13 @@ import glob
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Localiza o PDF sozinho: o nome do arquivo pode mudar, a pasta nao.
+# A 4a edicao e a edicao de referencia deste caderno (os offsets abaixo sao dela),
+# entao ela tem prioridade sobre qualquer outro PDF que apareca na raiz.
 _pdfs = sorted(glob.glob(os.path.join(RAIZ, "*.pdf")), key=os.path.getsize, reverse=True)
 if not _pdfs:
     raise SystemExit(f"nenhum PDF encontrado em {RAIZ}")
-PDF = _pdfs[0]
+_quarta = [p for p in _pdfs if "fourth" in os.path.basename(p).lower()]
+PDF = (_quarta or _pdfs)[0]
 
 # (primeira pagina do livro na faixa, ultima, offset). Levantado conferindo o
 # folio impresso pagina a pagina -- ver ferramentas/offset.py no historico.
