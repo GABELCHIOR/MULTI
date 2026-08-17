@@ -5,6 +5,10 @@
 # --------------------------------------------------------------------------
 *.pdf
 
+# Fotos das páginas que faltam no escaneamento (175, 176, 319 e 320 do livro).
+# Mesma razão do PDF: são páginas inteiras da obra. Ficam só na cópia local.
+paginas-faltantes/
+
 # Python
 __pycache__/
 *.py[cod]

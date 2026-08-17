@@ -17,6 +17,7 @@ de renderização.
 | 1 | [Aspectos da Análise Multivariada](estudo/cap01/01-00-aspectos-da-analise-multivariada.html) | Os cinco objetivos; o arranjo `X`; média, variância, covariância e correlação amostrais; os arranjos `x̄`, `Sₙ` e `R`; as duas geometrias; gráficos, *brushing*, estrelas e faces de Chernoff; e a **distância estatística** — por que a euclidiana não serve e de onde vem a elipse. |
 | 2 | [Álgebra de Matrizes e Vetores Aleatórios](estudo/cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html) | Comprimento, ângulo e projeção; **decomposição espectral**; matrizes definidas positivas e a resposta à pergunta deixada no cap. 1; elipses por autovalores; a raiz quadrada `A^{1/2}`; `μ`, `Σ` e `ρ`; a regra `CΣC′`; Cauchy–Schwarz e os lemas de maximização. |
 | 3 | [Geometria da Amostra e Amostragem Aleatória](estudo/cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html) | As duas leituras de `X`; a decomposição `yᵢ = x̄ᵢ1 + dᵢ` como projeção; comprimento = desvio-padrão e **cos(θ) = r**, pagando a dívida do cap. 1; amostra aleatória, `E(X̄) = μ`, `Cov(X̄) = Σ/n` e de onde vem o divisor `n − 1`; **variância generalizada `\|S\|`** como volume, suas duas fraquezas e o diagnóstico de `\|S\| = 0`; `x̄`, `S` e `R` como operações matriciais; `b′Sc` e `ASA′`. |
+| 4 | [A Distribuição Normal Multivariada](estudo/cap04/04-00-a-distribuicao-normal-multivariada.html) | A densidade `Nₚ(μ, Σ)` peça por peça e seus contornos elípticos, com `c² = χ²ₚ(α)` fechando o gancho do cap. 3; as quatro propriedades (Resultados 4.2 a 4.5) e a condicional do Resultado 4.6, que **é** a regressão linear múltipla; **Mahalanobis é χ²ₚ** e `Σ^{-1/2}` como padronização multivariada; verossimilhança, o truque do traço e os EMV `μ̂ = x̄`, `Σ̂ = [(n−1)/n]S`; Wishart, independência entre `X̄` e `S`, e o **limite central multivariado**; diagnóstico com Q–Q, teste de `r_Q` e gráfico qui-quadrado; outliers em quatro passos; e transformações de potência por **Box–Cox**. |
 
 Cada aula traz o objetivo da seção, o conceito com a derivação completa, figuras
 recortadas do livro, os exemplos resolvidos passo a passo com código em **R**,
@@ -64,8 +65,11 @@ Duas ressalvas sobre o arquivo usado, se você for reproduzir o processo:
   | 177 – 318 | livro + 14 |
   | 321 – 816 | livro + 12 |
 
-  Use `livro2pdf()` / `pdf2livro()` de `ferramentas/extrair.py`. Os capítulos 1,
-  2 e 3 estão inteiros.
+  Use `livro2pdf()` / `pdf2livro()` de `ferramentas/extrair.py` — nunca uma
+  constante. As quatro páginas perdidas foram **fotografadas da cópia física** e
+  ficam em `paginas-faltantes/`, também fora do repositório. As de nº 175–176 já
+  estão transcritas no capítulo 4; as de nº 319–320 esperam o capítulo 6.
+  Nenhuma aula fica incompleta por causa da lacuna.
 
 ## Uso das ferramentas
 

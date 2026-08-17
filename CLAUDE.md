@@ -44,10 +44,19 @@ para 12:
 | **319 – 320** | **ausentes** (meio do cap. 6) |
 | 321 – 816 | livro + 12 |
 
-Os capítulos 1, 2 e 3 (livro 1–148) estão inteiros na primeira faixa. Use
-sempre `livro2pdf()` / `pdf2livro()` de `ferramentas/extrair.py` — nunca uma
-constante. Ao chegar nos capítulos 4 e 6, avisar o usuário das lacunas e
-decidir se vale conseguir outra cópia do PDF.
+Use sempre `livro2pdf()` / `pdf2livro()` de `ferramentas/extrair.py` — nunca uma
+constante.
+
+**As quatro páginas foram recuperadas (2026-08-17).** O usuário fotografou a
+cópia física; as imagens estão em `paginas-faltantes/livro-175.jpeg`,
+`livro-176.jpeg`, `livro-319.jpeg` e `livro-320.jpeg`. A pasta está no
+`.gitignore` pela mesma razão do PDF (são páginas inteiras da obra). Leia-as com
+a ferramenta Read quando precisar.
+
+- **175–176** (fim da demonstração do Resultado 4.8 e o Exemplo 4.8 inteiro) já
+  estão transcritas na seção 3.6 do cap. 4. Nada falta nessa aula.
+- **319–320** (tabela ANOVA univariada, Exemplo 6.7 e o início do modelo MANOVA,
+  eq. 6-34 e 6-35) esperam o capítulo 6. Já conferidas: legíveis e completas.
 
 ## Preferências de estudo definidas
 
@@ -99,7 +108,32 @@ quando o capítulo chegar:
 - os quatro axiomas de distância, para julgar medidas de similaridade → **cap. 12**
 - Σ₁₂ e o complemento de Schur → **cap. 10**
 
-Ganchos novos, plantados pelo capítulo 3:
+Ganchos que o **capítulo 4** pagou (2026-08-17):
+
+- ~~distância de Mahalanobis, `(x−μ)'Σ⁻¹(x−μ)` como expoente da densidade~~
+  (seção 2.1 do cap. 4)
+- ~~`Σ⁻¹/²` como padronização multivariada~~ (seção 3.5, no Resultado 4.7)
+- ~~a elipsoide com `c² = χ²ₚ(α)`~~ (seção 2.5)
+- ~~`Cov(X̄) = Σ/n` como base do `T²`~~ (seções 3.6 e 5)
+- ~~`Σ₁₂` e o complemento de Schur~~ (seção 3.4, no Resultado 4.6) — mas o
+  **cap. 10** ainda vai usar a mesma estrutura para a correlação canônica
+
+Ganchos novos, plantados pelo capítulo 4:
+
+- `T²` de Hotelling: a estatística que substitui `Σ` por `S` em
+  `n(X̄−μ)'Σ⁻¹(X̄−μ)`, e cuja distribuição exata deixa de ser `χ²` → **cap. 5**
+- a média condicional `μ₁ + Σ₁₂Σ₂₂⁻¹(x₂−μ₂)` **é** a regressão linear múltipla,
+  e a homocedasticidade sai de graça → **cap. 7**
+- plotar `e₁'xⱼ` (maior autovalor de `S`) como diagnóstico de normalidade →
+  **cap. 8**
+- a Wishart soma graus de liberdade (propriedade 1 de 4-24) — é o que permite
+  juntar grupos → **cap. 6**
+- a normalidade das observações *individuais* importa em classificação, e o
+  limite central não salva → **cap. 11**
+- a estrutura de `Σ` (e não só a média) é o objeto da análise fatorial, e aí
+  não normalidade dói mesmo com `n` grande → **cap. 9**
+
+Ganchos ainda pendentes, plantados pelo capítulo 3:
 
 - Cov(X̄) = Σ/n é o σ²/n multivariado, e entra no T² de Hotelling → **cap. 5**
 - a elipsoide (x−x̄)'S⁻¹(x−x̄) ≤ c², com semi-eixos c√λᵢ nas direções eᵢ de S,
@@ -279,6 +313,7 @@ todas as páginas**, senão o navegador serve a versão em cache. Estão em `?v=
 ```
 MULTI/
 ├── Applied Multivariate Statistical Analysis, Fourth Edition.pdf   (fora do git: .gitignore)
+├── paginas-faltantes/      fotos das págs. 175, 176, 319 e 320 (fora do git)
 ├── index.html              redireciona para estudo/ — serve ao GitHub Pages
 ├── README.md               documentação pública do repositório
 ├── CLAUDE.md               este arquivo
@@ -305,16 +340,19 @@ fica de fora pelo `.gitignore`.
 
 ## Progresso
 
-**Capítulos 1, 2 e 3 prontos** (1 e 2 em 2026-08-10; 3 em 2026-08-13).
-Próximo: capítulo 4 (The Multivariate Normal Distribution, livro 157–223,
-PDF 173–239) — e é o primeiro a cair numa lacuna do escaneamento
-(faltam as págs. 175–176 do livro).
+**Capítulos 1, 2, 3 e 4 prontos** (1 e 2 em 2026-08-10; 3 em 2026-08-13;
+4 em 2026-08-17). Próximo: capítulo 5 (Inferences about a Mean Vector,
+livro 224–289, PDF 238–303) — inteiro na terceira faixa do PDF, sem lacunas.
 
-Ao gerar o cap. 4, retomar os ganchos que o cap. 3 deixou: a elipsoide
-`(x−x̄)'S⁻¹(x−x̄) ≤ c²` com semi-eixos `c√λᵢ` (seção 4.3 do cap. 3) vira contorno
-de densidade constante com `c² = χ²ₚ(α)`; `Cov(X̄) = Σ/n` vira a base do `T²`;
-e a distância de Mahalanobis, prometida desde o cap. 1, aparece como expoente
-da densidade.
+Ao gerar o cap. 5, retomar o que o cap. 4 deixou pronto: `X̄ ~ Nₚ(μ, Σ/n)`,
+`(n−1)S ~ Wishart` e **a independência entre os dois** são as três peças de que
+o `T²` de Hotelling precisa; a elipsoide `(x̄−μ)'S⁻¹(x̄−μ)` já está construída,
+só falta trocar o quantil `χ²` pelo de `T²`; e (4-28) explica por que, com `n`
+grande, a diferença entre os dois quantis some.
+
+O capítulo 4 é longo (≈2 000 linhas de HTML, 12 figuras, 20 cartões de recall,
+10 exercícios). Foi escrito em quatro passadas com `Edit` acrescentando ao fim
+do arquivo — escrever tudo numa chamada de `Write` estoura o limite de saída.
 
 **Numeração do livro corrigida em 2026-08-13.** As páginas de livro dos
 capítulos 4 a 12 na tabela abaixo estavam erradas — tinham sido obtidas
@@ -327,7 +365,7 @@ estiveram certas.
 | 1 | Aspects of Multivariate Analysis | 1 | 17 | ✅ `estudo/cap01/01-00-aspectos-da-analise-multivariada.html` |
 | 2 | Matrix Algebra and Random Vectors | 49 | 65 | ✅ `estudo/cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html` |
 | 3 | Sample Geometry and Random Sampling | 116 | 132 | ✅ `estudo/cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html` |
-| 4 | The Multivariate Normal Distribution | 157 | 173 | — |
+| 4 | The Multivariate Normal Distribution | 157 | 173 | ✅ `estudo/cap04/04-00-a-distribuicao-normal-multivariada.html` |
 | 5 | Inferences about a Mean Vector | 224 | 238 | — |
 | 6 | Comparisons of Several Multivariate Means | 290 | 304 | — |
 | 7 | Multivariate Linear Regression Models | 377 | 389 | — |

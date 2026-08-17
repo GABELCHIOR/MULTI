@@ -20,7 +20,7 @@
       <li><a href="cap01/01-00-aspectos-da-analise-multivariada.html">Aspectos da Análise Multivariada</a></li>
       <li><a href="cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Álgebra de Matrizes e Vetores Aleatórios</a></li>
       <li><a href="cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html">Geometria da Amostra e Amostragem Aleatória</a></li>
-      <li class="adiante">A Distribuição Normal Multivariada</li>
+      <li><a href="cap04/04-00-a-distribuicao-normal-multivariada.html">A Distribuição Normal Multivariada</a></li>
       <li class="adiante">Inferências sobre um Vetor de Médias</li>
       <li class="adiante">Comparações entre Vários Vetores de Médias</li>
       <li class="adiante">Modelos de Regressão Linear Multivariada</li>
@@ -68,6 +68,12 @@
     <p class="desc">As duas leituras de <math><mi>X</mi></math>: <math><mi>n</mi></math> pontos em <math><mi>p</mi></math> dimensões e <math><mi>p</mi></math> vetores em <math><mi>n</mi></math>. Comprimento é desvio-padrão e <math><mo>cos</mo><mo>(</mo><mi>θ</mi><mo>)</mo><mo>=</mo><mi>r</mi></math> — a dívida do cap. 1, paga. Amostra aleatória, <math><mi>E</mi><mo>(</mo><mover><mi mathvariant="bold">X</mi><mo>¯</mo></mover><mo>)</mo></math> e o divisor <math><mi>n</mi><mo>−</mo><mn>1</mn></math>. Variância generalizada <math><mo>|</mo><mi>S</mi><mo>|</mo></math> como volume, e quando ela dá zero.</p>
   </a>
 
+  <a class="cartao" href="cap04/04-00-a-distribuicao-normal-multivariada.html">
+    <span class="cap">Capítulo 4 · págs. 157–223</span>
+    <p class="tit">A Distribuição Normal Multivariada</p>
+    <p class="desc">A densidade <math><msub><mi>N</mi><mi>p</mi></msub><mo>(</mo><mi mathvariant="bold">μ</mi><mo>,</mo><mi mathvariant="bold">Σ</mi><mo>)</mo></math> e seus contornos elípticos. As quatro propriedades: combinações lineares, subconjuntos, covariância zero ⟹ independência, e a condicional — que <em>é</em> a regressão. Mahalanobis é <math><msubsup><mi>χ</mi><mi>p</mi><mn>2</mn></msubsup></math>. EMV, Wishart e o limite central multivariado. Q–Q, gráfico qui-quadrado, outliers e Box–Cox.</p>
+  </a>
+
 </div>
 
 <h2 id="menu">Menu</h2>
@@ -82,7 +88,7 @@
     <tr><td>1</td><td class="txt"><a href="cap01/01-00-aspectos-da-analise-multivariada.html">Aspectos da Análise Multivariada</a></td><td>1</td><td>17</td><td>✅ pronto</td></tr>
     <tr><td>2</td><td class="txt"><a href="cap02/02-00-algebra-de-matrizes-e-vetores-aleatorios.html">Álgebra de Matrizes e Vetores Aleatórios</a></td><td>49</td><td>65</td><td>✅ pronto</td></tr>
     <tr><td>3</td><td class="txt"><a href="cap03/03-00-geometria-da-amostra-e-amostragem-aleatoria.html">Geometria da Amostra e Amostragem Aleatória</a></td><td>116</td><td>132</td><td>✅ pronto</td></tr>
-    <tr><td>4</td><td class="txt">A Distribuição Normal Multivariada</td><td>157</td><td>173</td><td>—</td></tr>
+    <tr><td>4</td><td class="txt"><a href="cap04/04-00-a-distribuicao-normal-multivariada.html">A Distribuição Normal Multivariada</a></td><td>157</td><td>173</td><td>✅ pronto</td></tr>
     <tr><td>5</td><td class="txt">Inferências sobre um Vetor de Médias</td><td>224</td><td>238</td><td>—</td></tr>
     <tr><td>6</td><td class="txt">Comparações entre Vários Vetores de Médias</td><td>290</td><td>304</td><td>—</td></tr>
     <tr><td>7</td><td class="txt">Modelos de Regressão Linear Multivariada</td><td>377</td><td>389</td><td>—</td></tr>
@@ -104,14 +110,15 @@
     <thead><tr><th class="txt">Páginas do livro</th><th class="txt">Como achar no PDF</th></tr></thead>
     <tbody>
       <tr><td class="txt">1 a 174</td><td class="txt">PDF = livro + 16</td></tr>
-      <tr><td class="txt">175 e 176</td><td class="txt"><strong>ausentes</strong> (meio do cap. 4)</td></tr>
+      <tr><td class="txt">175 e 176</td><td class="txt"><strong>ausentes</strong> no PDF (meio do cap. 4) — recuperadas em foto</td></tr>
       <tr><td class="txt">177 a 318</td><td class="txt">PDF = livro + 14</td></tr>
-      <tr><td class="txt">319 e 320</td><td class="txt"><strong>ausentes</strong> (meio do cap. 6)</td></tr>
+      <tr><td class="txt">319 e 320</td><td class="txt"><strong>ausentes</strong> no PDF (meio do cap. 6) — recuperadas em foto</td></tr>
       <tr><td class="txt">321 a 816</td><td class="txt">PDF = livro + 12</td></tr>
     </tbody>
   </table>
   </div>
-  <p>Os capítulos 1, 2 e 3 estão <strong>inteiros</strong> na primeira faixa. As lacunas só serão sentidas nos capítulos 4 e 6. A conversão está resolvida em <code>ferramentas/extrair.py</code> (funções <code>livro2pdf</code> e <code>pdf2livro</code>) — não use uma constante.</p>
+  <p>A conversão está resolvida em <code>ferramentas/extrair.py</code> (funções <code>livro2pdf</code> e <code>pdf2livro</code>) — não use uma constante.</p>
+  <p>As quatro páginas que o escaneamento perdeu foram <strong>fotografadas da cópia física</strong> e ficam em <code>paginas-faltantes/</code> (fora do repositório, pela mesma razão do PDF). As de nº 175 e 176 já estão transcritas na <a href="cap04/04-00-a-distribuicao-normal-multivariada.html#s3-6">seção 3.6 do capítulo 4</a>; as de nº 319 e 320 esperam o capítulo 6. <strong>Nenhum capítulo fica incompleto.</strong></p>
 </div>
 
 <h2>Como as aulas são organizadas</h2>
